@@ -3,9 +3,924 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxury Ecommerce</title>
+    <title>LUXE | Curated Luxury Fashion & Lifestyle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-cream: #FAF9F6;
+            --color-gold: #D4AF37;
+            --color-blush: #F5E6E0;
+            --color-charcoal: #2C2C2C;
+            --color-sage: #E8E8E4;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-cream);
+            color: var(--color-charcoal);
+        }
+        
+        .font-serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .hover-lift {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #D4AF37 0%, #F4E5C2 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        
+        .custom-cursor {
+            cursor: none;
+        }
+        
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--color-gold);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+        }
+        
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--color-gold);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.15s ease-out;
+        }
+        
+        .product-card:hover .quick-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .quick-view {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-gold), #F4E5C2);
+            z-index: 100;
+            transition: width 0.1s;
+        }
+        
+        .ai-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .luxury-border {
+            position: relative;
+        }
+        
+        .luxury-border::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-gold);
+            transition: width 0.3s ease;
+        }
+        
+        .luxury-border:hover::after {
+            width: 100%;
+        }
+        
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
-<body>
-    hellow ord
+<body class="antialiased custom-cursor overflow-x-hidden">
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot hidden md:block" id="cursor-dot"></div>
+    <div class="cursor-outline hidden md:block" id="cursor-outline"></div>
+    
+    <!-- Scroll Progress -->
+    <div class="scroll-indicator" id="scroll-progress"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="glass-panel border-b border-white/20">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <!-- Logo -->
+                    <div class="flex-shrink-0 flex items-center gap-3">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-yellow-600">
+                            <path d="M20 2L24 14H36L26 22L30 34L20 26L10 34L14 22L4 14H16L20 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                            <circle cx="20" cy="20" r="3" fill="currentColor"/>
+                        </svg>
+                        <span class="font-serif text-2xl tracking-widest font-semibold text-gray-800">LUXE</span>
+                    </div>
+
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex space-x-8 items-center">
+                        <a href="#" class="luxury-border text-sm uppercase tracking-widest text-gray-700 hover:text-gray-900 transition">New In</a>
+                        <a href="#" class="luxury-border text-sm uppercase tracking-widest text-gray-700 hover:text-gray-900 transition">Designers</a>
+                        <a href="#" class="luxury-border text-sm uppercase tracking-widest text-gray-700 hover:text:text-gray-900 transition">Clothing</a>
+                        <a href="#" class="luxury-border text-sm uppercase tracking-widest text-gray-700 hover:text-gray-900 transition">Bags</a>
+                        <a href="#" class="luxury-border text-sm uppercase tracking-widest text-gray-700 hover:text-gray-900 transition">Beauty</a>
+                        <a href="#" class="luxury-border text-sm uppercase tracking-widest text-gray-700 hover:text-gray-900 transition">Gifts</a>
+                    </div>
+
+                    <!-- Icons -->
+                    <div class="flex items-center space-x-6">
+                        <button class="relative group" onclick="toggleSearch()">
+                            <i data-lucide="search" class="w-5 h-5 text-gray-700 group-hover:text-yellow-600 transition"></i>
+                        </button>
+                        <button class="relative group">
+                            <i data-lucide="heart" class="w-5 h-5 text-gray-700 group-hover:text-red-500 transition"></i>
+                            <span class="absolute -top-2 -right-2 bg-yellow-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">2</span>
+                        </button>
+                        <button class="relative group">
+                            <i data-lucide="shopping-bag" class="w-5 h-5 text-gray-700 group-hover:text-yellow-600 transition"></i>
+                            <span class="absolute -top-2 -right-2 bg-gray-900 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
+                        </button>
+                        <button class="md:hidden" onclick="toggleMobileMenu()">
+                            <i data-lucide="menu" class="w-6 h-6 text-gray-700"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Personalization Bar -->
+        <div class="bg-gradient-to-r from-purple-50 to-pink-50 border-b border-purple-100 py-2 px-6 hidden md:block" id="ai-bar">
+            <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 text-sm text-purple-800">
+                <span class="ai-badge">AI</span>
+                <span id="ai-message">Good afternoon. Based on your preferences, new arrivals from The Row match your style.</span>
+                <button class="text-purple-600 hover:text-purple-800 underline ml-2">View Edit</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-white transform translate-x-full transition-transform duration-300 md:hidden">
+        <div class="p-6">
+            <button onclick="toggleMobileMenu()" class="absolute top-6 right-6">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="mt-12 space-y-6">
+                <a href="#" class="block text-2xl font-serif">New In</a>
+                <a href="#" class="block text-2xl font-serif">Designers</a>
+                <a href="#" class="block text-2xl font-serif">Clothing</a>
+                <a href="#" class="block text-2xl font-serif">Bags</a>
+                <a href="#" class="block text-2xl font-serif">Beauty</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Overlay -->
+    <div id="search-overlay" class="fixed inset-0 z-50 bg-white/95 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+        <div class="max-w-3xl mx-auto mt-32 px-6">
+            <div class="relative">
+                <input type="text" placeholder="Search designers, categories, or trends..." 
+                       class="w-full text-3xl font-serif border-b-2 border-gray-200 py-4 focus:outline-none focus:border-yellow-600 bg-transparent placeholder-gray-300">
+                <button onclick="toggleSearch()" class="absolute right-0 top-4">
+                    <i data-lucide="x" class="w-8 h-8 text-gray-400 hover:text-gray-600"></i>
+                </button>
+            </div>
+            <div class="mt-8">
+                <p class="text-sm text-gray-500 uppercase tracking-widest mb-4">Trending Now</p>
+                <div class="flex flex-wrap gap-3">
+                    <span class="px-4 py-2 bg-gray-100 rounded-full text-sm cursor-pointer hover:bg-gray-200 transition">Summer Dresses</span>
+                    <span class="px-4 py-2 bg-gray-100 rounded-full text-sm cursor-pointer hover:bg-gray-200 transition">Bottega Veneta</span>
+                    <span class="px-4 py-2 bg-gray-100 rounded-full text-sm cursor-pointer hover:bg-gray-200 transition">Wedding Guest</span>
+                    <span class="px-4 py-2 bg-gray-100 rounded-full text-sm cursor-pointer hover:bg-gray-200 transition">The Row</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen min-h-[700px] flex items-center overflow-hidden pt-20">
+        <!-- Background with Parallax -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/40 to-transparent z-10"></div>
+            <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&q=80" 
+                 alt="Luxury Fashion" 
+                 class="w-full h-full object-cover object-center scale-110 animate-[pulse_20s_ease-in-out_infinite]">
+        </div>
+
+        <div class="relative z-20 max-w-7xl mx-auto px-6 lg:px-8 w-full">
+            <div class="max-w-2xl slide-up">
+                <p class="text-sm uppercase tracking-[0.3em] text-gray-600 mb-4 flex items-center gap-2">
+                    <span class="w-12 h-px bg-yellow-600"></span>
+                    Spring/Summer 2026
+                </p>
+                <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl leading-tight mb-6 text-gray-900">
+                    The Art of <br>
+                    <span class="italic text-yellow-700">Effortless</span> Luxury
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed max-w-lg">
+                    Discover our curated collection of timeless pieces. AI-personalised selections delivered to your door within 2 hours in London.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button class="group bg-gray-900 text-white px-8 py-4 rounded-none hover:bg-gray-800 transition-all duration-300 flex items-center justify-center gap-3">
+                        Explore Collection
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                    <button class="border border-gray-900 text-gray-900 px-8 py-4 rounded-none hover:bg-gray-50 transition-all duration-300">
+                        Book Personal Styling
+                    </button>
+                </div>
+                
+                <!-- Trust Indicators -->
+                <div class="mt-12 flex items-center gap-8 text-sm text-gray-500">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="truck" class="w-4 h-4"></i>
+                        <span>Complimentary Delivery</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        <span>30-Day Returns</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        <span>Authenticity Guaranteed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="absolute right-10 top-1/3 hidden lg:block slide-up delay-300">
+            <div class="glass-panel p-6 rounded-2xl shadow-2xl max-w-xs transform hover:scale-105 transition-transform duration-500">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="sparkles" class="w-6 h-6 text-purple-600"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-purple-600 font-semibold uppercase tracking-wider mb-1">AI Curated</p>
+                        <p class="text-sm text-gray-700">"This silk blouse matches 3 items in your wishlist"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Navigation -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 slide-up">
+                <h2 class="font-serif text-4xl md:text-5xl mb-4">Shop by Category</h2>
+                <p class="text-gray-500">Explore our carefully curated departments</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Category 1 -->
+                <div class="group cursor-pointer slide-up delay-100">
+                    <div class="relative overflow-hidden rounded-lg aspect-[3/4] mb-4">
+                        <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&q=80" 
+                             alt="Women's Fashion" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                    </div>
+                    <h3 class="font-serif text-xl text-center group-hover:text-yellow-700 transition-colors">Women</h3>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="group cursor-pointer slide-up delay-200">
+                    <div class="relative overflow-hidden rounded-lg aspect-[3/4] mb-4">
+                        <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=600&q=80" 
+                             alt="Men's Fashion" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                    </div>
+                    <h3 class="font-serif text-xl text-center group-hover:text-yellow-700 transition-colors">Men</h3>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="group cursor-pointer slide-up delay-300">
+                    <div class="relative overflow-hidden rounded-lg aspect-[3/4] mb-4">
+                        <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&q=80" 
+                             alt="Bags" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                    </div>
+                    <h3 class="font-serif text-xl text-center group-hover:text-yellow-700 transition-colors">Bags</h3>
+                </div>
+
+                <!-- Category 4 -->
+                <div class="group cursor-pointer slide-up delay-300">
+                    <div class="relative overflow-hidden rounded-lg aspect-[3/4] mb-4">
+                        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&q=80" 
+                             alt="Beauty" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                    </div>
+                    <h3 class="font-serif text-xl text-center group-hover:text-yellow-700 transition-colors">Beauty</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Personalisation Section -->
+    <section class="py-20 bg-gradient-to-br from-purple-50 via-white to-pink-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="slide-up">
+                    <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm mb-6">
+                        <span class="ai-badge">AI POWERED</span>
+                        <span class="text-sm text-gray-600">Your Personal Curator</span>
+                    </div>
+                    <h2 class="font-serif text-4xl md:text-5xl mb-6 leading-tight">
+                        Discover Pieces <br>
+                        <span class="italic text-purple-700">Uniquely</span> Yours
+                    </h2>
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        Our intelligent styling assistant learns your preferences, body type, and lifestyle to recommend pieces that truly resonate with your personal aesthetic. Experience luxury shopping reimagined.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="scan" class="w-5 h-5 text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Visual Search</h4>
+                                <p class="text-sm text-gray-600">Upload any image and find similar luxury items instantly</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                            <div class="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="shirt" class="w-5 h-5 text-pink-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Size Predictor</h4>
+                                <p class="text-sm text-gray-600">AI-powered fit recommendations across all designers</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                            <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="sparkles" class="w-5 h-5 text-yellow-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Style DNA</h4>
+                                <p class="text-sm text-gray-600">Weekly edits curated specifically for your wardrobe</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative slide-up delay-200">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" 
+                             alt="AI Styling" 
+                             class="w-full h-auto">
+                        
+                        <!-- Floating UI Elements -->
+                        <div class="absolute top-4 right-4 glass-panel px-4 py-3 rounded-xl shadow-lg animate-pulse">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <span class="text-xs font-semibold">Analyzing Style...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute bottom-4 left-4 right-4 glass-panel p-4 rounded-xl">
+                            <div class="flex items-center gap-3">
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" 
+                                     class="w-10 h-10 rounded-full object-cover border-2 border-white">
+                                <div class="flex-1">
+                                    <p class="text-sm font-semibold">Recommended for You</p>
+                                    <p class="text-xs text-gray-600">Bottega Veneta Mini Jodie</p>
+                                </div>
+                                <button class="bg-gray-900 text-white px-3 py-1 rounded-lg text-xs">View</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative Elements -->
+                    <div class="absolute -z-10 -top-10 -right-10 w-64 h-64 bg-purple-200 rounded-full blur-3xl opacity-50"></div>
+                    <div class="absolute -z-10 -bottom-10 -left-10 w-64 h-64 bg-pink-200 rounded-full blur-3xl opacity-50"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-12 slide-up">
+                <div>
+                    <p class="text-sm uppercase tracking-widest text-gray-500 mb-2">Curated Selection</p>
+                    <h2 class="font-serif text-4xl md:text-5xl">Trending Now</h2>
+                </div>
+                <a href="#" class="hidden md:flex items-center gap-2 text-sm uppercase tracking-widest hover:text-yellow-700 transition-colors">
+                    View All
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card group slide-up delay-100">
+                    <div class="relative overflow-hidden bg-gray-100 rounded-lg mb-4 aspect-[3/4]">
+                        <img src="https://images.unsplash.com/photo-1591561954557-26941169b49e?w=600&q=80" 
+                             alt="Luxury Bag" 
+                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-3 left-3">
+                            <span class="bg-white/90 backdrop-blur px-3 py-1 text-xs uppercase tracking-wider">New</span>
+                        </div>
+                        <div class="absolute top-3 right-3">
+                            <button class="w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4 quick-view">
+                            <button class="w-full bg-white/95 backdrop-blur py-3 text-sm uppercase tracking-widest hover:bg-gray-900 hover:text-white transition-colors">
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-xs text-gray-500 uppercase tracking-wider">Bottega Veneta</p>
+                        <h3 class="font-medium text-gray-900">Mini Jodie Intrecciato Bag</h3>
+                        <p class="text-gray-900 font-semibold">£2,450</p>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card group slide-up delay-200">
+                    <div class="relative overflow-hidden bg-gray-100 rounded-lg mb-4 aspect-[3/4]">
+                        <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&q=80" 
+                             alt="Designer Dress" 
+                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-3 right-3">
+                            <button class="w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4 quick-view">
+                            <button class="w-full bg-white/95 backdrop-blur py-3 text-sm uppercase tracking-widest hover:bg-gray-900 hover:text-white transition-colors">
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-xs text-gray-500 uppercase tracking-wider">The Row</p>
+                        <h3 class="font-medium text-gray-900">Ginza Silk Midi Dress</h3>
+                        <p class="text-gray-900 font-semibold">£1,890</p>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card group slide-up delay-300">
+                    <div class="relative overflow-hidden bg-gray-100 rounded-lg mb-4 aspect-[3/4]">
+                        <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&q=80" 
+                             alt="Designer Shoes" 
+                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-3 left-3">
+                            <span class="bg-yellow-600 text-white px-3 py-1 text-xs uppercase tracking-wider">Best Seller</span>
+                        </div>
+                        <div class="absolute top-3 right-3">
+                            <button class="w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                                <i data-lucide="heart" class="w-4 h-4 text-red-500 fill-red-500"></i>
+                            </button>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4 quick-view">
+                            <button class="w-full bg-white/95 backdrop-blur py-3 text-sm uppercase tracking-widest hover:bg-gray-900 hover:text-white transition-colors">
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-xs text-gray-500 uppercase tracking-wider">Manolo Blahnik</p>
+                        <h3 class="font-medium text-gray-900">Hangisi Pump 105</h3>
+                        <p class="text-gray-900 font-semibold">£875</p>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card group slide-up delay-300">
+                    <div class="relative overflow-hidden bg-gray-100 rounded-lg mb-4 aspect-[3/4]">
+                        <img src="https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=600&q=80" 
+                             alt="Jewelry" 
+                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-3 right-3">
+                            <button class="w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                                <i data-lucide="heart" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4 quick-view">
+                            <button class="w-full bg-white/95 backdrop-blur py-3 text-sm uppercase tracking-widest hover:bg-gray-900 hover:text-white transition-colors">
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-xs text-gray-500 uppercase tracking-wider">Missoma</p>
+                        <h3 class="font-medium text-gray-900">Harris Reed Pearl Necklace</h3>
+                        <p class="text-gray-900 font-semibold">£325</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center md:hidden">
+                <a href="#" class="inline-flex items-center gap-2 text-sm uppercase tracking-widest border-b border-gray-900 pb-1">
+                    View All Products
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Editorial Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="order-2 md:order-1 relative slide-up">
+                    <div class="grid grid-cols-2 gap-4">
+                        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80" 
+                             class="rounded-lg shadow-lg transform translate-y-8">
+                        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80" 
+                             class="rounded-lg shadow-lg">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 w-48 h-48 bg-yellow-100 rounded-full -z-10"></div>
+                </div>
+                
+                <div class="order-1 md:order-2 slide-up delay-200">
+                    <p class="text-sm uppercase tracking-widest text-gray-500 mb-4">The Journal</p>
+                    <h2 class="font-serif text-4xl md:text-5xl mb-6">The Spring Edit: <br><span class="italic text-yellow-700">Effortless Elegance</span></h2>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        This season, we embrace soft tailoring, natural fabrics, and a palette inspired by the English countryside. Our buyers have curated an exclusive selection of pieces that transition seamlessly from morning meetings to evening soirées.
+                    </p>
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        Discover the stories behind the collections, meet the designers shaping modern luxury, and explore styling tips from our expert team.
+                    </p>
+                    <button class="group flex items-center gap-3 text-sm uppercase tracking-widest border-b-2 border-gray-900 pb-2 hover:text-yellow-700 hover:border-yellow-700 transition-colors">
+                        Read the Editorial
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 slide-up">
+                <h2 class="font-serif text-4xl md:text-5xl mb-4">The LUXE Experience</h2>
+                <p class="text-gray-500">Exceptional service for the discerning client</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="group p-8 border border-gray-100 rounded-2xl hover:border-yellow-200 hover:shadow-xl transition-all duration-300 slide-up delay-100">
+                    <div class="w-14 h-14 bg-yellow-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="user" class="w-7 h-7 text-yellow-700"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl mb-3">Personal Styling</h3>
+                    <p class="text-gray-600 mb-4">Book a complimentary session with our expert stylists, available in-store, online, or at your home.</p>
+                    <a href="#" class="text-sm uppercase tracking-widest text-yellow-700 hover:text-yellow-800">Book Now</a>
+                </div>
+
+                <div class="group p-8 border border-gray-100 rounded-2xl hover:border-purple-200 hover:shadow-xl transition-all duration-300 slide-up delay-200">
+                    <div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="zap" class="w-7 h-7 text-purple-700"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl mb-3">LUXE Express</h3>
+                    <p class="text-gray-600 mb-4">London delivery within 2 hours. Manchester, Birmingham & Edinburgh same-day service available.</p>
+                    <a href="#" class="text-sm uppercase tracking-widest text-purple-700 hover:text-purple-800">Learn More</a>
+                </div>
+
+                <div class="group p-8 border border-gray-100 rounded-2xl hover:border-pink-200 hover:shadow-xl transition-all duration-300 slide-up delay-300">
+                    <div class="w-14 h-14 bg-pink-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="gift" class="w-7 h-7 text-pink-700"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl mb-3">Concierge Gifting</h3>
+                    <p class="text-gray-600 mb-4">Bespoke gift wrapping, handwritten notes, and curated gift boxes for every occasion.</p>
+                    <a href="#" class="text-sm uppercase tracking-widest text-pink-700 hover:text-pink-800">Explore</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-20 bg-gray-900 text-white">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center slide-up">
+            <i data-lucide="mail" class="w-12 h-12 mx-auto mb-6 text-yellow-500"></i>
+            <h2 class="font-serif text-4xl md:text-5xl mb-4">Join the Inner Circle</h2>
+            <p class="text-gray-400 mb-8 max-w-lg mx-auto">Subscribe for early access to sales, exclusive events, and personalised recommendations powered by our AI stylist.</p>
+            
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto mb-8" onsubmit="event.preventDefault(); showNotification('Welcome to the Inner Circle!');">
+                <input type="email" placeholder="Enter your email" 
+                       class="flex-1 px-6 py-4 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-yellow-500 text-white placeholder-gray-500">
+                <button type="submit" class="px-8 py-4 bg-yellow-600 hover:bg-yellow-700 rounded-lg font-medium transition-colors">
+                    Subscribe
+                </button>
+            </form>
+            
+            <p class="text-xs text-gray-500">By subscribing, you agree to our Privacy Policy. Unsubscribe anytime.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+                <div class="col-span-2 lg:col-span-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-yellow-600">
+                            <path d="M20 2L24 14H36L26 22L30 34L20 26L10 34L14 22L4 14H16L20 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                        </svg>
+                        <span class="font-serif text-xl tracking-widest font-semibold">LUXE</span>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6 max-w-xs">
+                        Curating the finest in luxury fashion and lifestyle. Serving the UK's most discerning clientele since 2024.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
+                            <i data-lucide="youtube" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4 uppercase tracking-wider text-sm">Shop</h4>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">New Arrivals</a></li>
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">Designers</a></li>
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">Clothing</a></li>
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">Shoes</a></li>
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">Bags</a></li>
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">Sale</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4 uppercase tracking-wider text-sm">Help</h4>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">Delivery Info</a></li>
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">Returns</a></li>
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">Size Guide</a></li>
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4 uppercase tracking-wider text-sm">Company</h4>
+                    <ul class="space-y-3 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">Sustainability</a></li>
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">Press</a></li>
+                        <li><a href="#" class="hover:text-yellow-700 transition-colors">Affiliates</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-500">&copy; 2026 LUXE. All rights reserved.</p>
+                <div class="flex gap-6 text-sm text-gray-500">
+                    <a href="#" class="hover:text-gray-900">Privacy Policy</a>
+                    <a href="#" class="hover:text-gray-900">Terms of Service</a>
+                    <a href="#" class="hover:text-gray-900">Cookie Settings</a>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i data-lucide="credit-card" class="w-5 h-5 text-gray-400"></i>
+                    <i data-lucide="shield" class="w-5 h-5 text-gray-400"></i>
+                    <span class="text-xs text-gray-400">Secure Checkout</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Toast -->
+    <div id="notification" class="fixed bottom-6 right-6 bg-gray-900 text-white px-6 py-4 rounded-lg shadow-2xl transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+        <i data-lucide="check-circle" class="w-5 h-5 text-green-400"></i>
+        <span id="notification-text">Notification</span>
+    </div>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Custom Cursor
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Scroll Progress
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scroll-progress').style.width = scrolled + "%";
+            
+            // Navbar background on scroll
+            const navbar = document.getElementById('navbar');
+            if (winScroll > 50) {
+                navbar.classList.add('shadow-sm');
+            } else {
+                navbar.classList.remove('shadow-sm');
+            }
+        });
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('translate-x-full')) {
+                menu.classList.remove('translate-x-full');
+            } else {
+                menu.classList.add('translate-x-full');
+            }
+        }
+
+        // Search Toggle
+        function toggleSearch() {
+            const search = document.getElementById('search-overlay');
+            if (search.classList.contains('hidden')) {
+                search.classList.remove('hidden');
+                setTimeout(() => search.classList.remove('opacity-0'), 10);
+                search.querySelector('input').focus();
+            } else {
+                search.classList.add('opacity-0');
+                setTimeout(() => search.classList.add('hidden'), 300);
+            }
+        }
+
+        // Notification System
+        function showNotification(message) {
+            const notif = document.getElementById('notification');
+            const text = document.getElementById('notification-text');
+            text.textContent = message;
+            notif.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                notif.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // AI Message Rotation
+        const aiMessages = [
+            "Good afternoon. Based on your preferences, new arrivals from The Row match your style.",
+            "Trending in London: Summer wedding guest outfits are flying off the shelves.",
+            "Your size in the Bottega Veneta Mini Jodie is back in stock.",
+            "Complete the look: The shoes you viewed last week are now 20% off."
+        ];
+        
+        let messageIndex = 0;
+        setInterval(() => {
+            messageIndex = (messageIndex + 1) % aiMessages.length;
+            const msgElement = document.getElementById('ai-message');
+            msgElement.style.opacity = '0';
+            setTimeout(() => {
+                msgElement.textContent = aiMessages[messageIndex];
+                msgElement.style.opacity = '1';
+            }, 300);
+        }, 5000);
+
+        // Intersection Observer for Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.slide-up').forEach((el) => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+
+        // Product Card Interactions
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                cursorOutline.style.transform = 'scale(1.5)';
+                cursorOutline.style.borderColor = '#D4AF37';
+            });
+            card.addEventListener('mouseleave', () => {
+                cursorOutline.style.transform = 'scale(1)';
+                cursorOutline.style.borderColor = '#D4AF37';
+            });
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Add to Cart Simulation
+        document.querySelectorAll('.quick-view button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showNotification('Added to bag - Express delivery available');
+            });
+        });
+    </script>
 </body>
 </html>
