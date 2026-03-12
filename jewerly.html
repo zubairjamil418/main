@@ -21,7 +21,7 @@
                             200: '#F0DEAA',
                             300: '#E6CB7D',
                             400: '#DDB850',
-                            500: '#D4AF37', // Classic Gold
+                            500: '#D4AF37',
                             600: '#AA8C2C',
                             700: '#806921',
                             800: '#554616',
@@ -33,9 +33,6 @@
                     fontFamily: {
                         serif: ['"Cormorant Garamond"', 'serif'],
                         sans: ['"Montserrat"', 'sans-serif'],
-                    },
-                    backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
                     }
                 }
             }
@@ -48,7 +45,6 @@
             overflow-x: hidden;
         }
         
-        /* Custom Cursor */
         .cursor-dot,
         .cursor-outline {
             position: fixed;
@@ -71,7 +67,6 @@
             transition: width 0.2s, height 0.2s, background-color 0.2s;
         }
         
-        /* Hover states for cursor */
         body.hovering .cursor-outline {
             width: 60px;
             height: 60px;
@@ -79,7 +74,6 @@
             border-color: transparent;
         }
 
-        /* Smooth Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -91,7 +85,6 @@
             border-radius: 4px;
         }
 
-        /* Text Reveal Animation */
         .reveal-text {
             clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
         }
@@ -106,7 +99,6 @@
             opacity: 1;
         }
 
-        /* Image Hover Zoom */
         .img-zoom-container {
             overflow: hidden;
         }
@@ -117,7 +109,6 @@
             transform: scale(1.05);
         }
 
-        /* Loader */
         #loader {
             position: fixed;
             inset: 0;
@@ -139,13 +130,24 @@
             100% { width: 100%; }
         }
 
-        /* Mobile Menu */
         .mobile-menu {
             clip-path: circle(0% at calc(100% - 40px) 40px);
             transition: clip-path 0.8s cubic-bezier(0.77, 0, 0.175, 1);
         }
         .mobile-menu.open {
             clip-path: circle(150% at calc(100% - 40px) 40px);
+        }
+
+        @keyframes scroll-line {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .animate-scroll-line {
+            animation: scroll-line 2s infinite;
+        }
+
+        .animate-up {
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
     </style>
 </head>
@@ -167,7 +169,6 @@
     <nav class="fixed w-full z-50 transition-all duration-300 py-6 px-6 md:px-12 flex justify-between items-center mix-blend-difference text-white" id="navbar">
         <a href="#" class="text-2xl md:text-3xl font-serif font-bold tracking-widest z-50 relative">LUMIÈRE</a>
         
-        <!-- Desktop Menu -->
         <div class="hidden md:flex space-x-12 items-center">
             <a href="#collections" class="text-sm uppercase tracking-widest hover:text-gold-300 transition-colors nav-link">Collections</a>
             <a href="#craft" class="text-sm uppercase tracking-widest hover:text-gold-300 transition-colors nav-link">Our Craft</a>
@@ -181,7 +182,6 @@
             </button>
         </div>
 
-        <!-- Mobile Menu Button -->
         <button class="md:hidden z-50 relative w-8 h-8 flex flex-col justify-center items-end space-y-1.5" id="menu-btn">
             <span class="block w-8 h-0.5 bg-current transition-transform duration-300 origin-right"></span>
             <span class="block w-6 h-0.5 bg-current transition-opacity duration-300"></span>
@@ -201,12 +201,12 @@
 
     <!-- Hero Section -->
     <header class="relative h-screen w-full overflow-hidden flex items-center justify-center">
-        <!-- Background Image with Parallax -->
         <div class="absolute inset-0 z-0">
             <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2070&auto=format&fit=crop" 
                  alt="Luxury Jewelry Background" 
                  class="w-full h-full object-cover scale-110" 
-                 id="hero-bg">
+                 id="hero-bg"
+                 onerror="this.src='https://placehold.co/1920x1080/1a1a1a/D4AF37?text=Lumiere+Hero'">
             <div class="absolute inset-0 bg-black/20"></div>
         </div>
 
@@ -223,7 +223,6 @@
             </a>
         </div>
 
-        <!-- Scroll Indicator -->
         <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center opacity-70">
             <span class="text-[10px] uppercase tracking-widest mb-2">Scroll</span>
             <div class="w-[1px] h-12 bg-white/50 relative overflow-hidden">
@@ -240,7 +239,8 @@
                 <div class="absolute -bottom-4 -right-4 w-24 h-24 border-b border-r border-gold-300/50"></div>
                 <img src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=1000&auto=format&fit=crop" 
                      alt="Jewelry Crafting" 
-                     class="w-full h-[500px] object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-out">
+                     class="w-full h-[500px] object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-out"
+                     onerror="this.src='https://placehold.co/800x600/333/D4AF37?text=Craftsmanship'">
             </div>
             <div class="order-1 md:order-2 space-y-8">
                 <h2 class="text-4xl md:text-5xl font-serif font-light reveal-text">
@@ -263,7 +263,7 @@
         </div>
     </section>
 
-    <!-- Featured Collections (Horizontal Scroll) -->
+    <!-- Featured Collections -->
     <section id="collections" class="py-24 bg-white overflow-hidden">
         <div class="px-6 md:px-12 mb-16 flex justify-between items-end">
             <div>
@@ -284,13 +284,14 @@
             </div>
         </div>
 
-        <!-- Product Slider -->
         <div class="flex overflow-x-auto space-x-6 px-6 md:px-12 pb-12 scrollbar-hide snap-x" id="product-slider" style="scrollbar-width: none; -ms-overflow-style: none;">
             
-            <!-- Product 1 -->
             <div class="min-w-[300px] md:min-w-[400px] snap-center group cursor-pointer product-card">
                 <div class="relative overflow-hidden mb-6 aspect-[3/4] bg-gray-100">
-                    <img src="https://images.unsplash.com/photo-1599643478518-17488fbbcd75?q=80&w=1000&auto=format&fit=crop" alt="Gold Necklace" class="w-full h-full object-cover img-zoom">
+                    <img src="https://images.unsplash.com/photo-1599643478518-17488fbbcd75?q=80&w=1000&auto=format&fit=crop" 
+                         alt="Gold Necklace" 
+                         class="w-full h-full object-cover img-zoom"
+                         onerror="this.src='https://placehold.co/600x800/F9F1D8/AA8C2C?text=Gold+Necklace'">
                     <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
                     <button class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white text-charcoal px-6 py-3 text-xs uppercase tracking-widest translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 shadow-lg add-to-cart">
                         Add to Cart
@@ -303,10 +304,12 @@
                 </div>
             </div>
 
-            <!-- Product 2 -->
             <div class="min-w-[300px] md:min-w-[400px] snap-center group cursor-pointer product-card">
                 <div class="relative overflow-hidden mb-6 aspect-[3/4] bg-gray-100">
-                    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=1000&auto=format&fit=crop" alt="Diamond Ring" class="w-full h-full object-cover img-zoom">
+                    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=1000&auto=format&fit=crop" 
+                         alt="Diamond Ring" 
+                         class="w-full h-full object-cover img-zoom"
+                         onerror="this.src='https://placehold.co/600x800/F0F0F0/333?text=Diamond+Ring'">
                     <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
                     <button class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white text-charcoal px-6 py-3 text-xs uppercase tracking-widest translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 shadow-lg add-to-cart">
                         Add to Cart
@@ -319,10 +322,12 @@
                 </div>
             </div>
 
-            <!-- Product 3 -->
             <div class="min-w-[300px] md:min-w-[400px] snap-center group cursor-pointer product-card">
                 <div class="relative overflow-hidden mb-6 aspect-[3/4] bg-gray-100">
-                    <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=1000&auto=format&fit=crop" alt="Pearl Earrings" class="w-full h-full object-cover img-zoom">
+                    <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=1000&auto=format&fit=crop" 
+                         alt="Pearl Earrings" 
+                         class="w-full h-full object-cover img-zoom"
+                         onerror="this.src='https://placehold.co/600x800/FFF8E7/D4AF37?text=Pearl+Earrings'">
                     <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
                     <button class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white text-charcoal px-6 py-3 text-xs uppercase tracking-widest translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 shadow-lg add-to-cart">
                         Add to Cart
@@ -335,10 +340,12 @@
                 </div>
             </div>
 
-            <!-- Product 4 -->
             <div class="min-w-[300px] md:min-w-[400px] snap-center group cursor-pointer product-card">
                 <div class="relative overflow-hidden mb-6 aspect-[3/4] bg-gray-100">
-                    <img src="https://images.unsplash.com/photo-1602751584552-8ba420552259?q=80&w=1000&auto=format&fit=crop" alt="Gold Bracelet" class="w-full h-full object-cover img-zoom">
+                    <img src="https://images.unsplash.com/photo-1602751584552-8ba420552259?q=80&w=1000&auto=format&fit=crop" 
+                         alt="Gold Bracelet" 
+                         class="w-full h-full object-cover img-zoom"
+                         onerror="this.src='https://placehold.co/600x800/D4AF37/FFF?text=Gold+Bracelet'">
                     <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
                     <button class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white text-charcoal px-6 py-3 text-xs uppercase tracking-widest translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 shadow-lg add-to-cart">
                         Add to Cart
@@ -351,10 +358,12 @@
                 </div>
             </div>
 
-             <!-- Product 5 -->
-             <div class="min-w-[300px] md:min-w-[400px] snap-center group cursor-pointer product-card">
+            <div class="min-w-[300px] md:min-w-[400px] snap-center group cursor-pointer product-card">
                 <div class="relative overflow-hidden mb-6 aspect-[3/4] bg-gray-100">
-                    <img src="https://images.unsplash.com/photo-1603561591411-07134e71a2a9?q=80&w=1000&auto=format&fit=crop" alt="Vintage Ring" class="w-full h-full object-cover img-zoom">
+                    <img src="https://images.unsplash.com/photo-1603561591411-07134e71a2a9?q=80&w=1000&auto=format&fit=crop" 
+                         alt="Vintage Ring" 
+                         class="w-full h-full object-cover img-zoom"
+                         onerror="this.src='https://placehold.co/600x800/2B230B/D4AF37?text=Vintage+Ring'">
                     <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
                     <button class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white text-charcoal px-6 py-3 text-xs uppercase tracking-widest translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 shadow-lg add-to-cart">
                         Add to Cart
@@ -373,7 +382,10 @@
     <!-- Parallax Quote Section -->
     <section class="relative py-32 flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1617038224558-28ad3fb558a7?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover fixed-bg" style="object-position: center;">
+            <img src="https://images.unsplash.com/photo-1617038224558-28ad3fb558a7?q=80&w=2000&auto=format&fit=crop" 
+                 class="w-full h-full object-cover fixed-bg" 
+                 style="object-position: center;"
+                 onerror="this.src='https://placehold.co/1920x1080/1a1a1a/D4AF37?text=Elegance'">
             <div class="absolute inset-0 bg-charcoal/60"></div>
         </div>
         <div class="relative z-10 text-center px-6 max-w-3xl mx-auto">
@@ -394,9 +406,11 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Category 1 -->
                 <a href="#" class="group relative h-[500px] overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Necklaces">
+                    <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=1000&auto=format&fit=crop" 
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                         alt="Necklaces"
+                         onerror="this.src='https://placehold.co/600x800/333/D4AF37?text=Necklaces'">
                     <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500"></div>
                     <div class="absolute inset-0 flex flex-col justify-center items-center text-white">
                         <h3 class="text-3xl font-serif italic mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Necklaces</h3>
@@ -404,9 +418,11 @@
                     </div>
                 </a>
 
-                <!-- Category 2 -->
                 <a href="#" class="group relative h-[500px] overflow-hidden mt-0 md:mt-12">
-                    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Rings">
+                    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=1000&auto=format&fit=crop" 
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                         alt="Rings"
+                         onerror="this.src='https://placehold.co/600x800/AA8C2C/FFF?text=Rings'">
                     <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500"></div>
                     <div class="absolute inset-0 flex flex-col justify-center items-center text-white">
                         <h3 class="text-3xl font-serif italic mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Rings</h3>
@@ -414,9 +430,11 @@
                     </div>
                 </a>
 
-                <!-- Category 3 -->
                 <a href="#" class="group relative h-[500px] overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1635767798638-3e2523c0188b?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Earrings">
+                    <img src="https://images.unsplash.com/photo-1635767798638-3e2523c0188b?q=80&w=1000&auto=format&fit=crop" 
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                         alt="Earrings"
+                         onerror="this.src='https://placehold.co/600x800/DDB850/333?text=Earrings'">
                     <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500"></div>
                     <div class="absolute inset-0 flex flex-col justify-center items-center text-white">
                         <h3 class="text-3xl font-serif italic mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Earrings</h3>
@@ -490,7 +508,7 @@
         </div>
     </footer>
 
-    <!-- Shopping Cart Sidebar (Hidden by default) -->
+    <!-- Shopping Cart Sidebar -->
     <div id="cart-sidebar" class="fixed inset-y-0 right-0 w-full md:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-500 z-[60] flex flex-col">
         <div class="p-6 border-b border-gray-100 flex justify-between items-center">
             <h2 class="font-serif text-2xl">Your Cart</h2>
@@ -501,7 +519,6 @@
             </button>
         </div>
         <div class="flex-1 p-6 overflow-y-auto" id="cart-items">
-            <!-- Cart items injected here -->
             <div class="h-full flex flex-col items-center justify-center text-gray-400 space-y-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -526,7 +543,6 @@
             loader.style.opacity = '0';
             setTimeout(() => {
                 loader.style.display = 'none';
-                // Trigger Hero Animations
                 document.querySelectorAll('.animate-up').forEach(el => {
                     el.style.opacity = '1';
                     el.style.transform = 'translateY(0)';
@@ -534,32 +550,28 @@
             }, 500);
         });
 
-        // --- Custom Cursor Logic ---
+        // --- Custom Cursor ---
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
         
         window.addEventListener('mousemove', (e) => {
             const posX = e.clientX;
             const posY = e.clientY;
-
             cursorDot.style.left = `${posX}px`;
             cursorDot.style.top = `${posY}px`;
-
-            // Add a little lag to the outline for smooth feel
             cursorOutline.animate({
                 left: `${posX}px`,
                 top: `${posY}px`
             }, { duration: 500, fill: "forwards" });
         });
 
-        // Hover effects for cursor
         const interactiveElements = document.querySelectorAll('a, button, .product-card');
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
             el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
         });
 
-        // --- Navbar Scroll Effect ---
+        // --- Navbar ---
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
@@ -580,8 +592,6 @@
         menuBtn.addEventListener('click', () => {
             isMenuOpen = !isMenuOpen;
             mobileMenu.classList.toggle('open');
-            
-            // Animate hamburger to X
             const spans = menuBtn.querySelectorAll('span');
             if (isMenuOpen) {
                 spans[0].style.transform = 'rotate(-45deg) translateY(-4px)';
@@ -609,7 +619,7 @@
             });
         });
 
-        // --- Horizontal Scroll Buttons ---
+        // --- Horizontal Scroll ---
         const slider = document.getElementById('product-slider');
         document.getElementById('scroll-left').addEventListener('click', () => {
             slider.scrollBy({ left: -400, behavior: 'smooth' });
@@ -618,7 +628,7 @@
             slider.scrollBy({ left: 400, behavior: 'smooth' });
         });
 
-        // --- Cart Functionality ---
+        // --- Cart ---
         let cart = [];
         const cartCount = document.getElementById('cart-count');
         const cartSidebar = document.getElementById('cart-sidebar');
@@ -627,14 +637,12 @@
         const cartItemsContainer = document.getElementById('cart-items');
         const cartTotal = document.getElementById('cart-total');
 
-        // Open Cart
         document.querySelector('.nav-link').addEventListener('click', () => {
             cartSidebar.classList.remove('translate-x-full');
             cartOverlay.classList.remove('hidden');
             setTimeout(() => cartOverlay.classList.remove('opacity-0'), 10);
         });
 
-        // Close Cart
         const hideCart = () => {
             cartSidebar.classList.add('translate-x-full');
             cartOverlay.classList.add('opacity-0');
@@ -643,21 +651,18 @@
         closeCart.addEventListener('click', hideCart);
         cartOverlay.addEventListener('click', hideCart);
 
-        // Add to Cart
         document.querySelectorAll('.add-to-cart').forEach((btn, index) => {
             btn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent card click
+                e.stopPropagation();
                 const card = btn.closest('.product-card');
                 const name = card.querySelector('h3').innerText;
                 const priceText = card.querySelector('.text-gold-600').innerText;
                 const price = parseFloat(priceText.replace('$', '').replace(',', ''));
                 const img = card.querySelector('img').src;
 
-                // Add to cart array
                 cart.push({ name, price, img });
                 updateCartUI();
                 
-                // Animation feedback
                 btn.innerText = "Added!";
                 btn.classList.add('bg-green-600', 'text-white');
                 setTimeout(() => {
@@ -668,13 +673,11 @@
         });
 
         function updateCartUI() {
-            // Update Count
             cartCount.innerText = cart.length;
             cartCount.classList.remove('opacity-0');
             cartCount.classList.add('animate-bounce');
             setTimeout(() => cartCount.classList.remove('animate-bounce'), 1000);
 
-            // Update List
             if (cart.length === 0) {
                 cartItemsContainer.innerHTML = `
                     <div class="h-full flex flex-col items-center justify-center text-gray-400 space-y-4">
@@ -710,16 +713,13 @@
             }
         }
 
-        // Expose remove function to window
         window.removeItem = (index) => {
             cart.splice(index, 1);
             updateCartUI();
         };
 
-        // --- GSAP Animations ---
+        // --- GSAP ---
         gsap.registerPlugin(ScrollTrigger);
-
-        // Parallax Hero
         gsap.to("#hero-bg", {
             yPercent: 20,
             ease: "none",
@@ -731,7 +731,6 @@
             }
         });
 
-        // Reveal Text on Scroll
         const revealTexts = document.querySelectorAll('.reveal-text');
         revealTexts.forEach(text => {
             ScrollTrigger.create({
@@ -741,7 +740,6 @@
             });
         });
 
-        // Category Stagger
         gsap.from(".group", {
             y: 50,
             opacity: 0,
@@ -752,7 +750,6 @@
                 start: "top 75%"
             }
         });
-
     </script>
 </body>
 </html>
