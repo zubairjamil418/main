@@ -3,89 +3,1497 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Dark Restaurant</title>
+    <title>RIVA | Premium Dining on the Danube</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            background: #181818;
-            color: #f5f5f5;
-            font-family: 'Segoe UI', Arial, sans-serif;
+        /* ============================================
+           DESIGN SYSTEM - TOKENS
+           ============================================ */
+        :root {
+            /* Colors - Premium Dark Palette */
+            --color-bg-primary: #0a0a0a;
+            --color-bg-secondary: #111111;
+            --color-bg-tertiary: #1a1a1a;
+            --color-bg-elevated: #141414;
+            
+            --color-text-primary: #ffffff;
+            --color-text-secondary: rgba(255, 255, 255, 0.7);
+            --color-text-tertiary: rgba(255, 255, 255, 0.5);
+            --color-text-muted: rgba(255, 255, 255, 0.35);
+            
+            /* Accent - Warm Gold/Brass */
+            --color-accent: #c9a962;
+            --color-accent-light: #d4b978;
+            --color-accent-dark: #a88b4a;
+            --color-accent-muted: rgba(201, 169, 98, 0.15);
+            
+            /* Borders */
+            --color-border: rgba(255, 255, 255, 0.1);
+            --color-border-strong: rgba(255, 255, 255, 0.2);
+            
+            /* Typography Scale */
+            --font-display: 'Cormorant Garamond', serif;
+            --font-body: 'Inter', sans-serif;
+            
+            /* Display - Elegant serif for headlines */
+            --text-display-xl: clamp(3rem, 8vw, 6rem);
+            --text-display-lg: clamp(2.5rem, 5vw, 4rem);
+            --text-display-md: clamp(2rem, 4vw, 3rem);
+            --text-display-sm: clamp(1.5rem, 3vw, 2rem);
+            
+            /* Body - Clean sans-serif */
+            --text-body-lg: 1.125rem;
+            --text-body-md: 1rem;
+            --text-body-sm: 0.875rem;
+            --text-body-xs: 0.75rem;
+            
+            /* Spacing System (8px base) */
+            --space-xs: 0.5rem;   /* 8px */
+            --space-sm: 1rem;     /* 16px */
+            --space-md: 1.5rem;   /* 24px */
+            --space-lg: 2rem;     /* 32px */
+            --space-xl: 3rem;     /* 48px */
+            --space-2xl: 4rem;    /* 64px */
+            --space-3xl: 6rem;    /* 96px */
+            --space-4xl: 8rem;    /* 128px */
+            
+            /* Layout */
+            --container-max: 1440px;
+            --container-padding: clamp(1.5rem, 5vw, 4rem);
+            
+            /* Transitions */
+            --transition-fast: 200ms ease;
+            --transition-base: 300ms ease;
+            --transition-slow: 500ms ease;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        .container {
-            max-width: 900px;
-            margin: 60px auto;
-            padding: 40px;
-            background: #232323;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
         }
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 24px;
-            color: #ffd700;
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 32px;
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
         }
-        .cta {
-            display: inline-block;
-            padding: 16px 36px;
-            background: #ffd700;
-            color: #181818;
-            font-weight: bold;
-            border-radius: 8px;
+
+        a {
             text-decoration: none;
-            font-size: 1.1rem;
-            transition: background 0.2s;
+            color: inherit;
+            transition: color var(--transition-fast);
         }
-        .cta:hover {
-            background: #e6c200;
+
+        /* ============================================
+           TYPOGRAPHY
+           ============================================ */
+        .display-xl {
+            font-family: var(--font-display);
+            font-size: var(--text-display-xl);
+            font-weight: 300;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
         }
-        .features {
-            margin-top: 40px;
+
+        .display-lg {
+            font-family: var(--font-display);
+            font-size: var(--text-display-lg);
+            font-weight: 300;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+        }
+
+        .display-md {
+            font-family: var(--font-display);
+            font-size: var(--text-display-md);
+            font-weight: 400;
+            line-height: 1.2;
+        }
+
+        .display-sm {
+            font-family: var(--font-display);
+            font-size: var(--text-display-sm);
+            font-weight: 400;
+            line-height: 1.3;
+        }
+
+        .text-body-lg {
+            font-size: var(--text-body-lg);
+            line-height: 1.7;
+            color: var(--color-text-secondary);
+        }
+
+        .text-body-md {
+            font-size: var(--text-body-md);
+            line-height: 1.6;
+            color: var(--color-text-secondary);
+        }
+
+        .text-label {
+            font-size: var(--text-body-xs);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-accent);
+        }
+
+        /* ============================================
+           COMPONENTS - BUTTONS
+           ============================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-lg);
+            font-family: var(--font-body);
+            font-size: var(--text-body-sm);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent);
+            color: var(--color-bg-primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(201, 169, 98, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--color-text-primary);
+            border: 1px solid var(--color-border-strong);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+        }
+
+        .btn-ghost {
+            background-color: transparent;
+            color: var(--color-text-primary);
+            padding: var(--space-xs) 0;
+            position: relative;
+        }
+
+        .btn-ghost::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--color-accent);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform var(--transition-base);
+        }
+
+        .btn-ghost:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .btn-lg {
+            padding: var(--space-md) var(--space-xl);
+            font-size: var(--text-body-md);
+        }
+
+        /* ============================================
+           COMPONENTS - CARDS
+           ============================================ */
+        .card {
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            overflow: hidden;
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--color-border-strong);
+        }
+
+        .card-image {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            filter: grayscale(20%) brightness(0.9);
+            transition: filter var(--transition-base);
+        }
+
+        .card:hover .card-image {
+            filter: grayscale(0%) brightness(1);
+        }
+
+        .card-content {
+            padding: var(--space-lg);
+        }
+
+        /* ============================================
+           COMPONENTS - FORM ELEMENTS
+           ============================================ */
+        .form-group {
+            margin-bottom: var(--space-md);
+        }
+
+        .form-label {
+            display: block;
+            font-size: var(--text-body-xs);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-tertiary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            background-color: var(--color-bg-tertiary);
+            border: 1px solid var(--color-border);
+            color: var(--color-text-primary);
+            font-family: var(--font-body);
+            font-size: var(--text-body-md);
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px var(--color-accent-muted);
+        }
+
+        .form-input::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        select.form-input {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23ffffff' stroke-width='1.5' stroke-opacity='0.5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right var(--space-md) center;
+            padding-right: var(--space-xl);
+        }
+
+        /* ============================================
+           LAYOUT UTILITIES
+           ============================================ */
+        .container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+        }
+
+        .section {
+            padding: var(--space-4xl) 0;
+        }
+
+        .section-sm {
+            padding: var(--space-3xl) 0;
+        }
+
+        .grid {
+            display: grid;
+            gap: var(--space-lg);
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .flex {
             display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-sm { gap: var(--space-sm); }
+        .gap-md { gap: var(--space-md); }
+        .gap-lg { gap: var(--space-lg); }
+
+        .text-center { text-align: center; }
+
+        .accent { color: var(--color-accent); }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: var(--space-md) 0;
+            background: linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0) 100%);
+            backdrop-filter: blur(10px);
+            transition: background-color var(--transition-base), padding var(--transition-base);
+        }
+
+        .nav.scrolled {
+            background-color: rgba(10, 10, 10, 0.95);
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            color: var(--color-text-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xl);
+            list-style: none;
+        }
+
+        .nav-link {
+            font-size: var(--text-body-sm);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-secondary);
+            position: relative;
+            padding: var(--space-xs) 0;
+        }
+
+        .nav-link:hover {
+            color: var(--color-text-primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--color-accent);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform var(--transition-base);
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .lang-switch {
+            font-size: var(--text-body-sm);
+            color: var(--color-text-tertiary);
+            font-weight: 500;
+        }
+
+        .lang-switch span {
+            color: var(--color-text-primary);
+            margin-right: var(--space-xs);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--space-xs);
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 24px;
+            height: 1px;
+            background-color: var(--color-text-primary);
+            transition: all var(--transition-fast);
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.6) 100%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900"><rect fill="%23111" width="1440" height="900"/><path fill="%231a1a1a" d="M0 450h1440v450H0z" opacity="0.5"/></svg>');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.7);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 var(--container-padding);
+        }
+
+        .hero-label {
+            margin-bottom: var(--space-lg);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-title {
+            margin-bottom: var(--space-lg);
+            animation: fadeInUp 1s ease 0.1s both;
+        }
+
+        .hero-subtitle {
+            max-width: 600px;
+            margin: 0 auto var(--space-xl);
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
             flex-wrap: wrap;
-            gap: 32px;
+            animation: fadeInUp 1s ease 0.3s both;
         }
-        .feature {
-            flex: 1 1 250px;
-            background: #292929;
-            border-radius: 8px;
-            padding: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: var(--space-xl);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--color-text-tertiary);
+            font-size: var(--text-body-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            animation: bounce 2s infinite;
         }
-        .feature h2 {
-            color: #ffd700;
-            font-size: 1.3rem;
-            margin-bottom: 12px;
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--color-accent), transparent);
+        }
+
+        /* ============================================
+           RESERVATION SECTION (OpenTable)
+           ============================================ */
+        .reservation-section {
+            background-color: var(--color-bg-secondary);
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+            position: relative;
+        }
+
+        .reservation-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: var(--space-3xl);
+            align-items: center;
+        }
+
+        .reservation-info h2 {
+            margin-bottom: var(--space-md);
+        }
+
+        .reservation-info p {
+            margin-bottom: var(--space-lg);
+            max-width: 400px;
+        }
+
+        .reservation-widget {
+            background-color: var(--color-bg-tertiary);
+            border: 1px solid var(--color-border);
+            padding: var(--space-xl);
+            position: relative;
+        }
+
+        .reservation-widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--color-accent), transparent);
+        }
+
+        .reservation-form {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr) auto;
+            gap: var(--space-md);
+            align-items: end;
+        }
+
+        .reservation-note {
+            margin-top: var(--space-md);
+            font-size: var(--text-body-xs);
+            color: var(--color-text-muted);
+            text-align: center;
+        }
+
+        /* ============================================
+           FEATURES / HIGHLIGHTS
+           ============================================ */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-xl);
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: var(--space-xl);
+            border: 1px solid var(--color-border);
+            background-color: var(--color-bg-secondary);
+            transition: all var(--transition-base);
+        }
+
+        .feature-item:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto var(--space-md);
+            color: var(--color-accent);
+        }
+
+        .feature-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: var(--space-sm);
+            font-weight: 400;
+        }
+
+        /* ============================================
+           MENU PREVIEW
+           ============================================ */
+        .menu-section {
+            background-color: var(--color-bg-secondary);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto var(--space-3xl);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-xl);
+        }
+
+        .menu-category {
+            padding: var(--space-xl);
+            border: 1px solid var(--color-border);
+            background-color: var(--color-bg-primary);
+        }
+
+        .menu-category-title {
+            font-family: var(--font-display);
+            font-size: var(--text-display-sm);
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item-info h4 {
+            font-family: var(--font-body);
+            font-size: var(--text-body-md);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: var(--color-text-primary);
+        }
+
+        .menu-item-info p {
+            font-size: var(--text-body-sm);
+            color: var(--color-text-tertiary);
+        }
+
+        .menu-item-price {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--color-accent);
+            font-weight: 400;
+        }
+
+        /* ============================================
+           GALLERY / AMBIANCE
+           ============================================ */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: 400px 400px;
+            gap: var(--space-sm);
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            background-color: var(--color-bg-secondary);
+        }
+
+        .gallery-item:first-child {
+            grid-row: span 2;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(30%) brightness(0.8);
+            transition: all var(--transition-slow);
+        }
+
+        .gallery-item:hover .gallery-img {
+            filter: grayscale(0%) brightness(1);
+            transform: scale(1.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 50%);
+            display: flex;
+            align-items: flex-end;
+            padding: var(--space-lg);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            background-color: var(--color-bg-secondary);
+            border-top: 1px solid var(--color-border);
+            padding: var(--space-4xl) 0 var(--space-xl);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: var(--space-3xl);
+            margin-bottom: var(--space-3xl);
+        }
+
+        .footer-brand {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin-bottom: var(--space-md);
+            letter-spacing: 0.1em;
+        }
+
+        .footer-desc {
+            color: var(--color-text-tertiary);
+            max-width: 300px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .footer-heading {
+            font-size: var(--text-body-sm);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-lg);
+            color: var(--color-text-primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: var(--space-sm);
+        }
+
+        .footer-links a {
+            color: var(--color-text-secondary);
+            font-size: var(--text-body-sm);
+            transition: color var(--transition-fast);
+        }
+
+        .footer-links a:hover {
+            color: var(--color-accent);
+        }
+
+        .footer-bottom {
+            padding-top: var(--space-xl);
+            border-top: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: var(--text-body-xs);
+            color: var(--color-text-muted);
+        }
+
+        .social-links {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all var(--transition-fast);
+        }
+
+        .social-links a:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        /* ============================================
+           MODAL (OpenTable Integration Concept)
+           ============================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-base);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform var(--transition-base);
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: var(--space-xl);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--color-text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color var(--transition-fast);
+        }
+
+        .modal-close:hover {
+            color: var(--color-text-primary);
+        }
+
+        .modal-body {
+            padding: var(--space-xl);
+        }
+
+        /* ============================================
+           RESPONSIVE - MOBILE (390px base)
+           ============================================ */
+        @media (max-width: 768px) {
+            :root {
+                --space-4xl: 4rem;
+                --space-3xl: 3rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                width: 100%;
+                padding: 0 var(--space-lg);
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .reservation-container {
+                grid-template-columns: 1fr;
+                gap: var(--space-xl);
+            }
+
+            .reservation-form {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid,
+            .menu-grid,
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(4, 300px);
+            }
+
+            .gallery-item:first-child {
+                grid-row: span 1;
+            }
+
+            .footer-grid {
+                gap: var(--space-xl);
+                text-align: center;
+            }
+
+            .footer-desc {
+                max-width: 100%;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: var(--space-md);
+                text-align: center;
+            }
+        }
+
+        /* Tablet adjustments */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .reservation-container {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 300px 300px;
+            }
+
+            .gallery-item:first-child {
+                grid-column: span 2;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Premium Dark Restaurant</h1>
-        <p>Experience luxury dining in a sophisticated, modern dark-themed environment. Our restaurant offers gourmet cuisine, exceptional service, and an ambiance designed for memorable evenings.</p>
-        <a href="#reservation" class="cta">Reserve Your Table</a>
-        <div class="features">
-            <div class="feature">
-                <h2>Elegant Atmosphere</h2>
-                <p>Enjoy a refined setting with ambient lighting and contemporary decor.</p>
+
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="nav-logo">RIVA</a>
+            
+            <ul class="nav-links">
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#menu" class="nav-link">Menu</a></li>
+                <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                <li><a href="#reservation" class="nav-link">Reservations</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <div class="lang-switch">
+                    <span>EN</span> / HU
+                </div>
+                <button class="mobile-menu-btn" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
-            <div class="feature">
-                <h2>Gourmet Cuisine</h2>
-                <p>Indulge in chef-crafted dishes using premium ingredients.</p>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="text-label hero-label">Budapest • Danube Riverside</div>
+            <h1 class="display-xl hero-title">
+                Where Culinary Art<br>
+                <span class="accent">Meets the River</span>
+            </h1>
+            <p class="text-body-lg hero-subtitle">
+                Experience modern gastronomy with panoramic views of the Danube. 
+                An intimate setting for unforgettable moments.
+            </p>
+            <div class="hero-cta">
+                <a href="#reservation" class="btn btn-primary btn-lg">Reserve a Table</a>
+                <a href="#menu" class="btn btn-secondary btn-lg">View Menu</a>
             </div>
-            <div class="feature">
-                <h2>Exclusive Wine Selection</h2>
-                <p>Choose from a curated list of world-class wines and spirits.</p>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Reservation Section (OpenTable Integration) -->
+    <section class="section-sm reservation-section" id="reservation">
+        <div class="container">
+            <div class="reservation-container">
+                <div class="reservation-info">
+                    <div class="text-label">Reservations</div>
+                    <h2 class="display-md">Book Your<br>Experience</h2>
+                    <p class="text-body-md">
+                        Secure your table with OpenTable for an evening of exceptional dining 
+                        and breathtaking riverside views. For groups larger than 8, please contact us directly.
+                    </p>
+                    <a href="#" class="btn btn-ghost" onclick="openModal()">Large Parties & Events →</a>
+                </div>
+
+                <div class="reservation-widget">
+                    <form class="reservation-form" onsubmit="event.preventDefault(); openModal();">
+                        <div class="form-group">
+                            <label class="form-label">Date</label>
+                            <input type="date" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Time</label>
+                            <select class="form-input" required>
+                                <option value="">Select time</option>
+                                <option>18:00</option>
+                                <option>18:30</option>
+                                <option>19:00</option>
+                                <option>19:30</option>
+                                <option>20:00</option>
+                                <option>20:30</option>
+                                <option>21:00</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Guests</label>
+                            <select class="form-input" required>
+                                <option value="2">2 People</option>
+                                <option value="3">3 People</option>
+                                <option value="4">4 People</option>
+                                <option value="5">5 People</option>
+                                <option value="6">6 People</option>
+                                <option value="7">7 People</option>
+                                <option value="8">8 People</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Find Table</button>
+                    </form>
+                    <p class="reservation-note">
+                        Powered by OpenTable • Instant confirmation • Free cancellation
+                    </p>
+                </div>
             </div>
-            <div class="feature">
-                <h2>Private Events</h2>
-                <p>Book our venue for special occasions and private gatherings.</p>
+        </div>
+    </section>
+
+    <!-- Features / Highlights -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Riverside Dining</h3>
+                    <p class="text-body-md">Panoramic terrace views of the Danube with the Parliament illuminated at night.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Modern Cuisine</h3>
+                    <p class="text-body-md">Contemporary Hungarian flavors reimagined with French techniques and seasonal ingredients.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Craft Cocktails</h3>
+                    <p class="text-body-md">Award-winning mixology program featuring local spirits and house-infusions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Preview -->
+    <section class="section menu-section" id="menu">
+        <div class="container">
+            <div class="section-header">
+                <div class="text-label">Culinary Journey</div>
+                <h2 class="display-lg">Seasonal Tasting<br>& À La Carte</h2>
+                <p class="text-body-md">Our menu evolves with the seasons, featuring the finest local produce and sustainable seafood.</p>
+            </div>
+
+            <div class="menu-grid">
+                <div class="menu-category">
+                    <div class="menu-category-title">
+                        <span>Starters</span>
+                        <span class="accent">Főételek előtt</span>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Beef Tartare</h4>
+                            <p>Smoked egg yolk, capers, sourdough crisp</p>
+                        </div>
+                        <span class="menu-item-price">4 800 Ft</span>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Seared Scallops</h4>
+                            <p>Cauliflower purée, black truffle, brown butter</p>
+                        </div>
+                        <span class="menu-item-price">6 200 Ft</span>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Foie Gras Terrine</h4>
+                            <p>Fig compote, brioche, aged balsamic</p>
+                        </div>
+                        <span class="menu-item-price">5 900 Ft</span>
+                    </div>
+                </div>
+
+                <div class="menu-category">
+                    <div class="menu-category-title">
+                        <span>Mains</span>
+                        <span class="accent">Főételek</span>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Heritage Pork Tenderloin</h4>
+                            <p>Apple mustard, savoy cabbage, potato gratin</p>
+                        </div>
+                        <span class="menu-item-price">8 900 Ft</span>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Pan-Roasted Duck Breast</h4>
+                            <p>Cherry gastrique, celeriac, wild rice</p>
+                        </div>
+                        <span class="menu-item-price">9 500 Ft</span>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <h4>Line-Caught Sea Bass</h4>
+                            <p>Fennel, saffron broth, mussels, herbs</p>
+                        </div>
+                        <span class="menu-item-price">10 200 Ft</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center" style="margin-top: var(--space-2xl);">
+                <a href="#" class="btn btn-secondary">View Full Menu</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery / Ambiance -->
+    <section class="section" id="gallery">
+        <div class="container" style="margin-bottom: var(--space-xl);">
+            <div class="section-header">
+                <div class="text-label">The Space</div>
+                <h2 class="display-lg">Interior & Terrace</h2>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'><rect fill='%23222' width='800' height='800'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23444' font-family='serif' font-size='24'>Terrace View</text></svg>" alt="Terrace" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <div>
+                            <div class="text-label">Outdoor</div>
+                            <h3 class="display-sm">Riverside Terrace</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%231a1a1a' width='400' height='400'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23333' font-family='serif' font-size='20'>Interior</text></svg>" alt="Interior" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <div>
+                            <div class="text-label">Dining Room</div>
+                            <h3 class="display-sm">Main Hall</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23222' width='400' height='400'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23444' font-family='serif' font-size='20'>Bar</text></svg>" alt="Bar" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <div>
+                            <div class="text-label">Drinks</div>
+                            <h3 class="display-sm">Cocktail Bar</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%231a1a1a' width='400' height='400'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23333' font-family='serif' font-size='20'>Kitchen</text></svg>" alt="Kitchen" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <div>
+                            <div class="text-label">Culinary</div>
+                            <h3 class="display-sm">Open Kitchen</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect fill='%23222' width='400' height='400'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23444' font-family='serif' font-size='20'>Private</text></svg>" alt="Private Dining" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <div>
+                            <div class="text-label">Events</div>
+                            <h3 class="display-sm">Private Room</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">RIVA</div>
+                    <p class="footer-desc">
+                        Modern dining on the Danube. Where exceptional cuisine meets 
+                        Budapest's most spectacular riverside views.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Instagram">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Facebook">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="footer-heading">Visit Us</h4>
+                    <ul class="footer-links">
+                        <li>Vigadó tér 2.</li>
+                        <li>Budapest, 1051</li>
+                        <li>Hungary</li>
+                        <li style="margin-top: var(--space-sm);">
+                            <a href="tel:+36123456789">+36 1 234 5678</a>
+                        </li>
+                        <li>
+                            <a href="mailto:hello@riva.hu">hello@riva.hu</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="footer-heading">Hours</h4>
+                    <ul class="footer-links">
+                        <li><strong>Tue–Thu</strong>: 18:00–23:00</li>
+                        <li><strong>Fri–Sat</strong>: 18:00–00:00</li>
+                        <li><strong>Sun</strong>: 12:00–22:00</li>
+                        <li><strong>Mon</strong>: Closed</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="footer-heading">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Gift Cards</a></li>
+                        <li><a href="#">Private Events</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Accessibility</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 RIVA Restaurant. All rights reserved.</p>
+                <div style="display: flex; gap: var(--space-lg);">
+                    <a href="#" style="color: var(--color-text-muted);">Privacy Policy</a>
+                    <a href="#" style="color: var(--color-text-muted);">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Reservation Modal (OpenTable Integration) -->
+    <div class="modal-overlay" id="reservationModal" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <div class="text-label">Table Reservation</div>
+                    <h3 class="display-sm" style="margin-top: var(--space-xs);">Complete Your Booking</h3>
+                </div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="background-color: var(--color-bg-primary); border: 1px dashed var(--color-border); padding: var(--space-xl); text-align: center; margin-bottom: var(--space-lg);">
+                    <p class="text-body-md" style="margin-bottom: var(--space-md);">
+                        <strong>OpenTable Widget Area</strong>
+                    </p>
+                    <p class="text-body-sm" style="color: var(--color-text-muted);">
+                        Embed OpenTable reservation widget here.<br>
+                        This modal provides focused context for the booking flow.
+                    </p>
+                </div>
+                <p class="text-body-sm" style="color: var(--color-text-muted); text-align: center;">
+                    For reservations within 24 hours, please call us directly at +36 1 234 5678
+                </p>
             </div>
         </div>
     </div>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('reservationModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            if (!event || event.target.id === 'reservationModal' || event.target.classList.contains('modal-close')) {
+                document.getElementById('reservationModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.feature-item, .menu-category, .gallery-item').forEach((el) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
