@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIVA | Riverside Dining Budapest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           DESIGN SYSTEM - TOKENS (Warm Editorial)
+           ============================================ */
+        :root {
+            /* Colors - Warm Stone & Sand Palette */
+            --color-bg-primary: #faf9f7;
+            --color-bg-secondary: #f5f3f0;
+            --color-bg-tertiary: #edeae5;
+            --color-bg-dark: #1a1a1a;
+            
+            --color-text-primary: #1a1a1a;
+            --color-text-secondary: #4a4a4a;
+            --color-text-tertiary: #6b6b6b;
+            --color-text-muted: #8a8a8a;
+            --color-text-inverse: #ffffff;
+            
+            /* Accent - Terracotta/Rust */
+            --color-accent: #b85450;
+            --color-accent-light: #c9706c;
+            --color-accent-dark: #9a4542;
+            --color-accent-muted: rgba(184, 84, 80, 0.08);
+            
+            /* Secondary Accent - Olive/Sage */
+            --color-secondary: #5c6b56;
+            
+            /* Borders */
+            --color-border: rgba(26, 26, 26, 0.08);
+            --color-border-strong: rgba(26, 26, 26, 0.15);
+            
+            /* Typography Scale */
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            
+            /* Display - Editorial serif */
+            --text-display-xl: clamp(3.5rem, 10vw, 8rem);
+            --text-display-lg: clamp(2.5rem, 6vw, 5rem);
+            --text-display-md: clamp(2rem, 4vw, 3.5rem);
+            --text-display-sm: clamp(1.5rem, 3vw, 2.25rem);
+            
+            /* Body */
+            --text-body-lg: 1.125rem;
+            --text-body-md: 1rem;
+            --text-body-sm: 0.875rem;
+            --text-body-xs: 0.75rem;
+            
+            /* Spacing System */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --space-2xl: 6rem;
+            --space-3xl: 8rem;
+            --space-4xl: 12rem;
+            
+            /* Layout */
+            --container-max: 1600px;
+            --container-padding: clamp(1.5rem, 6vw, 5rem);
+            
+            /* Transitions */
+            --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 800ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ============================================
+           TYPOGRAPHY
+           ============================================ */
+        .display-xl {
+            font-family: var(--font-display);
+            font-size: var(--text-display-xl);
+            font-weight: 400;
+            line-height: 1.0;
+            letter-spacing: -0.03em;
+        }
+
+        .display-lg {
+            font-family: var(--font-display);
+            font-size: var(--text-display-lg);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .display-md {
+            font-family: var(--font-display);
+            font-size: var(--text-display-md);
+            font-weight: 500;
+            line-height: 1.15;
+        }
+
+        .display-sm {
+            font-family: var(--font-display);
+            font-size: var(--text-display-sm);
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .text-body-lg {
+            font-size: var(--text-body-lg);
+            line-height: 1.7;
+            color: var(--color-text-secondary);
+            font-weight: 300;
+        }
+
+        .text-body-md {
+            font-size: var(--text-body-md);
+            line-height: 1.6;
+            color: var(--color-text-secondary);
+        }
+
+        .text-label {
+            font-size: var(--text-body-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--color-accent);
+        }
+
+        .italic {
+            font-style: italic;
+        }
+
+        /* ============================================
+           COMPONENTS - BUTTONS
+           ============================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-xl);
+            font-family: var(--font-body);
+            font-size: var(--text-body-xs);
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent);
+            color: var(--color-text-inverse);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(184, 84, 80, 0.25);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--color-text-primary);
+            border: 1.5px solid var(--color-border-strong);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+            background-color: var(--color-accent-muted);
+        }
+
+        .btn-dark {
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-inverse);
+        }
+
+        .btn-dark:hover {
+            background-color: #000;
+            transform: translateY(-2px);
+        }
+
+        .btn-text {
+            background: none;
+            border: none;
+            padding: var(--space-xs) 0;
+            color: var(--color-accent);
+            font-weight: 600;
+            position: relative;
+        }
+
+        .btn-text::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--color-accent);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform var(--transition-base);
+        }
+
+        .btn-text:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* ============================================
+           LAYOUT UTILITIES
+           ============================================ */
+        .container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+        }
+
+        .container-narrow {
+            max-width: 1200px;
+        }
+
+        .section {
+            padding: var(--space-4xl) 0;
+            position: relative;
+        }
+
+        .grid {
+            display: grid;
+            gap: var(--space-lg);
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-sm { gap: var(--space-sm); }
+        .gap-md { gap: var(--space-md); }
+        .gap-lg { gap: var(--space-lg); }
+
+        .text-center { text-align: center; }
+
+        .accent { color: var(--color-accent); }
+
+        /* ============================================
+           NAVIGATION (Minimal, Editorial)
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: var(--space-lg) 0;
+            mix-blend-mode: difference;
+            transition: padding var(--transition-base);
+        }
+
+        .nav.scrolled {
+            padding: var(--space-md) 0;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xl);
+            list-style: none;
+        }
+
+        .nav-link {
+            font-size: var(--text-body-xs);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.8);
+            transition: color var(--transition-fast);
+        }
+
+        .nav-link:hover {
+            color: #fff;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+
+        .lang-switch {
+            font-size: var(--text-body-xs);
+            color: rgba(255,255,255,0.6);
+            font-weight: 500;
+            letter-spacing: 0.1em;
+        }
+
+        .lang-switch span {
+            color: #fff;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--space-xs);
+            color: #fff;
+        }
+
+        /* ============================================
+           HERO (Asymmetric, Editorial)
+           ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 55% 45%;
+            position: relative;
+            background-color: var(--color-bg-secondary);
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-4xl) var(--container-padding);
+            padding-right: var(--space-2xl);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-label {
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 60px;
+            height: 1px;
+            background-color: var(--color-accent);
+        }
+
+        .hero-title {
+            margin-bottom: var(--space-lg);
+            font-size: clamp(3rem, 6vw, 6rem);
+        }
+
+        .hero-subtitle {
+            max-width: 480px;
+            margin-bottom: var(--space-xl);
+            font-size: 1.25rem;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: var(--space-md);
+            align-items: center;
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 100%;
+            min-height: 600px;
+        }
+
+        .hero-image-main {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(0.9) contrast(1.05);
+        }
+
+        .hero-image-accent {
+            position: absolute;
+            bottom: -60px;
+            left: -100px;
+            width: 280px;
+            height: 350px;
+            object-fit: cover;
+            border: 12px solid var(--color-bg-primary);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            z-index: 3;
+        }
+
+        .hero-stats {
+            position: absolute;
+            bottom: var(--space-2xl);
+            right: var(--space-2xl);
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: var(--space-lg) var(--space-xl);
+            border-left: 3px solid var(--color-accent);
+            z-index: 3;
+        }
+
+        .stat-item {
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--color-accent);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: var(--text-body-xs);
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 4px;
+        }
+
+        /* ============================================
+           MARQUEE / SCROLLING TEXT
+           ============================================ */
+        .marquee-section {
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-inverse);
+            padding: var(--space-xl) 0;
+            overflow: hidden;
+        }
+
+        .marquee-track {
+            display: flex;
+            animation: marquee 30s linear infinite;
+            width: fit-content;
+        }
+
+        .marquee-content {
+            display: flex;
+            gap: var(--space-xl);
+            padding-right: var(--space-xl);
+            white-space: nowrap;
+        }
+
+        .marquee-item {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-style: italic;
+            opacity: 0.6;
+            display: flex;
+            align-items: center;
+            gap: var(--space-xl);
+        }
+
+        .marquee-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-accent);
+            border-radius: 50%;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ============================================
+           RESERVATION (Integrated, Horizontal)
+           ============================================ */
+        .reservation-section {
+            background-color: var(--color-bg-tertiary);
+            position: relative;
+        }
+
+        .reservation-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--color-border-strong), transparent);
+        }
+
+        .reservation-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: var(--space-3xl);
+            align-items: center;
+        }
+
+        .reservation-header {
+            position: sticky;
+            top: 100px;
+        }
+
+        .reservation-form-wrapper {
+            background-color: var(--color-bg-primary);
+            padding: var(--space-2xl);
+            border: 1px solid var(--color-border);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+        }
+
+        .reservation-form {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .form-label {
+            font-size: var(--text-body-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-muted);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--space-md);
+            background-color: var(--color-bg-secondary);
+            border: 1.5px solid var(--color-border);
+            color: var(--color-text-primary);
+            font-family: var(--font-body);
+            font-size: var(--text-body-md);
+            transition: all var(--transition-fast);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            background-color: var(--color-bg-primary);
+        }
+
+        select.form-input {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%231a1a1a' stroke-width='1.5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right var(--space-md) center;
+            padding-right: var(--space-xl);
+        }
+
+        .opentable-badge {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--color-border);
+            font-size: var(--text-body-xs);
+            color: var(--color-text-muted);
+        }
+
+        /* ============================================
+           EXPERIENCE / FEATURES (Asymmetric Grid)
+           ============================================ */
+        .features-section {
+            background-color: var(--color-bg-primary);
+        }
+
+        .features-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3xl);
+            margin-bottom: var(--space-3xl);
+            align-items: end;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--space-lg);
+        }
+
+        .feature-card {
+            position: relative;
+            overflow: hidden;
+            background-color: var(--color-bg-secondary);
+        }
+
+        .feature-card:nth-child(1) {
+            grid-column: span 7;
+            grid-row: span 2;
+            min-height: 600px;
+        }
+
+        .feature-card:nth-child(2) {
+            grid-column: span 5;
+            min-height: 280px;
+        }
+
+        .feature-card:nth-child(3) {
+            grid-column: span 5;
+            min-height: 280px;
+        }
+
+        .feature-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            inset: 0;
+            transition: transform var(--transition-slow);
+        }
+
+        .feature-card:hover .feature-image {
+            transform: scale(1.05);
+        }
+
+        .feature-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: var(--space-xl);
+            color: var(--color-text-inverse);
+        }
+
+        .feature-number {
+            font-family: var(--font-display);
+            font-size: 6rem;
+            font-weight: 400;
+            opacity: 0.2;
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            line-height: 1;
+        }
+
+        .feature-title {
+            font-family: var(--font-display);
+            font-size: var(--text-display-sm);
+            margin-bottom: var(--space-sm);
+        }
+
+        .feature-desc {
+            font-size: var(--text-body-md);
+            opacity: 0.9;
+            max-width: 400px;
+        }
+
+        /* ============================================
+           MENU (Editorial Layout)
+           ============================================ */
+        .menu-section {
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-inverse);
+        }
+
+        .menu-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: var(--space-3xl);
+        }
+
+        .menu-sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .menu-nav {
+            list-style: none;
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .menu-nav-item {
+            padding: var(--space-md) var(--space-lg);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border-left: 2px solid transparent;
+            margin-left: -1px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .menu-nav-item:hover,
+        .menu-nav-item.active {
+            border-left-color: var(--color-accent);
+            color: #fff;
+            background: linear-gradient(to right, rgba(184,84,80,0.1), transparent);
+        }
+
+        .menu-content {
+            display: grid;
+            gap: var(--space-2xl);
+        }
+
+        .menu-category {
+            padding-bottom: var(--space-2xl);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .menu-category:last-child {
+            border-bottom: none;
+        }
+
+        .menu-category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: var(--space-xl);
+        }
+
+        .menu-category-title {
+            font-family: var(--font-display);
+            font-size: var(--text-display-md);
+        }
+
+        .menu-category-subtitle {
+            font-size: var(--text-body-sm);
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .menu-list {
+            display: grid;
+            gap: var(--space-lg);
+        }
+
+        .menu-item {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: var(--space-md);
+            align-items: start;
+            padding: var(--space-md) 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item-header {
+            display: flex;
+            align-items: baseline;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-xs);
+        }
+
+        .menu-item-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        .menu-item-dots {
+            flex: 1;
+            border-bottom: 1px dotted rgba(255,255,255,0.2);
+            margin-bottom: 6px;
+        }
+
+        .menu-item-price {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--color-accent);
+        }
+
+        .menu-item-desc {
+            font-size: var(--text-body-sm);
+            color: rgba(255,255,255,0.5);
+            font-style: italic;
+        }
+
+        /* ============================================
+           GALLERY (Masonry)
+           ============================================ */
+        .gallery-section {
+            background-color: var(--color-bg-secondary);
+        }
+
+        .gallery-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto var(--space-3xl);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 300px;
+            gap: var(--space-sm);
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item:nth-child(1) {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .gallery-item:nth-child(4) {
+            grid-column: span 2;
+        }
+
+        .gallery-item:nth-child(5) {
+            grid-row: span 2;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all var(--transition-slow);
+            filter: saturate(0.8);
+        }
+
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.1);
+            filter: saturate(1);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .gallery-item:hover .gallery-caption {
+            opacity: 1;
+        }
+
+        .gallery-caption-text {
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            transform: translateY(20px);
+            transition: transform var(--transition-base);
+        }
+
+        .gallery-item:hover .gallery-caption-text {
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           NEWSLETTER / CONTACT
+           ============================================ */
+        .newsletter-section {
+            background-color: var(--color-bg-tertiary);
+            padding: var(--space-3xl) 0;
+        }
+
+        .newsletter-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3xl);
+            align-items: center;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: var(--space-md);
+            border: 1.5px solid var(--color-border-strong);
+            background-color: var(--color-bg-primary);
+            font-family: var(--font-body);
+            font-size: var(--text-body-md);
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-inverse);
+            padding: var(--space-4xl) 0 var(--space-xl);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: var(--space-3xl);
+            margin-bottom: var(--space-3xl);
+        }
+
+        .footer-brand {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            margin-bottom: var(--space-md);
+            letter-spacing: 0.05em;
+        }
+
+        .footer-desc {
+            color: rgba(255,255,255,0.5);
+            max-width: 300px;
+            margin-bottom: var(--space-xl);
+            line-height: 1.8;
+        }
+
+        .footer-heading {
+            font-size: var(--text-body-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: var(--space-lg);
+            color: var(--color-accent);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: var(--space-sm);
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            font-size: var(--text-body-sm);
+            transition: color var(--transition-fast);
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+            transform: translateX(4px);
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+            color: rgba(255,255,255,0.6);
+            font-size: var(--text-body-sm);
+        }
+
+        .footer-bottom {
+            padding-top: var(--space-xl);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: var(--text-body-xs);
+            color: rgba(255,255,255,0.4);
+        }
+
+        .social-links {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .social-link {
+            width: 44px;
+            height: 44px;
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all var(--transition-fast);
+            color: rgba(255,255,255,0.6);
+        }
+
+        .social-link:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+            transform: translateY(-3px);
+        }
+
+        /* ============================================
+           FLOATING RESERVATION BUTTON (Mobile)
+           ============================================ */
+        .fab {
+            position: fixed;
+            bottom: var(--space-lg);
+            right: var(--space-lg);
+            z-index: 999;
+            display: none;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-visual {
+                min-height: 400px;
+                order: -1;
+            }
+
+            .hero-image-accent {
+                display: none;
+            }
+
+            .hero-stats {
+                right: var(--space-lg);
+                bottom: var(--space-lg);
+            }
+
+            .reservation-container,
+            .menu-container,
+            .newsletter-container {
+                grid-template-columns: 1fr;
+            }
+
+            .features-header {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card:nth-child(1),
+            .feature-card:nth-child(2),
+            .feature-card:nth-child(3) {
+                grid-column: span 12;
+                min-height: 300px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-item:nth-child(1) {
+                grid-column: span 2;
+                grid-row: span 1;
+            }
+
+            .gallery-item:nth-child(4),
+            .gallery-item:nth-child(5) {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .menu-sidebar {
+                position: relative;
+                top: 0;
+            }
+
+            .menu-nav {
+                display: flex;
+                overflow-x: auto;
+                border-left: none;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                padding-bottom: var(--space-sm);
+            }
+
+            .menu-nav-item {
+                border-left: none;
+                border-bottom: 2px solid transparent;
+                white-space: nowrap;
+                margin-left: 0;
+            }
+
+            .menu-nav-item:hover,
+            .menu-nav-item.active {
+                border-left-color: transparent;
+                border-bottom-color: var(--color-accent);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-content {
+                padding: var(--space-2xl) var(--container-padding);
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .reservation-form {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: 250px;
+            }
+
+            .gallery-item:nth-child(1),
+            .gallery-item:nth-child(4) {
+                grid-column: span 1;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: var(--space-xl);
+            }
+
+            .footer-desc {
+                max-width: 100%;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: var(--space-md);
+                text-align: center;
+            }
+
+            .fab {
+                display: block;
+            }
+        }
+
+        /* Utility for reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="nav-logo">RIVA</a>
+            
+            <ul class="nav-links">
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#menu" class="nav-link">Menu</a></li>
+                <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                <li><a href="#visit" class="nav-link">Visit</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <div class="lang-switch">
+                    <span>EN</span> / HU
+                </div>
+                <button class="mobile-menu-btn" aria-label="Menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="text-label hero-label">
+                Est. 2024 — Budapest
+            </div>
+            <h1 class="display-xl hero-title">
+                Taste the <br>
+                <span class="italic accent">river's edge</span>
+            </h1>
+            <p class="hero-subtitle">
+                Modern Hungarian cuisine meets Mediterranean warmth on the banks of the Danube. 
+                An intimate culinary journey where every dish tells a story of land and water.
+            </p>
+            <div class="hero-cta">
+                <a href="#reservation" class="btn btn-primary">Reserve Table</a>
+                <a href="#menu" class="btn btn-text">Explore Menu →</a>
+            </div>
+        </div>
+        
+        <div class="hero-visual">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 1000'><rect fill='%23d4c4b0' width='800' height='1000'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%239e8b76' font-family='serif' font-size='32'>Hero Image</text></svg>" alt="Restaurant terrace" class="hero-image-main">
+            
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'><rect fill='%23c9706c' width='300' height='400'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23fff' font-family='serif' font-size='24'>Detail</text></svg>" alt="Food detail" class="hero-image-accent">
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Michelin Stars</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">180°</div>
+                    <div class="stat-label">River View</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">48</div>
+                    <div class="stat-label">Wine Labels</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <section class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-content">
+                <div class="marquee-item">Farm to Table <span class="marquee-dot"></span></div>
+                <div class="marquee-item">Danube Riverside <span class="marquee-dot"></span></div>
+                <div class="marquee-item">Modern Hungarian <span class="marquee-dot"></span></div>
+                <div class="marquee-item">Wine & Dine <span class="marquee-dot"></span></div>
+                <div class="marquee-item">Seasonal Menu <span class="marquee-dot"></span></div>
+                <div class="marquee-item">Farm to Table <span class="marquee-dot"></span></div>
+                <div class="marquee-item">Danube Riverside <span class="marquee-dot"></span></div>
+                <div class="marquee-item">Modern Hungarian <span class="marquee-dot"></span></div>
+                <div class="marquee-item">Wine & Dine <span class="marquee-dot"></span></div>
+                <div class="marquee-item">Seasonal Menu <span class="marquee-dot"></span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reservation Section -->
+    <section class="section reservation-section" id="reservation">
+        <div class="container reservation-container">
+            <div class="reservation-header">
+                <div class="text-label">Reservations</div>
+                <h2 class="display-md">Book Your<br>Table</h2>
+                <p class="text-body-md" style="margin-top: var(--space-md); max-width: 360px;">
+                    We recommend booking at least 2 weeks in advance for weekend seating. 
+                    For special occasions or groups over 8, please contact us directly.
+                </p>
+                <div style="margin-top: var(--space-xl);">
+                    <a href="tel:+36123456789" class="btn btn-secondary">+36 1 234 5678</a>
+                </div>
+            </div>
+
+            <div class="reservation-form-wrapper">
+                <form class="reservation-form" onsubmit="event.preventDefault();">
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Time</label>
+                        <select class="form-input" required>
+                            <option value="">Select</option>
+                            <option>18:00</option>
+                            <option>18:30</option>
+                            <option>19:00</option>
+                            <option>19:30</option>
+                            <option>20:00</option>
+                            <option>20:30</option>
+                            <option>21:00</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Guests</label>
+                        <select class="form-input" required>
+                            <option value="2">2 Guests</option>
+                            <option value="3">3 Guests</option>
+                            <option value="4">4 Guests</option>
+                            <option value="5">5 Guests</option>
+                            <option value="6">6 Guests</option>
+                            <option value="7">7 Guests</option>
+                            <option value="8">8 Guests</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-dark">Check Availability</button>
+                </form>
+                <div class="opentable-badge">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--color-accent)">
+                        <circle cx="12" cy="12" r="10"/>
+                    </svg>
+                    <span>Powered by OpenTable — Instant Confirmation</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience / Features -->
+    <section class="section features-section" id="experience">
+        <div class="container">
+            <div class="features-header">
+                <div>
+                    <div class="text-label">The Experience</div>
+                    <h2 class="display-lg">Three Reasons<br>to Visit</h2>
+                </div>
+                <p class="text-body-lg" style="max-width: 400px;">
+                    Every element of RIVA has been thoughtfully designed to create 
+                    memorable moments from the first greeting to the final bite.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><rect fill='%235c6b56' width='800' height='600'/></svg>" alt="Cuisine" class="feature-image">
+                    <div class="feature-overlay">
+                        <span class="feature-number">01</span>
+                        <h3 class="feature-title">Modern Hungarian</h3>
+                        <p class="feature-desc">Reimagined classics using heritage techniques and locally sourced ingredients from the Great Plain and Lake Balaton.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><rect fill='%23b85450' width='600' height='400'/></svg>" alt="Wine" class="feature-image">
+                    <div class="feature-overlay">
+                        <span class="feature-number">02</span>
+                        <h3 class="feature-title">Curated Wines</h3>
+                        <p class="feature-desc">Exclusive selection from Eger, Tokaj, and Villány regions.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><rect fill='%23d4c4b0' width='600' height='400'/></svg>" alt="View" class="feature-image">
+                    <div class="feature-overlay">
+                        <span class="feature-number">03</span>
+                        <h3 class="feature-title">The View</h3>
+                        <p class="feature-desc">Uninterrupted panoramas of the Danube and Parliament.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="section menu-section" id="menu">
+        <div class="container menu-container">
+            <aside class="menu-sidebar">
+                <div class="text-label" style="color: var(--color-accent); margin-bottom: var(--space-md);">Menu</div>
+                <ul class="menu-nav">
+                    <li class="menu-nav-item active">Tasting Menu</li>
+                    <li class="menu-nav-item">Starters / Előételek</li>
+                    <li class="menu-nav-item">Mains / Főételek</li>
+                    <li class="menu-nav-item">Desserts / Desszertek</li>
+                    <li class="menu-nav-item">Wines / Borok</li>
+                </ul>
+            </aside>
+
+            <div class="menu-content">
+                <div class="menu-category">
+                    <div class="menu-category-header">
+                        <h3 class="menu-category-title">Chef's Tasting</h3>
+                        <span class="menu-category-subtitle">7 Courses — 42,000 Ft</span>
+                    </div>
+                    <p class="text-body-md" style="color: rgba(255,255,255,0.6); margin-bottom: var(--space-xl); max-width: 600px;">
+                        A journey through contemporary Hungarian gastronomy. Optional wine pairing available (+18,000 Ft).
+                    </p>
+                    
+                    <div class="menu-list">
+                        <div class="menu-item">
+                            <div>
+                                <div class="menu-item-header">
+                                    <h4 class="menu-item-title">Tokaji Aszú Foam</h4>
+                                    <span class="menu-item-dots"></span>
+                                </div>
+                                <p class="menu-item-desc">Foie gras, golden raisin, sourdough crisp</p>
+                            </div>
+                            <span class="menu-item-price">Amuse</span>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div>
+                                <div class="menu-item-header">
+                                    <h4 class="menu-item-title">Lake Balaton Pike Perch</h4>
+                                    <span class="menu-item-dots"></span>
+                                </div>
+                                <p class="menu-item-desc">Smoked paprika velouté, caviar, chive oil</p>
+                            </div>
+                            <span class="menu-item-price">1</span>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div>
+                                <div class="menu-item-header">
+                                    <h4 class="menu-item-title">Mangalica Pork Neck</h4>
+                                    <span class="menu-item-dots"></span>
+                                </div>
+                                <p class="menu-item-desc">Sauerkraut foam, juniper, pickled apple</p>
+                            </div>
+                            <span class="menu-item-price">4</span>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div>
+                                <div class="menu-item-header">
+                                    <h4 class="menu-item-title">Dobos Torte Reimagined</h4>
+                                    <span class="menu-item-dots"></span>
+                                </div>
+                                <p class="menu-item-desc">Caramel mousse, hazelnut praline, espresso gel</p>
+                            </div>
+                            <span class="menu-item-price">7</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-category">
+                    <div class="menu-category-header">
+                        <h3 class="menu-category-title">À La Carte Selection</h3>
+                        <span class="menu-category-subtitle">Seasonal Favorites</span>
+                    </div>
+                    
+                    <div class="menu-list">
+                        <div class="menu-item">
+                            <div>
+                                <div class="menu-item-header">
+                                    <h4 class="menu-item-title">Goulash Soup Modern</h4>
+                                    <span class="menu-item-dots"></span>
+                                </div>
+                                <p class="menu-item-desc">Short rib, root vegetables, csipetke dumplings</p>
+                            </div>
+                            <span class="menu-item-price">4,800 Ft</span>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div>
+                                <div class="menu-item-header">
+                                    <h4 class="menu-item-title">Venison Loin</h4>
+                                    <span class="menu-item-dots"></span>
+                                </div>
+                                <p class="menu-item-desc">Red cabbage, chestnut, blackcurrant jus</p>
+                            </div>
+                            <span class="menu-item-price">12,500 Ft</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="section gallery-section" id="gallery">
+        <div class="container">
+            <div class="gallery-header">
+                <div class="text-label">Gallery</div>
+                <h2 class="display-lg">The Space</h2>
+                <p class="text-body-md">Where contemporary design meets timeless riverside elegance.</p>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'><rect fill='%23e8e0d5' width='600' height='600'/></svg>" alt="Interior" class="gallery-img">
+                    <div class="gallery-caption">
+                        <span class="gallery-caption-text">Main Dining</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect fill='%23d4c4b0' width='300' height='300'/></svg>" alt="Detail" class="gallery-img">
+                    <div class="gallery-caption">
+                        <span class="gallery-caption-text">Details</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect fill='%23c9706c' width='300' height='300'/></svg>" alt="Kitchen" class="gallery-img">
+                    <div class="gallery-caption">
+                        <span class="gallery-caption-text">Kitchen</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 300'><rect fill='%235c6b56' width='600' height='300'/></svg>" alt="Terrace" class="gallery-img">
+                    <div class="gallery-caption">
+                        <span class="gallery-caption-text">Terrace</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 600'><rect fill='%231a1a1a' width='300' height='600'/></svg>" alt="Bar" class="gallery-img">
+                    <div class="gallery-caption">
+                        <span class="gallery-caption-text">Bar</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect fill='%23b85450' width='300' height='300'/></svg>" alt="Private" class="gallery-img">
+                    <div class="gallery-caption">
+                        <span class="gallery-caption-text">Private</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-section">
+        <div class="container newsletter-container">
+            <div>
+                <h3 class="display-sm">Stay Connected</h3>
+                <p class="text-body-md" style="margin-top: var(--space-sm);">
+                    Receive seasonal menu updates and exclusive event invitations.
+                </p>
+            </div>
+            <form class="newsletter-form" onsubmit="event.preventDefault();">
+                <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="visit">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">RIVA</div>
+                    <p class="footer-desc">
+                        Contemporary riverside dining in the heart of Budapest. 
+                        Where Hungarian tradition meets modern gastronomy.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="5"/>
+                                <circle cx="12" cy="12" r="4"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Facebook">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="footer-heading">Visit</h4>
+                    <ul class="footer-links">
+                        <li>Vigadó tér 2.</li>
+                        <li>Budapest, 1051</li>
+                        <li>Hungary</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="footer-heading">Hours</h4>
+                    <ul class="footer-links">
+                        <li>Tue–Thu: 18:00–23:00</li>
+                        <li>Fri–Sat: 18:00–00:00</li>
+                        <li>Sun: 12:00–22:00</li>
+                        <li>Mon: Closed</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="footer-heading">Contact</h4>
+                    <div class="footer-contact-item">
+                        <span>📞</span>
+                        <a href="tel:+36123456789">+36 1 234 5678</a>
+                    </div>
+                    <div class="footer-contact-item">
+                        <span>✉️</span>
+                        <a href="mailto:hello@riva.hu">hello@riva.hu</a>
+                    </div>
+                    <div style="margin-top: var(--space-md);">
+                        <a href="#" class="btn btn-text">Private Events →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 RIVA Restaurant. All rights reserved.</p>
+                <div style="display: flex; gap: var(--space-lg);">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Button (Mobile) -->
+    <div class="fab">
+        <a href="#reservation" class="btn btn-primary" style="border-radius: 50px; box-shadow: 0 4px 20px rgba(184,84,80,0.4);">
+            Book Table
+        </a>
+    </div>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Menu navigation interaction
+        document.querySelectorAll('.menu-nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.menu-nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .menu-category, .gallery-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
