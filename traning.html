@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frances & Kevin - Marketing Training That Makes Leaders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #2D1B2E;
+            --primary-pink: #E91E8C;
+            --cream: #FDF6F0;
+            --white: #FFFFFF;
+            --text-dark: #2D1B2E;
+            --text-light: #FDF6F0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--primary-dark);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--primary-pink);
+            font-size: 1.8rem;
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-pink);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .cart-icon {
+            color: var(--white);
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--primary-pink);
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-pink);
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(233, 30, 140, 0.3);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-pink);
+            color: var(--primary-pink);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-pink);
+            color: var(--white);
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: var(--cream);
+            padding: 4rem 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            min-height: 80vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            color: var(--primary-pink);
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+            max-width: 500px;
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .decorative-arrow {
+            position: absolute;
+            bottom: -30px;
+            left: 20%;
+            width: 80px;
+            height: 80px;
+            stroke: var(--primary-dark);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* Stats Section */
+        .stats {
+            background-color: var(--primary-dark);
+            padding: 3rem 5%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            color: var(--white);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(233, 30, 140, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--primary-pink);
+            font-size: 1.5rem;
+        }
+
+        .stat-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--primary-pink);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 5rem 5%;
+            background-color: var(--cream);
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .services-header h2 {
+            font-size: 3rem;
+            color: var(--primary-pink);
+            margin-bottom: 1rem;
+        }
+
+        .services-header p {
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .services-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid var(--primary-dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: repeating-linear-gradient(
+                45deg,
+                var(--primary-dark),
+                var(--primary-dark) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .service-card p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #666;
+        }
+
+        .starburst {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: var(--primary-pink);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: -50px;
+        }
+
+        /* Featured Courses */
+        .courses {
+            padding: 6rem 5%;
+            background-color: var(--cream);
+            position: relative;
+        }
+
+        .courses-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .courses-header h2 {
+            font-size: 3rem;
+            color: var(--primary-pink);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid var(--primary-dark);
+            transition: transform 0.3s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .course-image {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .course-content {
+            padding: 1.5rem;
+        }
+
+        .stars {
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-pink);
+        }
+
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .price {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .enroll-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: var(--primary-pink);
+        }
+
+        /* Why Choose Us */
+        .why-us {
+            background-color: var(--primary-dark);
+            padding: 5rem 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .why-us-image {
+            position: relative;
+        }
+
+        .why-us-image img {
+            width: 100%;
+            border-radius: 20px;
+            border: 3px solid var(--primary-pink);
+        }
+
+        .starburst-decoration {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: var(--primary-pink);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .starburst-1 { top: -20px; left: -20px; }
+        .starburst-2 { top: 20%; right: -30px; width: 60px; height: 60px; }
+
+        .why-us-content h2 {
+            font-size: 3rem;
+            color: var(--primary-pink);
+            margin-bottom: 2rem;
+        }
+
+        .why-us-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .why-us-list li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .check-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--primary-pink);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 5rem 5%;
+            background-color: var(--cream);
+        }
+
+        .testimonials-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .testimonials-header h2 {
+            font-size: 3rem;
+            color: var(--primary-pink);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid var(--primary-dark);
+            position: relative;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .testimonial-name {
+            font-weight: bold;
+            color: var(--primary-pink);
+            margin-bottom: 0.2rem;
+        }
+
+        .testimonial-role {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-stars {
+            color: #FFD700;
+        }
+
+        .view-all {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            background-color: var(--primary-dark);
+            padding: 5rem 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            color: var(--white);
+            position: relative;
+        }
+
+        .cta-images {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .cta-image-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary-pink);
+        }
+
+        .cta-image-circle:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 2rem;
+        }
+
+        .cta-image-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cta-content h2 {
+            font-size: 3rem;
+            color: var(--primary-pink);
+            margin-bottom: 1rem;
+        }
+
+        .cta-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Community Section */
+        .community {
+            padding: 5rem 5%;
+            background-color: var(--cream);
+            text-align: center;
+        }
+
+        .community h2 {
+            font-size: 3rem;
+            color: var(--primary-pink);
+            margin-bottom: 1rem;
+        }
+
+        .community p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 3rem 5%;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1.5fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--primary-pink);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+
+        .footer-links h4 {
+            color: var(--white);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-pink);
+        }
+
+        .footer-cta p {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Floating Chat Button */
+        .chat-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-pink);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(233, 30, 140, 0.4);
+            z-index: 999;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero, .services, .why-us, .cta {
+                grid-template-columns: 1fr;
+            }
+            
+            .courses-grid, .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">FRANCES & KEVIN</a>
+        <ul class="nav-links">
+            <li><a href="#">Marketing Consultant</a></li>
+            <li><a href="#">Team Development</a></li>
+            <li><a href="#">Marketing Director Course</a></li>
+            <li><a href="#">Success Stories</a></li>
+            <li><a href="#">Blogs</a></li>
+            <li><a href="#">FAQs</a></li>
+        </ul>
+        <div class="nav-right">
+            <div class="cart-icon">
+                🛒
+                <span class="cart-count">0</span>
+            </div>
+            <a href="#" class="btn-primary">Get in Touch →</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Marketing training that makes leaders</h1>
+            <p>Frances & Kevin helps ambitious marketers and teams upskill with practical, career-defining training. From early-career marketers to aspiring CMOs, our programmes give you the strategy, skills, and confidence to lead.</p>
+            <a href="#" class="btn-primary">Discover More →</a>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&h=600&fit=crop" alt="Marketing Professional">
+            <svg class="decorative-arrow" viewBox="0 0 100 100">
+                <path d="M10,50 Q50,10 90,50" marker-end="url(#arrowhead)"/>
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#2D1B2E"/>
+                    </marker>
+                </defs>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stat-item">
+            <div class="stat-icon">⊞</div>
+            <div class="stat-number">110%</div>
+            <div class="stat-label">Increase in leadership skills.</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">👤</div>
+            <div class="stat-number">83%</div>
+            <div class="stat-label">Increase in networking skills.</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">📢</div>
+            <div class="stat-number">72%</div>
+            <div class="stat-label">Increase in conflict management skills.</div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="services-header">
+            <h2>Services we offer</h2>
+            <p>We offer a range of services from Marketing strategy to courses to help you take your marketing career to the next level.</p>
+            <a href="#" class="btn-outline">Explore More</a>
+        </div>
+        <div class="services-grid">
+            <div class="starburst">A+<br>Courses</div>
+            <div class="service-card">
+                <h3>Marketing Courses</h3>
+                <p>We understand the importance of continuing professional development within the marketing industry. That's why we offer comprehensive online strategy courses, aimed at business owners and marketing professionals looking to develop their marketing strategy know how.</p>
+            </div>
+            <div class="service-card">
+                <h3>Career Development</h3>
+                <p>Take charge of your career journey. We offer personalised CV writing and career development services, empowering you to showcase your skills, navigate the job market, and achieve your professional aspirations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Courses -->
+    <section class="courses">
+        <div class="courses-header">
+            <h2>Featured Courses</h2>
+        </div>
+        <div class="courses-grid">
+            <div class="course-card">
+                <div class="course-image">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop" alt="Digital Marketing">
+                </div>
+                <div class="course-content">
+                    <div class="stars">★★★★★</div>
+                    <div class="course-title">13 week Digital Marketing Skills Bootcamp Course: Industry Expert Led</div>
+                    <div class="course-footer">
+                        <span class="price">£750</span>
+                        <a href="#" class="enroll-link">⚙ Get Enrolled</a>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop" alt="Google Ads">
+                </div>
+                <div class="course-content">
+                    <div class="stars">★★★★★</div>
+                    <div class="course-title">Introduction to Paid Search – Google Ads</div>
+                    <div class="course-footer">
+                        <span class="price">£199</span>
+                        <a href="#" class="enroll-link">⚙ Get Enrolled</a>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop" alt="Leadership">
+                </div>
+                <div class="course-content">
+                    <div class="stars">★★★★★</div>
+                    <div class="course-title">Marketing Leadership Programme: 7 Weeks to Mastering the CMO Role</div>
+                    <div class="course-footer">
+                        <span class="price">£799</span>
+                        <a href="#" class="enroll-link">⚙ Get Enrolled</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why-us">
+        <div class="why-us-image">
+            <div class="starburst-decoration starburst-1"></div>
+            <div class="starburst-decoration starburst-2"></div>
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop" alt="Team Meeting">
+        </div>
+        <div class="why-us-content">
+            <h2>Accelerate your marketing career</h2>
+            <ul class="why-us-list">
+                <li><span class="check-icon">✓</span> Online tutor led</li>
+                <li><span class="check-icon">✓</span> Delivered by an experienced Chief Marketing Officer</li>
+                <li><span class="check-icon">✓</span> Expand your network</li>
+                <li><span class="check-icon">✓</span> CPD-certified content</li>
+                <li><span class="check-icon">✓</span> Proven results</li>
+            </ul>
+            <a href="#" class="btn-primary">Discover More →</a>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="testimonials-header">
+            <h2>What's Our Client Say About Us.</h2>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-avatar">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="Mandi Webb">
+                </div>
+                <div class="testimonial-name">Mandi Webb</div>
+                <div class="testimonial-role">Marketing Manager</div>
+                <p class="testimonial-text">I can't say enough about the impact this course has had on my career, professional growth and outlook on marketing. The depth of knowledge in just 6 weeks is truly remarkable. From shaping my own...</p>
+                <div class="testimonial-stars">★★★★★</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-avatar">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" alt="Otilia Simionescu">
+                </div>
+                <div class="testimonial-name">Otilia Simionescu</div>
+                <div class="testimonial-role">CRM Executive</div>
+                <p class="testimonial-text">The course offered me the chance to have discussions with like-minded people outside of the normal day-to-day sprints. It was eye-opening to listen to other course attendees on their experiences and make...</p>
+                <div class="testimonial-stars">★★★★★</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-avatar">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="Chris Shepherd">
+                </div>
+                <div class="testimonial-name">Chris Shepherd</div>
+                <div class="testimonial-role">Head of Marketing</div>
+                <p class="testimonial-text">Having completed the Advanced Marketing Professional Development course, and I found it to be exceptional. The course is well-structured, covering a comprehensive range of topics crucial for any...</p>
+                <div class="testimonial-stars">★★★★★</div>
+            </div>
+        </div>
+        <div class="view-all">
+            <a href="#" class="btn-primary">View all Case Studies →</a>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-images">
+            <div class="cta-image-circle">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop" alt="Team member 1">
+            </div>
+            <div class="cta-image-circle">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop" alt="Team member 2">
+            </div>
+        </div>
+        <div class="cta-content">
+            <h2>Try it for free</h2>
+            <p>If you've made it this far, you must be at least a little curious. Sign up and take the first step toward your goals.</p>
+            <a href="#" class="btn-primary">Udemy</a>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section class="community">
+        <h2>Join Our Community</h2>
+        <p>Be part of a like-minded community that shares your passion! Stay updated with the latest trends, exclusive offers, and inspiring stories. Connect with us today!</p>
+        <a href="#" class="btn-primary">Join Now →</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">FRANCES & KEVIN</div>
+                <p>Connect with us.</p>
+                <div class="social-links">
+                    <a href="#">in</a>
+                    <a href="#">𝕏</a>
+                    <a href="#">📷</a>
+                    <a href="#">🦋</a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Returns Policy</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-cta">
+                <p>Get in touch and begin your future, today.</p>
+                <a href="#" class="btn-primary">Get in touch →</a>
+            </div>
+        </div>
+        <div class="copyright">
+            Copyright © 2025 All rights reserved by FrancesandKevin.
+        </div>
+    </footer>
+
+    <!-- Chat Button -->
+    <div class="chat-button">💬</div>
+
+</body>
+</html>
