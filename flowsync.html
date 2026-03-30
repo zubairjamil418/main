@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowSync - Professional SaaS Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f172a;
+            --primary-light: #1e293b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text: #0f172a;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .btn-ghost:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 10rem 2rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            min-height: 90vh;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 500px;
+            background: linear-gradient(135deg, var(--bg-secondary), #e0e7ff);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-card:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-card:nth-child(2) {
+            top: 50%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-card:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .badge {
+            position: absolute;
+            top: -12px;
+            right: 2rem;
+            background: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .pricing-header {
+            margin-bottom: 2rem;
+        }
+
+        .pricing-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .price span {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .pricing-features li:before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .pricing-features li.unavailable {
+            opacity: 0.5;
+        }
+
+        .pricing-features li.unavailable:before {
+            content: "×";
+            color: var(--danger);
+        }
+
+        /* Login/Register Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-secondary);
+            color: var(--text);
+        }
+
+        .modal h2 {
+            font-size: 1.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-group input.error {
+            border-color: var(--danger);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-group input.error + .error-message {
+            display: block;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+        }
+
+        .forgot-password {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .btn-full {
+            width: 100%;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        .social-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-social {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            color: var(--text);
+            justify-content: center;
+        }
+
+        .btn-social:hover {
+            background: white;
+            border-color: var(--accent);
+        }
+
+        .modal-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .modal-footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .modal-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dashboard Preview */
+        .dashboard-preview {
+            padding: 6rem 2rem;
+            background: var(--primary);
+            color: white;
+            overflow: hidden;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .dashboard-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-content p {
+            color: #94a3b8;
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-stats {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .stat h4 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat p {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        .dashboard-mockup {
+            background: var(--primary-light);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mockup-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .mockup-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ef4444;
+        }
+
+        .mockup-dot:nth-child(2) { background: #f59e0b; }
+        .mockup-dot:nth-child(3) { background: #10b981; }
+
+        .mockup-content {
+            space-y: 1rem;
+        }
+
+        .mockup-row {
+            height: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            gap: 1rem;
+        }
+
+        .mockup-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            border-radius: 50%;
+        }
+
+        .mockup-line {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            flex: 1;
+        }
+
+        .mockup-line.short {
+            flex: 0.5;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            padding: 4rem 2rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            max-width: 300px;
+        }
+
+        .footer-links h4 {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .payment-icon {
+            width: 40px;
+            height: 26px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .toast {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 300px;
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            border-left-color: var(--danger);
+        }
+
+        .toast.warning {
+            border-left-color: var(--warning);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            display: none;
+        }
+
+        .btn.loading .spinner {
+            display: block;
+        }
+
+        .btn.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 3rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                margin: 0 auto 2rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .dashboard-stats {
+                justify-content: center;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 8rem 1.5rem 4rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-visual {
+                height: 300px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal {
+                padding: 2rem;
+                margin: 1rem;
+                max-height: 85vh;
+            }
+
+            .social-login {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        /* Password Strength Indicator */
+        .password-strength {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+            display: none;
+        }
+
+        .password-strength.show {
+            display: block;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s;
+        }
+
+        .password-strength.weak .password-strength-bar {
+            width: 33%;
+            background: var(--danger);
+        }
+
+        .password-strength.medium .password-strength-bar {
+            width: 66%;
+            background: var(--warning);
+        }
+
+        .password-strength.strong .password-strength-bar {
+            width: 100%;
+            background: var(--success);
+        }
+
+        /* Success Checkmark Animation */
+        .checkmark {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            animation: scale-in 0.5s ease-out;
+        }
+
+        .checkmark svg {
+            width: 30px;
+            height: 30px;
+            stroke: white;
+            stroke-width: 3;
+            fill: none;
+            stroke-dasharray: 50;
+            stroke-dashoffset: 50;
+            animation: draw 0.5s ease-out 0.3s forwards;
+        }
+
+        @keyframes scale-in {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes draw {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .success-message {
+            text-align: center;
+        }
+
+        .success-message h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-message p {
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">F</div>
+                FlowSync
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#dashboard">Dashboard</a>
+                <button class="btn btn-ghost" onclick="openModal('login')">Log in</button>
+                <button class="btn btn-primary" onclick="openModal('register')">Get Started</button>
+            </div>
+            <button class="mobile-menu-btn">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Streamline Your Workflow with Intelligent Automation</h1>
+            <p>FlowSync helps teams collaborate seamlessly, automate repetitive tasks, and deliver projects faster with our powerful SaaS platform.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="openModal('register')">
+                    Start Free Trial
+                    <span style="font-size: 1.2rem;">→</span>
+                </button>
+                <button class="btn btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+                    Learn More
+                </button>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-card">
+                <div class="card-icon">📊</div>
+                <h4>Analytics</h4>
+                <p style="font-size: 0.875rem; color: var(--text-secondary);">Real-time insights</p>
+            </div>
+            <div class="floating-card">
+                <div class="card-icon">🚀</div>
+                <h4>Automation</h4>
+                <p style="font-size: 0.875rem; color: var(--text-secondary);">Save 10+ hours/week</p>
+            </div>
+            <div class="floating-card">
+                <div class="card-icon">🔒</div>
+                <h4>Security</h4>
+                <p style="font-size: 0.875rem; color: var(--text-secondary);">Enterprise-grade</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <h2>Everything You Need to Scale</h2>
+            <p>Powerful features designed to help your team work smarter, not harder. From automation to analytics, we've got you covered.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Lightning Fast</h3>
+                <p>Optimized infrastructure ensures your workflows run at peak performance with 99.9% uptime guarantee.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Bank-Level Security</h3>
+                <p>End-to-end encryption, SOC 2 compliance, and GDPR readiness keep your data safe and secure.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔗</div>
+                <h3>Integrations</h3>
+                <p>Connect with 100+ tools including Slack, GitHub, Jira, and more. API access for custom solutions.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3>Advanced Analytics</h3>
+                <p>Gain deep insights into team productivity with customizable dashboards and detailed reporting.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>Team Collaboration</h3>
+                <p>Real-time collaboration features, comments, mentions, and role-based permissions for seamless teamwork.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI-Powered</h3>
+                <p>Leverage machine learning for smart suggestions, automated categorization, and predictive analytics.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="section-header">
+            <h2>Simple, Transparent Pricing</h2>
+            <p>Choose the plan that fits your needs. All plans include a 14-day free trial with no credit card required.</p>
+        </div>
+        <div class="pricing-grid">
+            <!-- Free Tier -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Starter</h3>
+                    <div class="price">$0<span>/month</span></div>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">Perfect for individuals</p>
+                </div>
+                <ul class="pricing-features">
+                    <li>Up to 3 projects</li>
+                    <li>Basic analytics</li>
+                    <li>Email support</li>
+                    <li>1GB storage</li>
+                    <li class="unavailable">API access</li>
+                    <li class="unavailable">Team collaboration</li>
+                    <li class="unavailable">Custom integrations</li>
+                </ul>
+                <button class="btn btn-secondary btn-full" onclick="openModal('register')">Get Started Free</button>
+            </div>
+
+            <!-- Pro Tier -->
+            <div class="pricing-card featured">
+                <span class="badge">Most Popular</span>
+                <div class="pricing-header">
+                    <h3>Professional</h3>
+                    <div class="price">$29<span>/month</span></div>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">For growing teams</p>
+                </div>
+                <ul class="pricing-features">
+                    <li>Unlimited projects</li>
+                    <li>Advanced analytics</li>
+                    <li>Priority support</li>
+                    <li>50GB storage</li>
+                    <li>API access</li>
+                    <li>Up to 10 team members</li>
+                    <li class="unavailable">White-label</li>
+                </ul>
+                <button class="btn btn-primary btn-full" onclick="openModal('register')">Start Free Trial</button>
+            </div>
+
+            <!-- Enterprise Tier -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Enterprise</h3>
+                    <div class="price">$99<span>/month</span></div>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">For large organizations</p>
+                </div>
+                <ul class="pricing-features">
+                    <li>Everything in Pro</li>
+                    <li>Unlimited storage</li>
+                    <li>24/7 phone support</li>
+                    <li>SSO & Advanced security</li>
+                    <li>Custom integrations</li>
+                    <li>Unlimited team members</li>
+                    <li>White-label option</li>
+                </ul>
+                <button class="btn btn-secondary btn-full" onclick="openModal('register')">Contact Sales</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Preview Section -->
+    <section class="dashboard-preview" id="dashboard">
+        <div class="dashboard-container">
+            <div class="dashboard-content">
+                <h2>Powerful Dashboard at Your Fingertips</h2>
+                <p>Manage everything from one centralized hub. Track progress, manage team members, and access advanced features all in one place.</p>
+                <div class="dashboard-stats">
+                    <div class="stat">
+                        <h4>10k+</h4>
+                        <p>Active Users</p>
+                    </div>
+                    <div class="stat">
+                        <h4>99.9%</h4>
+                        <p>Uptime</p>
+                    </div>
+                    <div class="stat">
+                        <h4>24/7</h4>
+                        <p>Support</p>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-mockup">
+                <div class="mockup-header">
+                    <div class="mockup-dot"></div>
+                    <div class="mockup-dot"></div>
+                    <div class="mockup-dot"></div>
+                </div>
+                <div class="mockup-content">
+                    <div class="mockup-row">
+                        <div class="mockup-avatar"></div>
+                        <div class="mockup-line"></div>
+                        <div class="mockup-line short"></div>
+                    </div>
+                    <div class="mockup-row">
+                        <div class="mockup-avatar"></div>
+                        <div class="mockup-line"></div>
+                        <div class="mockup-line short"></div>
+                    </div>
+                    <div class="mockup-row">
+                        <div class="mockup-avatar"></div>
+                        <div class="mockup-line"></div>
+                        <div class="mockup-line short"></div>
+                    </div>
+                    <div class="mockup-row">
+                        <div class="mockup-avatar"></div>
+                        <div class="mockup-line"></div>
+                        <div class="mockup-line short"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a href="#" class="logo">
+                    <div class="logo-icon">F</div>
+                    FlowSync
+                </a>
+                <p>Empowering teams to work smarter with intelligent automation and seamless collaboration tools.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#">Integrations</a></li>
+                    <li><a href="#">API</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">GDPR</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 FlowSync. All rights reserved.</p>
+            <div class="payment-methods">
+                <span style="font-size: 0.875rem; color: var(--text-secondary);">We accept:</span>
+                <div class="payment-icon">VISA</div>
+                <div class="payment-icon">MC</div>
+                <div class="payment-icon">GPay</div>
+                <div class="payment-icon">Amex</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('login')">&times;</button>
+            <h2>Welcome back</h2>
+            <p class="modal-subtitle">Enter your credentials to access your account</p>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Email address</label>
+                    <input type="email" id="loginEmail" placeholder="name@company.com" required>
+                    <span class="error-message">Please enter a valid email address</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    <span class="error-message">Password is required</span>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="rememberMe">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" class="forgot-password" onclick="showForgotPassword()">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
+                    <span class="spinner"></span>
+                    <span class="btn-text">Sign in</span>
+                </button>
+            </form>
+            
+            <div class="divider"><span>or continue with</span></div>
+            
+            <div class="social-login">
+                <button class="btn btn-social" onclick="socialLogin('google')">
+                    <span>G</span> Google
+                </button>
+                <button class="btn btn-social" onclick="socialLogin('github')">
+                    <span>GH</span> GitHub
+                </button>
+            </div>
+            
+            <div class="modal-footer">
+                Don't have an account? <a href="#" onclick="switchModal('register')">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('register')">&times;</button>
+            <h2>Create your account</h2>
+            <p class="modal-subtitle">Start your 14-day free trial today</p>
+            
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="regName">Full name</label>
+                    <input type="text" id="regName" placeholder="John Doe" required>
+                    <span class="error-message">Please enter your full name</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regEmail">Email address</label>
+                    <input type="email" id="regEmail" placeholder="name@company.com" required>
+                    <span class="error-message">Please enter a valid email address</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" placeholder="Min 8 characters" required oninput="checkPasswordStrength(this.value)">
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="password-strength-bar"></div>
+                    </div>
+                    <span class="error-message">Password must be at least 8 characters</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regPlan">Select plan</label>
+                    <select id="regPlan" style="width: 100%; padding: 0.875rem 1rem; border: 2px solid var(--border); border-radius: 10px; font-size: 1rem; font-family: inherit;">
+                        <option value="starter">Starter (Free)</option>
+                        <option value="professional" selected>Professional ($29/month)</option>
+                        <option value="enterprise">Enterprise ($99/month)</option>
+                    </select>
+                </div>
+                
+                <label class="checkbox-wrapper" style="margin-bottom: 1.5rem; display: flex;">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <span style="font-size: 0.875rem;">I agree to the <a href="#" style="color: var(--accent);">Terms of Service</a> and <a href="#" style="color: var(--accent);">Privacy Policy</a></span>
+                </label>
+                
+                <button type="submit" class="btn btn-primary btn-full" id="registerBtn">
+                    <span class="spinner"></span>
+                    <span class="btn-text">Create account</span>
+                </button>
+            </form>
+            
+            <div class="divider"><span>or sign up with</span></div>
+            
+            <div class="social-login">
+                <button class="btn btn-social" onclick="socialLogin('google')">
+                    <span>G</span> Google
+                </button>
+                <button class="btn btn-social" onclick="socialLogin('github')">
+                    <span>GH</span> GitHub
+                </button>
+            </div>
+            
+            <div class="modal-footer">
+                Already have an account? <a href="#" onclick="switchModal('login')">Log in</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal-overlay" id="forgotModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('forgot')">&times;</button>
+            <div id="forgotStep1">
+                <h2>Reset your password</h2>
+                <p class="modal-subtitle">Enter your email address and we'll send you a reset link</p>
+                
+                <form onsubmit="handleForgotPassword(event)">
+                    <div class="form-group">
+                        <label for="forgotEmail">Email address</label>
+                        <input type="email" id="forgotEmail" placeholder="name@company.com" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span class="spinner"></span>
+                        <span class="btn-text">Send reset link</span>
+                    </button>
+                </form>
+            </div>
+            
+            <div id="forgotStep2" style="display: none;">
+                <div class="checkmark">
+                    <svg viewBox="0 0 50 50">
+                        <path d="M10 25 L20 35 L40 15"></path>
+                    </svg>
+                </div>
+                <div class="success-message">
+                    <h3>Check your email</h3>
+                    <p>We've sent a password reset link to your email address. Please check your inbox and follow the instructions.</p>
+                </div>
+                <button class="btn btn-secondary btn-full" onclick="closeModal('forgot')" style="margin-top: 2rem;">
+                    Back to login
+                </button>
+            </div>
+            
+            <div class="modal-footer">
+                Remember your password? <a href="#" onclick="switchModal('login')">Log in</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Modal Management
+        function openModal(type) {
+            const modal = document.getElementById(type + 'Modal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Reset forms
+            if (type === 'login') {
+                document.getElementById('loginForm').reset();
+                document.getElementById('loginBtn').classList.remove('loading');
+            } else if (type === 'register') {
+                document.getElementById('registerForm').reset();
+                document.getElementById('registerBtn').classList.remove('loading');
+                document.getElementById('passwordStrength').classList.remove('show', 'weak', 'medium', 'strong');
+            } else if (type === 'forgot') {
+                document.getElementById('forgotStep1').style.display = 'block';
+                document.getElementById('forgotStep2').style.display = 'none';
+            }
+        }
+
+        function closeModal(type) {
+            const modal = document.getElementById(type + 'Modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function switchModal(type) {
+            // Close all modals
+            document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+            // Open target modal
+            setTimeout(() => openModal(type), 300);
+        }
+
+        function showForgotPassword() {
+            closeModal('login');
+            setTimeout(() => openModal('forgot'), 300);
+        }
+
+        // Close modal on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Form Handling
+        async function handleLogin(e) {
+            e.preventDefault();
+            const btn = document.getElementById('loginBtn');
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Validation
+            let hasError = false;
+            
+            if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                document.getElementById('loginEmail').classList.add('error');
+                hasError = true;
+            } else {
+                document.getElementById('loginEmail').classList.remove('error');
+            }
+            
+            if (password.length < 1) {
+                document.getElementById('loginPassword').classList.add('error');
+                hasError = true;
+            } else {
+                document.getElementById('loginPassword').classList.remove('error');
+            }
+            
+            if (hasError) return;
+            
+            // Simulate API call
+            btn.classList.add('loading');
+            
+            try {
+                // In production, this would be: await fetch('/api/login', {...})
+                await simulateApiCall({ email, password, action: 'login' });
+                
+                showToast('Login successful! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = '/dashboard.html';
+                }, 1500);
+            } catch (error) {
+                showToast('Invalid credentials. Please try again.', 'error');
+                btn.classList.remove('loading');
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const btn = document.getElementById('registerBtn');
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const plan = document.getElementById('regPlan').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            
+            // Validation
+            let hasError = false;
+            
+            if (name.length < 2) {
+                document.getElementById('regName').classList.add('error');
+                hasError = true;
+            } else {
+                document.getElementById('regName').classList.remove('error');
+            }
+            
+            if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                document.getElementById('regEmail').classList.add('error');
+                hasError = true;
+            } else {
+                document.getElementById('regEmail').classList.remove('error');
+            }
+            
+            if (password.length < 8) {
+                document.getElementById('regPassword').classList.add('error');
+                hasError = true;
+            } else {
+                document.getElementById('regPassword').classList.remove('error');
+            }
+            
+            if (!agreeTerms) {
+                showToast('Please agree to the Terms of Service', 'warning');
+                return;
+            }
+            
+            if (hasError) return;
+            
+            // Simulate API call
+            btn.classList.add('loading');
+            
+            try {
+                // In production, this would send confirmation email
+                await simulateApiCall({ name, email, password, plan, action: 'register' });
+                
+                showToast('Account created! Please check your email to confirm.', 'success');
+                setTimeout(() => {
+                    closeModal('register');
+                    // Show confirmation message or redirect
+                }, 2000);
+            } catch (error) {
+                showToast('Email already registered. Please log in.', 'error');
+                btn.classList.remove('loading');
+            }
+        }
+
+        async function handleForgotPassword(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const email = document.getElementById('forgotEmail').value;
+            
+            btn.classList.add('loading');
+            
+            try {
+                await simulateApiCall({ email, action: 'forgot' });
+                
+                document.getElementById('forgotStep1').style.display = 'none';
+                document.getElementById('forgotStep2').style.display = 'block';
+            } catch (error) {
+                showToast('Email not found. Please check your address.', 'error');
+                btn.classList.remove('loading');
+            }
+        }
+
+        function socialLogin(provider) {
+            showToast(`Connecting to ${provider}...`, 'success');
+            // In production: window.location.href = `/auth/${provider}`;
+        }
+
+        // Password Strength Checker
+        function checkPasswordStrength(password) {
+            const strengthDiv = document.getElementById('passwordStrength');
+            
+            if (password.length === 0) {
+                strengthDiv.classList.remove('show', 'weak', 'medium', 'strong');
+                return;
+            }
+            
+            strengthDiv.classList.add('show');
+            
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+            
+            strengthDiv.classList.remove('weak', 'medium', 'strong');
+            
+            if (strength <= 2) {
+                strengthDiv.classList.add('weak');
+            } else if (strength === 3) {
+                strengthDiv.classList.add('medium');
+            } else {
+                strengthDiv.classList.add('strong');
+            }
+        }
+
+        // Toast Notifications
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icon = type === 'success' ? '✓' : type === 'error' ? '✕' : '⚠';
+            
+            toast.innerHTML = `
+                <span style="font-size: 1.25rem; color: var(--${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'warning'});">${icon}</span>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Simulate API Call (Replace with actual fetch in production)
+        function simulateApiCall(data) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // Simulate random success/failure for demo
+                    if (Math.random() > 0.1) {
+                        console.log('API Call:', data);
+                        resolve({ success: true, data });
+                    } else {
+                        reject(new Error('Network error'));
+                    }
+                }, 1500);
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Mobile menu toggle (simplified)
+        document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
+            showToast('Mobile menu coming soon', 'warning');
+        });
+
+        // Real-time input validation
+        document.getElementById('loginEmail').addEventListener('input', function() {
+            if (this.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                this.classList.remove('error');
+            }
+        });
+
+        document.getElementById('regEmail').addEventListener('input', function() {
+            if (this.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                this.classList.remove('error');
+            }
+        });
+
+        document.getElementById('regPassword').addEventListener('input', function() {
+            if (this.value.length >= 8) {
+                this.classList.remove('error');
+            }
+        });
+
+        // Add scroll effect to nav
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                nav.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+            } else {
+                nav.style.boxShadow = 'none';
+            }
+            
+            lastScroll = currentScroll;
+        });
+    </script>
+</body>
+</html>
