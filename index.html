@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio — Senior Frontend Developer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0f1e;
+            --surface: #111827;
+            --surface2: #1a2236;
+            --border: #1f2d45;
+            --accent: #3b82f6;
+            --accent2: #6366f1;
+            --accent3: #10b981;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --radius: 14px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ───── NAV ───── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 15, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--text);
+        }
+
+        .nav-logo span { color: var(--accent); }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color var(--transition);
+        }
+
+        .nav-links a:hover { color: var(--text); }
+
+        /* ───── HERO ───── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 760px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 1rem;
+            border-radius: 20px;
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.25);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .hero-badge i { font-size: 0.7rem; }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 580px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.75rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all var(--transition);
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59,130,246,0.35);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            color: var(--text);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* ───── STATS ───── */
+        .stats-bar {
+            padding: 3rem 2rem;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 2.25rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 0.25rem;
+        }
+
+        /* ───── SECTIONS ───── */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            max-width: 540px;
+            margin: 0 auto;
+        }
+
+        /* ───── PORTFOLIO GRID ───── */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition);
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(59,130,246,0.4);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(59,130,246,0.1);
+        }
+
+        .project-card:hover .card-preview {
+            transform: scale(1.04);
+        }
+
+        .card-preview-wrap {
+            height: 210px;
+            overflow: hidden;
+            background: var(--surface2);
+            position: relative;
+        }
+
+        .card-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            transition: transform 0.5s ease;
+            border: none;
+            display: block;
+        }
+
+        /* Iframe preview replaced by color block + icon for performance */
+        .card-thumb {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .card-thumb {
+            transform: scale(1.1);
+        }
+
+        .card-body {
+            padding: 1.25rem 1.5rem 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .tag-blue  { background: rgba(59,130,246,0.15);  color: #60a5fa; }
+        .tag-green { background: rgba(16,185,129,0.15);  color: #34d399; }
+        .tag-purple{ background: rgba(99,102,241,0.15);  color: #a5b4fc; }
+        .tag-amber { background: rgba(245,158,11,0.15);  color: #fcd34d; }
+        .tag-rose  { background: rgba(244,63,94,0.15);   color: #fb7185; }
+        .tag-cyan  { background: rgba(6,182,212,0.15);   color: #67e8f9; }
+        .tag-slate { background: rgba(100,116,139,0.15); color: #94a3b8; }
+        .tag-pink  { background: rgba(236,72,153,0.15);  color: #f9a8d4; }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: var(--text);
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .card-link {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: gap var(--transition);
+        }
+
+        .project-card:hover .card-link { gap: 0.7rem; }
+
+        .card-type {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ───── SKILLS ───── */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .skill-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            transition: all var(--transition);
+        }
+
+        .skill-card:hover {
+            border-color: rgba(59,130,246,0.3);
+            transform: translateY(-3px);
+        }
+
+        .skill-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .skill-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ───── CTA BANNER ───── */
+        .cta-section {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .cta-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(99,102,241,0.1));
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 20px;
+            padding: 3.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(59,130,246,0.06) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .cta-card h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+        }
+
+        .cta-card p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .cta-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ───── FOOTER ───── */
+        footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer span { color: var(--accent); }
+
+        /* ───── SCROLL REVEAL ───── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-logo">Dev<span>.</span>Portfolio</div>
+        <ul class="nav-links">
+            <li><a href="#work">Work</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-grid-bg"></div>
+        <div class="hero-glow"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-circle" style="color: #10b981; font-size: 0.5rem;"></i>
+                Available for freelance projects
+            </div>
+            <h1>Senior Frontend<br><span class="highlight">Developer</span></h1>
+            <p class="hero-sub">
+                Crafting high-converting landing pages, SaaS dashboards, and immersive digital experiences with clean, performant HTML&nbsp;&amp;&nbsp;CSS.
+            </p>
+            <div class="hero-cta">
+                <a href="#work" class="btn btn-primary">
+                    <i class="fas fa-layer-group"></i> View My Work
+                </a>
+                <a href="#contact" class="btn btn-ghost">
+                    <i class="fas fa-envelope"></i> Get In Touch
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+        <div class="stats-inner">
+            <div class="stat-item">
+                <div class="stat-num">10+</div>
+                <div class="stat-label">Projects Built</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">5+</div>
+                <div class="stat-label">Industries</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">100%</div>
+                <div class="stat-label">Custom Code</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">0</div>
+                <div class="stat-label">Templates Used</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PORTFOLIO -->
+    <section class="section" id="work">
+        <div class="section-header reveal">
+            <div class="section-tag">Portfolio</div>
+            <h2 class="section-title">Featured Projects</h2>
+            <p class="section-desc">A collection of landing pages and dashboards built across diverse industries — from luxury brands to SaaS platforms.</p>
+        </div>
+
+        <div class="portfolio-grid">
+
+            <!-- SalesForce Pro -->
+            <a href="salesforce.html" class="project-card reveal">
+                <div class="card-preview-wrap">
+                    <div class="card-thumb" style="background: linear-gradient(135deg, #0f172a, #1e3a5f);">
+                        <i class="fas fa-chart-line" style="color: #3b82f6;"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag tag-blue">Dashboard</span>
+                        <span class="tag tag-purple">SaaS</span>
+                        <span class="tag tag-green">Chart.js</span>
+                    </div>
+                    <div class="card-title">SalesForce Pro</div>
+                    <div class="card-desc">Interactive sales dashboard with per-rep performance tracking, live charts, commission calculator, and client order management.</div>
+                    <div class="card-footer">
+                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        <span class="card-type">Web App</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- ScaleCRM -->
+            <a href="crm.html" class="project-card reveal">
+                <div class="card-preview-wrap">
+                    <div class="card-thumb" style="background: linear-gradient(135deg, #0f1923, #1a3a2a);">
+                        <i class="fas fa-users" style="color: #10b981;"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag tag-green">CRM</span>
+                        <span class="tag tag-blue">SaaS</span>
+                        <span class="tag tag-slate">Landing Page</span>
+                    </div>
+                    <div class="card-title">ScaleCRM</div>
+                    <div class="card-desc">Economical & scalable customer management platform landing page with feature showcase, pricing tiers, and lead capture.</div>
+                    <div class="card-footer">
+                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        <span class="card-type">Landing Page</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- FlowSync -->
+            <a href="flowsync.html" class="project-card reveal">
+                <div class="card-preview-wrap">
+                    <div class="card-thumb" style="background: linear-gradient(135deg, #0f0f2e, #1e1b4b);">
+                        <i class="fas fa-sync-alt" style="color: #6366f1;"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag tag-purple">SaaS</span>
+                        <span class="tag tag-cyan">Automation</span>
+                        <span class="tag tag-slate">Landing Page</span>
+                    </div>
+                    <div class="card-title">FlowSync</div>
+                    <div class="card-desc">Professional SaaS platform landing page for workflow automation with animated feature sections and conversion-focused design.</div>
+                    <div class="card-footer">
+                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        <span class="card-type">Landing Page</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- LUMIÈRE Jewelry -->
+            <a href="jewerly.html" class="project-card reveal">
+                <div class="card-preview-wrap">
+                    <div class="card-thumb" style="background: linear-gradient(135deg, #1a1208, #3d2b0d);">
+                        <i class="fas fa-gem" style="color: #fcd34d;"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag tag-amber">Luxury</span>
+                        <span class="tag tag-rose">E-Commerce</span>
+                        <span class="tag tag-slate">Jewelry</span>
+                    </div>
+                    <div class="card-title">LUMIÈRE — Fine Jewelry</div>
+                    <div class="card-desc">High-end fine jewelry brand landing page with editorial photography layout, collection showcases, and premium dark aesthetic.</div>
+                    <div class="card-footer">
+                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        <span class="card-type">E-Commerce</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- LUXE Fashion -->
+            <a href="luxury_ecommerce.html" class="project-card reveal">
+                <div class="card-preview-wrap">
+                    <div class="card-thumb" style="background: linear-gradient(135deg, #120a0a, #2d1515);">
+                        <i class="fas fa-shopping-bag" style="color: #fb7185;"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag tag-rose">Fashion</span>
+                        <span class="tag tag-amber">Luxury</span>
+                        <span class="tag tag-slate">E-Commerce</span>
+                    </div>
+                    <div class="card-title">LUXE — Luxury Fashion</div>
+                    <div class="card-desc">Curated luxury fashion & lifestyle brand with immersive hero sections, product grid layout, and refined minimalist typography.</div>
+                    <div class="card-footer">
+                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        <span class="card-type">E-Commerce</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- LuxeTouch Massage -->
+            <a href="massage.html" class="project-card reveal">
+                <div class="card-preview-wrap">
+                    <div class="card-thumb" style="background: linear-gradient(135deg, #0d1a18, #1a3330);">
+                        <i class="fas fa-spa" style="color: #34d399;"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag tag-green">Wellness</span>
+                        <span class="tag tag-cyan">Services</span>
+                        <span class="tag tag-slate">Landing Page</span>
+                    </div>
+                    <div class="card-title">LuxeTouch — Massage</div>
+                    <div class="card-desc">Premium massage services landing page with service menu, booking call-to-actions, and a calming luxury spa aesthetic.</div>
+                    <div class="card-footer">
+                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        <span class="card-type">Service Page</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- RIVA Premium Restaurant -->
+            <a href="premium_dark_restaurant.html" class="project-card reveal">
+                <div class="card-preview-wrap">
+                    <div class="card-thumb" style="background: linear-gradient(135deg, #120c04, #2e1a04);">
+                        <i class="fas fa-utensils" style="color: #fb923c;"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag tag-amber">Restaurant</span>
+                        <span class="tag tag-rose">Fine Dining</span>
+                        <span class="tag tag-slate">Dark Theme</span>
+                    </div>
+                    <div class="card-title">RIVA — Premium Dining</div>
+                    <div class="card-desc">Upscale restaurant landing page with dark premium theme, menu showcase, reservation section, and cinematic hero design.</div>
+                    <div class="card-footer">
+                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        <span class="card-type">Restaurant</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- RIVA Riverside -->
+            <a href="pre_dark_restaurant.html" class="project-card reveal">
+                <div class="card-preview-wrap">
+                    <div class="card-thumb" style="background: linear-gradient(135deg, #08121e, #0d2640);">
+                        <i class="fas fa-water" style="color: #67e8f9;"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag tag-cyan">Restaurant</span>
+                        <span class="tag tag-blue">Riverside</span>
+                        <span class="tag tag-slate">Budapest</span>
+                    </div>
+                    <div class="card-title">RIVA — Riverside Dining</div>
+                    <div class="card-desc">Riverside dining experience in Budapest — atmospheric design with waterfront mood, seasonal menu highlights, and event bookings.</div>
+                    <div class="card-footer">
+                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        <span class="card-type">Restaurant</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Lumina Estates -->
+            <a href="property_landingpage.html" class="project-card reveal">
+                <div class="card-preview-wrap">
+                    <div class="card-thumb" style="background: linear-gradient(135deg, #0a0e1a, #1a2540);">
+                        <i class="fas fa-building" style="color: #a5b4fc;"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag tag-purple">Real Estate</span>
+                        <span class="tag tag-blue">Property</span>
+                        <span class="tag tag-slate">Landing Page</span>
+                    </div>
+                    <div class="card-title">Lumina Estates</div>
+                    <div class="card-desc">Premium property landing page with property listings, location highlights, agent contact section, and clean architectural layout.</div>
+                    <div class="card-footer">
+                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        <span class="card-type">Real Estate</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- ICMT -->
+            <a href="theicmt.html" class="project-card reveal">
+                <div class="card-preview-wrap">
+                    <div class="card-thumb" style="background: linear-gradient(135deg, #0e0a1f, #1e1040);">
+                        <i class="fas fa-music" style="color: #c084fc;"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag tag-purple">Education</span>
+                        <span class="tag tag-pink">Arts</span>
+                        <span class="tag tag-slate">College</span>
+                    </div>
+                    <div class="card-title">ICMT — Musical Theatre</div>
+                    <div class="card-desc">International College of Musical Theatre — institution landing page with course overview, faculty section, and audition call-to-action.</div>
+                    <div class="card-footer">
+                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        <span class="card-type">Education</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Frances & Kevin Training -->
+            <a href="traning.html" class="project-card reveal">
+                <div class="card-preview-wrap">
+                    <div class="card-thumb" style="background: linear-gradient(135deg, #0f1a0a, #1a3010);">
+                        <i class="fas fa-chalkboard-teacher" style="color: #86efac;"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag tag-green">Coaching</span>
+                        <span class="tag tag-cyan">Marketing</span>
+                        <span class="tag tag-slate">Training</span>
+                    </div>
+                    <div class="card-title">Frances &amp; Kevin — Training</div>
+                    <div class="card-desc">Marketing leadership training landing page with coach profiles, program highlights, testimonials, and lead capture form.</div>
+                    <div class="card-footer">
+                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
+                        <span class="card-type">Coaching</span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <div style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+        <section class="section" id="skills">
+            <div class="section-header reveal">
+                <div class="section-tag">Expertise</div>
+                <h2 class="section-title">Technical Skills</h2>
+                <p class="section-desc">Focused on delivering pixel-perfect, performant frontend experiences without relying on heavy frameworks.</p>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card reveal">
+                    <div class="skill-icon" style="background: rgba(59,130,246,0.1); color: #3b82f6;"><i class="fab fa-html5"></i></div>
+                    <div class="skill-name">HTML5 / Semantic Markup</div>
+                    <div class="skill-desc">Accessible, SEO-friendly structure with clean semantic HTML for every project.</div>
+                </div>
+                <div class="skill-card reveal">
+                    <div class="skill-icon" style="background: rgba(99,102,241,0.1); color: #818cf8;"><i class="fab fa-css3-alt"></i></div>
+                    <div class="skill-name">CSS3 / Advanced Layouts</div>
+                    <div class="skill-desc">CSS Grid, Flexbox, animations, custom properties, and responsive design without any framework.</div>
+                </div>
+                <div class="skill-card reveal">
+                    <div class="skill-icon" style="background: rgba(245,158,11,0.1); color: #fbbf24;"><i class="fab fa-js-square"></i></div>
+                    <div class="skill-name">Vanilla JavaScript</div>
+                    <div class="skill-desc">Dynamic UI, DOM manipulation, API integration, and interactive dashboards — no jQuery needed.</div>
+                </div>
+                <div class="skill-card reveal">
+                    <div class="skill-icon" style="background: rgba(16,185,129,0.1); color: #34d399;"><i class="fas fa-chart-bar"></i></div>
+                    <div class="skill-name">Chart.js / Data Viz</div>
+                    <div class="skill-desc">Interactive charts, dashboards, and data visualisations with animated, responsive graphs.</div>
+                </div>
+                <div class="skill-card reveal">
+                    <div class="skill-icon" style="background: rgba(236,72,153,0.1); color: #f472b6;"><i class="fas fa-mobile-alt"></i></div>
+                    <div class="skill-name">Responsive Design</div>
+                    <div class="skill-desc">Mobile-first layouts that adapt seamlessly across all screen sizes and devices.</div>
+                </div>
+                <div class="skill-card reveal">
+                    <div class="skill-icon" style="background: rgba(6,182,212,0.1); color: #22d3ee;"><i class="fas fa-rocket"></i></div>
+                    <div class="skill-name">Performance & UX</div>
+                    <div class="skill-desc">Optimised load times, smooth animations, and conversion-focused user experience design.</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- CTA / CONTACT -->
+    <section class="cta-section" id="contact">
+        <div class="cta-card reveal">
+            <div class="section-tag">Let's Work Together</div>
+            <h2>Have a project in mind?</h2>
+            <p>I'm available for freelance work — whether it's a landing page, SaaS dashboard, or a full product UI.</p>
+            <div class="cta-btns">
+                <a href="mailto:hello@yourportfolio.com" class="btn btn-primary">
+                    <i class="fas fa-envelope"></i> Send a Message
+                </a>
+                <a href="https://github.com" target="_blank" rel="noopener" class="btn btn-ghost">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>Built with <span>♥</span> using pure HTML &amp; CSS — no frameworks, no templates.</p>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, i * 60);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
