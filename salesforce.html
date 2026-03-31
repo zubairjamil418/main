@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1280, initial-scale=1.0">
+    <title>SalesForce Pro - Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --radius: 12px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-width: 1280px;
+        }
+
+        /* Layout */
+        .dashboard {
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--card-bg);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            width: 260px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .rep-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .rep-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .rep-item:hover {
+            background: var(--bg);
+        }
+
+        .rep-item.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .rep-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .rep-item.active .rep-avatar {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .rep-info {
+            flex: 1;
+        }
+
+        .rep-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .rep-role {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .rep-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            background: var(--card-bg);
+            padding: 1.25rem 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-left h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .breadcrumb {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        select, .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        select:hover, select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-icon.blue { background: #dbeafe; color: var(--primary); }
+        .stat-icon.green { background: #d1fae5; color: var(--success); }
+        .stat-icon.orange { background: #fef3c7; color: var(--warning); }
+        .stat-icon.red { background: #fee2e2; color: var(--danger); }
+
+        .stat-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-up { background: #d1fae5; color: #065f46; }
+        .badge-down { background: #fee2e2; color: #991b1b; }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        /* Commission Card Special */
+        .commission-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .commission-card .stat-label,
+        .commission-card .stat-value {
+            color: white;
+        }
+
+        .commission-formula {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .chart-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chart-btn {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chart-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        /* Tables Section */
+        .tables-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .table-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            width: 200px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 0.875rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.75rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 0.875rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.875rem;
+        }
+
+        tr:hover td {
+            background: var(--bg);
+            cursor: pointer;
+        }
+
+        tr.selected {
+            background: #eff6ff;
+        }
+
+        .client-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .client-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .client-name {
+            font-weight: 600;
+        }
+
+        .client-type {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        /* Department Section */
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .dept-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s;
+        }
+
+        .dept-card:hover {
+            transform: translateX(4px);
+        }
+
+        .dept-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .dept-info {
+            flex: 1;
+        }
+
+        .dept-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .dept-target {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .dept-value {
+            text-align: right;
+        }
+
+        .dept-amount {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .dept-change {
+            font-size: 0.75rem;
+            color: var(--success);
+        }
+
+        /* Orders Panel */
+        .orders-panel {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-top: 1.5rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .orders-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .orders-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: var(--danger);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-completed { background: #d1fae5; color: #065f46; }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-processing { background: #dbeafe; color: #1e40af; }
+
+        /* Loading State */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .tables-grid {
+                grid-template-columns: 1fr;
+            }
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.5rem;
+            background: var(--text);
+            color: white;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>SalesForce Pro</span>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">Sales Team</div>
+                <div class="rep-list" id="repList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Quick Stats</div>
+                <div style="padding: 0.75rem; background: var(--bg); border-radius: 8px; margin-top: 0.5rem;">
+                    <div style="font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.25rem;">Team Target</div>
+                    <div style="font-weight: 700; margin-bottom: 0.5rem;">$12.4M / $15M</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 82%; background: var(--success);"></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 id="dashboardTitle">Sales Dashboard</h1>
+                    <div class="breadcrumb">Overview > <span id="repName">Select Rep</span></div>
+                </div>
+                <div class="header-controls">
+                    <div class="filter-group">
+                        <span class="filter-label">Period:</span>
+                        <select id="monthFilter">
+                            <option value="all">All Months</option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="yearFilter">
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="fiscalFilter">
+                            <option value="fy2024">FY 2024 (Jul-Jun)</option>
+                            <option value="fy2023">FY 2023 (Jul-Jun)</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="refreshData()">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <span class="stat-badge badge-up">+12.5%</span>
+                    </div>
+                    <div class="stat-value" id="totalRevenue">$0</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <span class="stat-badge badge-up">+8.2%</span>
+                    </div>
+                    <div class="stat-value" id="totalDeals">0</div>
+                    <div class="stat-label">Closed Deals</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <span class="stat-badge badge-up">+5.3%</span>
+                    </div>
+                    <div class="stat-value" id="activeClients">0</div>
+                    <div class="stat-label">Active Clients</div>
+                </div>
+
+                <div class="stat-card commission-card">
+                    <div class="stat-header">
+                        <div class="stat-icon" style="background: rgba(255,255,255,0.2); color: white;">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="commissionValue">$0</div>
+                    <div class="stat-label">Est. Next Commission</div>
+                    <div class="commission-formula">
+                        Based on: (Revenue × 5%) + (Deals × $100) + Bonus
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Monthly Sales Trend</h3>
+                        <div class="chart-actions">
+                            <button class="chart-btn active">Revenue</button>
+                            <button class="chart-btn">Units</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Year over Year Comparison</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="yoyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Charts Row -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Top Clients by Revenue</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="clientsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Product Performance</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="productsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tables Section -->
+            <div class="tables-grid">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3 class="chart-title">Top Clients</h3>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search clients..." id="clientSearch">
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="clientsTable">
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Type</th>
+                                    <th>Revenue</th>
+                                    <th>Progress</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientsBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3 class="chart-title">Client Types</h3>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="typesTable">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Count</th>
+                                    <th>Revenue</th>
+                                </tr>
+                            </thead>
+                            <tbody id="typesBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Panel (Hidden by default) -->
+            <div id="ordersPanel" class="orders-panel" style="display: none;">
+                <div class="orders-header">
+                    <div class="orders-title">
+                        <i class="fas fa-box"></i>
+                        <span id="selectedClientName">Client Orders</span>
+                    </div>
+                    <button class="close-btn" onclick="closeOrders()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <table id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Department Performance -->
+            <div class="chart-card" style="margin-top: 2rem;">
+                <div class="chart-header">
+                    <h3 class="chart-title">Department Performance</h3>
+                    <button class="btn btn-primary" style="padding: 0.375rem 0.75rem; font-size: 0.75rem;">
+                        View Details
+                    </button>
+                </div>
+                <div class="dept-grid" id="deptGrid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Data Structure
+        const salesReps = [
+            { id: 1, name: 'Sarah Chen', role: 'Senior Account Executive', avatar: 'SC', region: 'West' },
+            { id: 2, name: 'Michael Rodriguez', role: 'Account Executive', avatar: 'MR', region: 'East' },
+            { id: 3, name: 'Emily Watson', role: 'Sales Manager', avatar: 'EW', region: 'Central' },
+            { id: 4, name: 'James Kim', role: 'Account Executive', avatar: 'JK', region: 'West' },
+            { id: 5, name: 'Lisa Thompson', role: 'Senior AE', avatar: 'LT', region: 'East' },
+            { id: 6, name: 'David Park', role: 'Account Executive', avatar: 'DP', region: 'Central' },
+            { id: 7, name: 'Amanda Foster', role: 'Sales Director', avatar: 'AF', region: 'West' },
+            { id: 8, name: 'Robert Chen', role: 'Account Executive', avatar: 'RC', region: 'East' }
+        ];
+
+        const clientTypes = ['Enterprise', 'SMB', 'Startup', 'Government', 'Non-Profit'];
+        const productCategories = ['Software License', 'Consulting', 'Support', 'Training', 'Hardware'];
+        const orderStatuses = ['Completed', 'Pending', 'Processing'];
+
+        // Generate dummy data for each rep
+        function generateRepData(repId) {
+            const baseMultiplier = 0.8 + (repId * 0.15);
+            
+            return {
+                stats: {
+                    revenue: Math.floor(850000 * baseMultiplier),
+                    deals: Math.floor(45 * baseMultiplier),
+                    clients: Math.floor(28 * baseMultiplier),
+                    commission: Math.floor(42500 * baseMultiplier)
+                },
+                monthlyTrend: Array.from({length: 12}, (_, i) => ({
+                    month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][i],
+                    current: Math.floor((50000 + Math.random() * 30000) * baseMultiplier),
+                    previous: Math.floor((45000 + Math.random() * 25000) * baseMultiplier)
+                })),
+                clients: Array.from({length: 8}, (_, i) => ({
+                    id: i + 1,
+                    name: ['TechCorp Inc', 'Global Solutions', 'Innovate Labs', 'Digital Dynamics', 'Cloud Systems', 'DataFlow Pro', 'SmartTech Co', 'Future Systems'][i],
+                    type: clientTypes[Math.floor(Math.random() * clientTypes.length)],
+                    revenue: Math.floor((150000 - i * 15000) * baseMultiplier),
+                    target: 200000,
+                    status: Math.random() > 0.3 ? 'Active' : 'At Risk'
+                })),
+                products: Array.from({length: 5}, (_, i) => ({
+                    name: productCategories[i],
+                    sales: Math.floor((200000 - i * 30000) * baseMultiplier),
+                    units: Math.floor((100 - i * 15) * baseMultiplier)
+                })),
+                departments: [
+                    { name: 'Direct Sales', icon: 'fa-handshake', color: 'blue', value: Math.floor(450000 * baseMultiplier), target: 500000 },
+                    { name: 'Channel Partners', icon: 'fa-network-wired', color: 'green', value: Math.floor(280000 * baseMultiplier), target: 300000 },
+                    { name: 'Enterprise', icon: 'fa-building', color: 'orange', value: Math.floor(320000 * baseMultiplier), target: 350000 },
+                    { name: 'Inside Sales', icon: 'fa-phone', color: 'red', value: Math.floor(180000 * baseMultiplier), target: 200000 }
+                ]
+            };
+        }
+
+        // State
+        let currentRep = salesReps[0];
+        let currentData = generateRepData(currentRep.id);
+        let charts = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRepList();
+            initCharts();
+            updateDashboard();
+            
+            // Event listeners
+            document.getElementById('monthFilter').addEventListener('change', updateDashboard);
+            document.getElementById('yearFilter').addEventListener('change', updateDashboard);
+            document.getElementById('fiscalFilter').addEventListener('change', updateDashboard);
+            document.getElementById('clientSearch').addEventListener('input', filterClients);
+        });
+
+        function renderRepList() {
+            const list = document.getElementById('repList');
+            list.innerHTML = salesReps.map(rep => `
+                <div class="rep-item ${rep.id === currentRep.id ? 'active' : ''}" onclick="selectRep(${rep.id})">
+                    <div class="rep-avatar">${rep.avatar}</div>
+                    <div class="rep-info">
+                        <div class="rep-name">${rep.name}</div>
+                        <div class="rep-role">${rep.role}</div>
+                    </div>
+                    <div class="rep-status"></div>
+                </div>
+            `).join('');
+        }
+
+        function selectRep(id) {
+            currentRep = salesReps.find(r => r.id === id);
+            currentData = generateRepData(id);
+            
+            // Show loading state
+            document.body.style.cursor = 'wait';
+            
+            setTimeout(() => {
+                renderRepList();
+                updateDashboard();
+                document.body.style.cursor = 'default';
+            }, 300);
+        }
+
+        function updateDashboard() {
+            document.getElementById('repName').textContent = currentRep.name;
+            document.getElementById('dashboardTitle').textContent = `${currentRep.name}'s Dashboard`;
+            
+            updateStats();
+            updateCharts();
+            updateTables();
+            updateDepartments();
+        }
+
+        function updateStats() {
+            const stats = currentData.stats;
+            animateValue('totalRevenue', stats.revenue, '$');
+            animateValue('totalDeals', stats.deals, '');
+            animateValue('activeClients', stats.clients, '');
+            animateValue('commissionValue', stats.commission, '$');
+        }
+
+        function animateValue(id, value, prefix) {
+            const el = document.getElementById(id);
+            const start = 0;
+            const duration = 800;
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(start + (value - start) * easeProgress);
+                
+                el.textContent = prefix + current.toLocaleString();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        function initCharts() {
+            // Monthly Trend Chart
+            const trendCtx = document.getElementById('trendChart').getContext('2d');
+            charts.trend = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Current Year',
+                        data: [],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Previous Year',
+                        data: [],
+                        borderColor: '#94a3b8',
+                        backgroundColor: 'rgba(148, 163, 184, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderDash: [5, 5]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f1f5f9' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // YoY Comparison Chart
+            const yoyCtx = document.getElementById('yoyChart').getContext('2d');
+            charts.yoy = new Chart(yoyCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                    datasets: [{
+                        label: 'FY 2024',
+                        data: [],
+                        backgroundColor: '#3b82f6'
+                    }, {
+                        label: 'FY 2023',
+                        data: [],
+                        backgroundColor: '#cbd5e1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f1f5f9' }
+                        }
+                    }
+                }
+            });
+
+            // Top Clients Chart
+            const clientsCtx = document.getElementById('clientsChart').getContext('2d');
+            charts.clients = new Chart(clientsCtx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [],
+                        backgroundColor: [
+                            '#3b82f6', '#10b981', '#f59e0b', '#ef4444',
+                            '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'
+                        ],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: { color: '#f1f5f9' }
+                        }
+                    }
+                }
+            });
+
+            // Products Chart
+            const productsCtx = document.getElementById('productsChart').getContext('2d');
+            charts.products = new Chart(productsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        data: [],
+                        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { usePointStyle: true, padding: 20 }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateCharts() {
+            // Update trend chart
+            charts.trend.data.labels = currentData.monthlyTrend.map(d => d.month);
+            charts.trend.data.datasets[0].data = currentData.monthlyTrend.map(d => d.current);
+            charts.trend.data.datasets[1].data = currentData.monthlyTrend.map(d => d.previous);
+            charts.trend.update();
+
+            // Update YoY chart (aggregate quarterly)
+            const quarterly = [];
+            for (let i = 0; i < 4; i++) {
+                const qSum = currentData.monthlyTrend.slice(i * 3, (i + 1) * 3).reduce((a, b) => a + b.current, 0);
+                quarterly.push(qSum);
+            }
+            charts.yoy.data.datasets[0].data = quarterly;
+            charts.yoy.data.datasets[1].data = quarterly.map(v => v * (0.85 + Math.random() * 0.3));
+            charts.yoy.update();
+
+            // Update clients chart
+            charts.clients.data.labels = currentData.clients.slice(0, 5).map(c => c.name);
+            charts.clients.data.datasets[0].data = currentData.clients.slice(0, 5).map(c => c.revenue);
+            charts.clients.update();
+
+            // Update products chart
+            charts.products.data.labels = currentData.products.map(p => p.name);
+            charts.products.data.datasets[0].data = currentData.products.map(p => p.sales);
+            charts.products.update();
+        }
+
+        function updateTables() {
+            // Update clients table
+            const clientsBody = document.getElementById('clientsBody');
+            clientsBody.innerHTML = currentData.clients.map((client, idx) => `
+                <tr onclick="showClientOrders(${client.id})" class="fade-in" style="animation-delay: ${idx * 0.05}s">
+                    <td>
+                        <div class="client-cell">
+                            <div class="client-avatar">${client.name.split(' ').map(n => n[0]).join('').substring(0, 2)}</div>
+                            <div>
+                                <div class="client-name">${client.name}</div>
+                                <div class="client-type">${client.type}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="status-badge status-${client.type.toLowerCase().replace(' ', '-')}">${client.type}</span></td>
+                    <td><strong>$${client.revenue.toLocaleString()}</strong></td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div class="progress-bar" style="flex: 1;">
+                                <div class="progress-fill" style="width: ${(client.revenue / client.target * 100)}%"></div>
+                            </div>
+                            <span style="font-size: 0.75rem; color: var(--text-light);">${Math.round(client.revenue / client.target * 100)}%</span>
+                        </div>
+                    </td>
+                    <td><span class="status-badge ${client.status === 'Active' ? 'status-completed' : 'status-pending'}">${client.status}</span></td>
+                </tr>
+            `).join('');
+
+            // Update client types table
+            const typeGroups = {};
+            currentData.clients.forEach(c => {
+                if (!typeGroups[c.type]) typeGroups[c.type] = { count: 0, revenue: 0 };
+                typeGroups[c.type].count++;
+                typeGroups[c.type].revenue += c.revenue;
+            });
+
+            const typesBody = document.getElementById('typesBody');
+            typesBody.innerHTML = Object.entries(typeGroups).map(([type, data]) => `
+                <tr class="fade-in">
+                    <td><strong>${type}</strong></td>
+                    <td>${data.count}</td>
+                    <td>$${data.revenue.toLocaleString()}</td>
+                </tr>
+            `).join('');
+        }
+
+        function updateDepartments() {
+            const deptGrid = document.getElementById('deptGrid');
+            deptGrid.innerHTML = currentData.departments.map((dept, idx) => `
+                <div class="dept-card fade-in" style="animation-delay: ${idx * 0.1}s">
+                    <div class="dept-icon ${dept.color}">
+                        <i class="fas ${dept.icon}"></i>
+                    </div>
+                    <div class="dept-info">
+                        <div class="dept-name">${dept.name}</div>
+                        <div class="dept-target">Target: $${dept.target.toLocaleString()}</div>
+                    </div>
+                    <div class="dept-value">
+                        <div class="dept-amount">$${dept.value.toLocaleString()}</div>
+                        <div class="dept-change">${Math.round(dept.value / dept.target * 100)}% of target</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showClientOrders(clientId) {
+            const client = currentData.clients.find(c => c.id === clientId);
+            document.getElementById('selectedClientName').textContent = `${client.name} - Recent Orders`;
+            
+            // Generate dummy orders
+            const orders = Array.from({length: 5}, (_, i) => ({
+                id: `ORD-${2024001 + i}`,
+                date: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1).toLocaleDateString(),
+                product: productCategories[Math.floor(Math.random() * productCategories.length)],
+                quantity: Math.floor(Math.random() * 10) + 1,
+                amount: Math.floor(Math.random() * 50000) + 10000,
+                status: orderStatuses[Math.floor(Math.random() * orderStatuses.length)]
+            }));
+
+            const ordersBody = document.getElementById('ordersBody');
+            ordersBody.innerHTML = orders.map(order => `
+                <tr>
+                    <td><strong>${order.id}</strong></td>
+                    <td>${order.date}</td>
+                    <td>${order.product}</td>
+                    <td>${order.quantity}</td>
+                    <td>$${order.amount.toLocaleString()}</td>
+                    <td><span class="status-badge status-${order.status.toLowerCase().replace(' ', '-')}">${order.status}</span></td>
+                </tr>
+            `).join('');
+
+            const panel = document.getElementById('ordersPanel');
+            panel.style.display = 'block';
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function closeOrders() {
+            document.getElementById('ordersPanel').style.display = 'none';
+        }
+
+        function filterClients(e) {
+            const search = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#clientsBody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(search) ? '' : 'none';
+            });
+        }
+
+        function refreshData() {
+            const btn = document.querySelector('.btn-primary');
+            const icon = btn.querySelector('i');
+            icon.classList.add('fa-spin');
+            
+            setTimeout(() => {
+                currentData = generateRepData(currentRep.id);
+                updateDashboard();
+                icon.classList.remove('fa-spin');
+            }, 800);
+        }
+
+        // Responsive sidebar toggle for mobile
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
