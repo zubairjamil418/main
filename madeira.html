@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploring Madeira | Your Trusted Local Property Partner in Madeira Island</title>
+    <meta name="description" content="Your trusted local property partner in Madeira Island. Land sourcing and construction support for international buyers.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --stone-50: #fafaf9;
+            --stone-100: #f5f5f4;
+            --stone-200: #e7e5e4;
+            --stone-300: #d6d3d1;
+            --stone-400: #a8a29e;
+            --stone-500: #78716c;
+            --stone-600: #57534e;
+            --stone-700: #44403c;
+            --stone-800: #292524;
+            --stone-900: #1c1917;
+            
+            --forest-900: #14532d;
+            --forest-950: #052e16;
+            
+            --ocean-900: #0c4a6e;
+            --ocean-950: #082f49;
+            
+            --terracotta: #c65d3b;
+            --warm-cream: #f5f5dc;
+            
+            --font-display: 'Cormorant Garamond', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--stone-50);
+            color: var(--stone-800);
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Mockup Badge */
+        .mockup-badge {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            background: var(--terracotta);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            z-index: 10000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--stone-200);
+            z-index: 1000;
+            padding: 16px 0;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--stone-900);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-contact {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-phone {
+            display: none;
+            color: var(--stone-600);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #25D366;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-whatsapp:hover {
+            background: #128C7E;
+            transform: translateY(-1px);
+        }
+
+        .btn-whatsapp svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Hero Section - Gateway */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--forest-950) 0%, var(--ocean-950) 100%);
+            position: relative;
+            padding-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1920&q=80') center/cover;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 60px 24px;
+        }
+
+        .hero-label {
+            font-family: var(--font-display);
+            font-size: 14px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(36px, 6vw, 64px);
+            color: white;
+            font-weight: 400;
+            margin-bottom: 16px;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: rgba(255,255,255,0.9);
+            max-width: 600px;
+            margin: 0 auto 48px;
+            font-weight: 300;
+        }
+
+        /* Gateway Cards - Critical UX Element */
+        .gateway {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        .gateway-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .gateway-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            padding: 40px 32px;
+            text-decoration: none;
+            color: var(--stone-900);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gateway-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--terracotta);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .gateway-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--stone-100);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 24px;
+        }
+
+        .gateway-card h2 {
+            font-family: var(--font-display);
+            font-size: 32px;
+            margin-bottom: 12px;
+            font-weight: 500;
+            color: var(--stone-900);
+        }
+
+        .gateway-card p {
+            color: var(--stone-600);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+
+        .gateway-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--terracotta);
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            max-width: 700px;
+            margin: 0 auto 48px;
+            text-align: center;
+        }
+
+        .section-label {
+            font-family: var(--font-display);
+            font-size: 13px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--terracotta);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(32px, 4vw, 48px);
+            color: var(--stone-900);
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+
+        .section-subtitle {
+            font-size: 17px;
+            color: var(--stone-600);
+            font-weight: 300;
+        }
+
+        /* About Section */
+        .about {
+            background: white;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .about-image {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .about-content h2 {
+            font-family: var(--font-display);
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: var(--stone-900);
+            font-weight: 400;
+        }
+
+        .about-content p {
+            color: var(--stone-600);
+            margin-bottom: 16px;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--stone-200);
+        }
+
+        .stat h3 {
+            font-family: var(--font-display);
+            font-size: 36px;
+            color: var(--forest-900);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .stat p {
+            font-size: 12px;
+            color: var(--stone-500);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin: 0;
+        }
+
+        /* Service Paths */
+        .service-section {
+            background: var(--stone-50);
+        }
+
+        .service-section:nth-child(even) {
+            background: white;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .service-visual {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .service-visual img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+
+        .service-content h3 {
+            font-family: var(--font-display);
+            font-size: 13px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--terracotta);
+            margin-bottom: 12px;
+        }
+
+        .service-content h2 {
+            font-family: var(--font-display);
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: var(--stone-900);
+            font-weight: 400;
+        }
+
+        .service-content > p {
+            color: var(--stone-600);
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .features {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 15px;
+            color: var(--stone-700);
+        }
+
+        .features li::before {
+            content: '✓';
+            color: var(--forest-900);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--stone-900);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--stone-800);
+            transform: translateY(-2px);
+        }
+
+        /* Digital Passport USP */
+        .passport {
+            background: var(--forest-950);
+            color: white;
+            text-align: center;
+        }
+
+        .passport .section-title {
+            color: white;
+        }
+
+        .passport .section-subtitle {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .passport-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-top: 48px;
+            text-align: left;
+        }
+
+        .passport-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 32px;
+        }
+
+        .passport-card h4 {
+            font-family: var(--font-display);
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .passport-card p {
+            color: rgba(255,255,255,0.7);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: white;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .testimonial {
+            background: var(--stone-50);
+            padding: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--stone-200);
+        }
+
+        .testimonial-stars {
+            color: #f59e0b;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+
+        .testimonial-text {
+            font-family: var(--font-display);
+            font-size: 20px;
+            line-height: 1.5;
+            color: var(--stone-800);
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .testimonial-author img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .testimonial-author div h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--stone-900);
+            margin-bottom: 2px;
+        }
+
+        .testimonial-author div p {
+            font-size: 13px;
+            color: var(--stone-500);
+        }
+
+        /* Contact Strip */
+        .contact-strip {
+            background: var(--ocean-950);
+            color: white;
+            text-align: center;
+            padding: 80px 24px;
+        }
+
+        .contact-strip h2 {
+            font-family: var(--font-display);
+            font-size: clamp(28px, 4vw, 40px);
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+
+        .contact-strip > p {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 32px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 32px;
+        }
+
+        .contact-divider {
+            color: rgba(255,255,255,0.4);
+            font-size: 14px;
+        }
+
+        .btn-large {
+            padding: 16px 32px;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--stone-900);
+            color: var(--stone-400);
+            padding: 64px 0 32px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand h3 {
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .footer-brand p {
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .footer-links h4 {
+            font-size: 12px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: white;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--stone-400);
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .btn-pdf {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 16px;
+            transition: all 0.2s;
+        }
+
+        .btn-pdf:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .footer-contact a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Floating WhatsApp */
+        .float-whatsapp {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: transform 0.2s;
+            text-decoration: none;
+        }
+
+        .float-whatsapp:hover {
+            transform: scale(1.1);
+        }
+
+        .float-whatsapp svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
+        /* Tablet */
+        @media (min-width: 768px) {
+            .gateway-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .service-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .service-grid.reverse {
+                direction: rtl;
+            }
+
+            .service-grid.reverse > * {
+                direction: ltr;
+            }
+
+            .passport-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .testimonials-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+            }
+
+            .contact-options {
+                flex-direction: row;
+            }
+
+            .nav-phone {
+                display: block;
+            }
+
+            .footer-bottom {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+            }
+
+            .footer-contact {
+                flex-direction: row;
+                gap: 24px;
+            }
+        }
+
+        /* Desktop */
+        @media (min-width: 1024px) {
+            .container {
+                padding: 0 40px;
+            }
+
+            section {
+                padding: 120px 0;
+            }
+
+            .about-image img {
+                height: 500px;
+            }
+
+            .service-visual img {
+                height: 450px;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mockup Badge -->
+    <div class="mockup-badge">Mockup Preview</div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">Exploring Madeira</a>
+            <div class="nav-contact">
+                <a href="tel:+351123456789" class="nav-phone">+351 123 456 789</a>
+                <a href="https://wa.me/351123456789" class="btn-whatsapp">
+                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    WhatsApp
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero - Gateway -->
+    <section class="hero">
+        <div class="hero-content">
+            <p class="hero-label">Premium Property Services</p>
+            <h1 class="hero-title">Your Trusted Local Property Partner in Madeira Island</h1>
+            <p class="hero-subtitle">We help international buyers navigate land acquisition and construction with clarity, transparency, and local expertise.</p>
+        </div>
+        
+        <div class="gateway">
+            <div class="gateway-grid">
+                <a href="#land-sourcing" class="gateway-card">
+                    <div class="gateway-icon">◈</div>
+                    <h2>LAND</h2>
+                    <p>Find and acquire the perfect plot in Madeira's most desirable locations. From coastal views to mountain retreats, we source exclusive opportunities.</p>
+                    <span class="gateway-cta">Explore Land Sourcing →</span>
+                </a>
+                <a href="#build-renovate" class="gateway-card">
+                    <div class="gateway-icon">▣</div>
+                    <h2>BUILD / RENOVATE</h2>
+                    <p>Transform your vision into reality with end-to-end construction management. From villa builds to quinta renovations, we deliver quality.</p>
+                    <span class="gateway-cta">Explore Construction →</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="https://picsum.photos/800/1000?random=1" alt="Madeira landscape and property">
+                </div>
+                <div class="about-content">
+                    <span class="section-label">About Us</span>
+                    <h2>Why Exploring Madeira Exists</h2>
+                    <p>We exist to bridge the gap between international buyers and the complex Madeira property market. With deep local knowledge and international service standards, we guide you through every step—from finding land to handing over keys.</p>
+                    <p>Our mission is simple: to make property investment in Madeira transparent, secure, and successful for international clients who demand excellence.</p>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <h3>12+</h3>
+                            <p>Years Experience</p>
+                        </div>
+                        <div class="stat">
+                            <h3>147</h3>
+                            <p>Projects Completed</p>
+                        </div>
+                        <div class="stat">
+                            <h3>98%</h3>
+                            <p>Client Success Rate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Land Sourcing Service -->
+    <section class="service-section" id="land-sourcing">
+        <div class="container">
+            <div class="service-grid">
+                <div class="service-visual">
+                    <img src="https://picsum.photos/800/600?random=2" alt="Land sourcing in Madeira">
+                </div>
+                <div class="service-content">
+                    <h3>Land Sourcing</h3>
+                    <h2>Find Your Perfect Plot</h2>
+                    <p>Navigating Madeira's property market requires insider knowledge and established relationships. We provide exclusive access to prime locations before they reach the open market.</p>
+                    <ul class="features">
+                        <li>Exclusive off-market land opportunities</li>
+                        <li>Comprehensive due diligence & legal verification</li>
+                        <li>Topographic & geological assessments</li>
+                        <li>Planning permission pre-checks</li>
+                        <li>Drone footage and video walkthroughs</li>
+                        <li>Area analysis and opportunity breakdowns</li>
+                    </ul>
+                    <a href="#contact" class="btn-primary">Enquire About Land</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Build & Renovate Service -->
+    <section class="service-section" id="build-renovate">
+        <div class="container">
+            <div class="service-grid reverse">
+                <div class="service-visual">
+                    <img src="https://picsum.photos/800/600?random=3" alt="Construction and renovation">
+                </div>
+                <div class="service-content">
+                    <h3>Construction & Renovation</h3>
+                    <h2>Build Without Boundaries</h2>
+                    <p>From historic quinta renovations to contemporary architectural statements, our construction management ensures your project realizes its full potential with complete transparency.</p>
+                    <ul class="features">
+                        <li>End-to-end project management</li>
+                        <li>Curated network of master craftsmen</li>
+                        <li>Bi-weekly progress filming & documentation</li>
+                        <li>Real-time budget monitoring</li>
+                        <li>Quality assurance & stage verification</li>
+                        <li>Digital Property Passport™ included</li>
+                    </ul>
+                    <a href="#contact" class="btn-primary">Start Your Build</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Digital Property Passport USP -->
+    <section class="passport">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Major Differentiator</span>
+                <h2 class="section-title">Digital Property Passport™</h2>
+                <p class="section-subtitle">Complete transparency for international buyers. Every project includes comprehensive documentation and progress tracking.</p>
+            </div>
+            
+            <div class="passport-grid">
+                <div class="passport-card">
+                    <h4>Bi-Weekly Progress Filming</h4>
+                    <p>Regular video updates showing construction progress, keeping you connected to your project from anywhere in the world.</p>
+                </div>
+                <div class="passport-card">
+                    <h4>Construction Documentation</h4>
+                    <p>Detailed records of every stage, from foundation to finish, including materials used and quality checkpoints.</p>
+                </div>
+                <div class="passport-card">
+                    <h4>Transparency Reporting</h4>
+                    <p>Real-time access to budgets, timelines, and milestones. No surprises, complete visibility throughout.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Client Stories</span>
+                <h2 class="section-title">Trusted by International Buyers</h2>
+                <p class="section-subtitle">Hear from those who've built their Madeira dreams with us</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Exploring Madeira found us a cliffside plot we didn't know existed. Their Digital Passport kept us informed throughout construction from London."</p>
+                    <div class="testimonial-author">
+                        <img src="https://picsum.photos/100/100?random=4" alt="Marina & James">
+                        <div>
+                            <h4>Marina & James C.</h4>
+                            <p>São Martinho Villa</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"The renovation of our 19th-century quinta required sensitivity and skill. The team's craftsmanship exceeded our expectations completely."</p>
+                    <div class="testimonial-author">
+                        <img src="https://picsum.photos/100/100?random=5" alt="Robert">
+                        <div>
+                            <h4>Robert H.</h4>
+                            <p>Santana Estate</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"From land sourcing to handing over the keys, every step was transparent. The Digital Passport is revolutionary for overseas investors."</p>
+                    <div class="testimonial-author">
+                        <img src="https://picsum.photos/100/100?random=6" alt="Anderson Family">
+                        <div>
+                            <h4>The Anderson Family</h4>
+                            <p>Funchal Residence</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA Strip -->
+    <section class="contact-strip" id="contact">
+        <div class="container">
+            <h2>Ready to Start Your Madeira Journey?</h2>
+            <p>Connect with us directly for immediate assistance or submit an enquiry for detailed information.</p>
+            
+            <div class="contact-options">
+                <a href="https://wa.me/351123456789" class="btn-whatsapp btn-large">
+                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    Message on WhatsApp
+                </a>
+                <span class="contact-divider">or</span>
+                <a href="mailto:hello@exploringmadeira.com" class="btn-secondary">Email Enquiry</a>
+            </div>
+            
+            <p style="font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 24px;">
+                Direct line: <a href="tel:+351123456789" style="color: white; text-decoration: none;">+351 123 456 789</a> • Available 7 days
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>Exploring Madeira</h3>
+                    <p>Your trusted local property partner in Madeira Island. We combine deep local knowledge with international service standards to deliver exceptional results for discerning clients.</p>
+                    <a href="#" class="btn-pdf" download>
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        Download Company Brochure (PDF)
+                    </a>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#land-sourcing">Land Sourcing</a></li>
+                        <li><a href="#build-renovate">Construction</a></li>
+                        <li><a href="#build-renovate">Renovation</a></li>
+                        <li><a href="#">Project Management</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#">Our Process</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Buying Guide</a></li>
+                        <li><a href="#">Building Regulations</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">YouTube Channel</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Exploring Madeira. All rights reserved.</p>
+                <div class="footer-contact">
+                    <a href="https://wa.me/351123456789">WhatsApp</a>
+                    <a href="mailto:hello@exploringmadeira.com">Email</a>
+                    <a href="tel:+351123456789">+351 123 456 789</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/351123456789" class="float-whatsapp" aria-label="Contact on WhatsApp">
+        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </a>
+
+</body>
+</html>
