@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio � Full-Stack Developer & Product Manager</title>
+    <title>Portfolio — Full-Stack Developer & Product Manager</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -131,7 +131,10 @@
         .center .section-desc { margin: 0 auto; }
 
         /* Portfolio Grid */
-        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 2rem; }
+        .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .portfolio-grid { grid-template-columns: 1fr; } }
+
         .project-card {
             background: var(--bg);
             border: 1px solid var(--border);
@@ -172,12 +175,76 @@
         .skill-name { font-weight: 800; font-size: 1.1rem; margin-bottom: 0.5rem; }
         .skill-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
-        /* Footer / CTA */
-        .cta-section { background: var(--accent); color: white; padding: 6rem 2rem; text-align: center; }
-        .cta-section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; }
-        .cta-section p { color: #9ca3af; font-size: 1.1rem; max-width: 500px; margin: 0 auto 2.5rem; }
-        .cta-section .btn-primary { background: white; color: var(--accent); }
-        .cta-section .btn-primary:hover { background: #f3f4f6; }
+        /* Contact Section */
+        .cta-section { background: var(--accent); color: white; padding: 6rem 2rem; }
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+        @media (max-width: 768px) {
+            .contact-wrapper { grid-template-columns: 1fr; gap: 3rem; }
+        }
+
+        .contact-info h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; }
+        .contact-info p { color: #9ca3af; font-size: 1.1rem; margin-bottom: 2.5rem; max-width: 450px; line-height: 1.6; }
+        
+        .contact-methods { display: flex; flex-direction: column; gap: 1.5rem; }
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+            color: white;
+            text-decoration: none;
+            transition: color var(--transition);
+            font-weight: 500;
+        }
+        .contact-method:hover { color: #d1d5db; }
+        .contact-method i { font-size: 1.5rem; width: 24px; text-align: center; }
+        .contact-method i.fa-whatsapp { color: #25D366; font-size: 1.7rem; }
+
+        /* Email Form */
+        .contact-form {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            color: var(--text);
+            text-align: left;
+        }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-size: 0.9rem; font-weight: 700; color: #374151; margin-bottom: 0.5rem; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all var(--transition);
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent2);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        .form-submit {
+            background: var(--accent2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: background var(--transition);
+        }
+        .form-submit:hover { background: #3730a3; }
         
         footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; }
     </style>
@@ -200,7 +267,7 @@
             </div>
             <h1>Building Complete Products,<br>Not Just Websites</h1>
             <p class="hero-sub">
-                I am a Full-Stack Developer and Product Manager. I bridge the gap between business strategy, robust backend scalable architecture, and pixel-perfect minimal frontends.
+                I am Zubair Jamil, a Full-Stack Developer and Product Manager. I bridge the gap between business strategy, robust backend scalable architecture, and pixel-perfect minimal frontends.
             </p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <a href="#work" class="btn btn-primary">See My Work</a>
@@ -227,20 +294,20 @@
     </div>
 
     <section class="section" id="work">
-        <div class="section-header">
+        <div class="section-header center">
             <div class="section-tag">Case Studies</div>
             <h2 class="section-title">Completed Products</h2>
             <p class="section-desc">A selection of end-to-end applications designed, engineered, and managed across diverse domains ranging from SaaS workflows to E-Commerce platforms.</p>
         </div>
 
         <div class="portfolio-grid">
+            <!-- 1. Salesforce -->
             <a href="salesforce.html" class="project-card">
                 <div class="card-preview-wrap" style="color: #4f46e5;"><i class="fas fa-chart-line"></i></div>
                 <div class="card-body">
                     <div class="card-tags">
                         <span class="tag">Full-Stack SaaS</span>
                         <span class="tag">Analytics</span>
-                        <span class="tag">Node.js</span>
                     </div>
                     <div class="card-title">SalesForce Pro Dashboard</div>
                     <div class="card-desc">Designed data infrastructure and frontend UI for a comprehensive sales tool with commission tracking, rep performance logic, and dynamic charts.</div>
@@ -248,6 +315,7 @@
                 </div>
             </a>
 
+            <!-- 2. CRM -->
             <a href="crm.html" class="project-card">
                 <div class="card-preview-wrap" style="color: #10b981;"><i class="fas fa-users-cog"></i></div>
                 <div class="card-body">
@@ -261,6 +329,7 @@
                 </div>
             </a>
 
+            <!-- 3. FlowSync -->
             <a href="flowsync.html" class="project-card">
                 <div class="card-preview-wrap" style="color: #6366f1;"><i class="fas fa-project-diagram"></i></div>
                 <div class="card-body">
@@ -274,6 +343,7 @@
                 </div>
             </a>
 
+            <!-- 4. Milltown Motors -->
             <a href="carcms.html" class="project-card">
                 <div class="card-preview-wrap" style="color: #ef4444;"><i class="fas fa-car"></i></div>
                 <div class="card-body">
@@ -287,6 +357,7 @@
                 </div>
             </a>
 
+            <!-- 5. Exploring Madeira -->
             <a href="madeira.html" class="project-card">
                 <div class="card-preview-wrap" style="color: #0c4a6e;"><i class="fas fa-home"></i></div>
                 <div class="card-body">
@@ -300,12 +371,13 @@
                 </div>
             </a>
 
+            <!-- 6. LUXE Retail -->
             <a href="luxury_ecommerce.html" class="project-card">
                 <div class="card-preview-wrap" style="color: #9d174d;"><i class="fas fa-shopping-bag"></i></div>
                 <div class="card-body">
                     <div class="card-tags">
                         <span class="tag">E-Commerce Architecture</span>
-                        <span class="tag">Stripe</span>
+                        <span class="tag">Stripe Setup</span>
                     </div>
                     <div class="card-title">LUXE Retail App</div>
                     <div class="card-desc">Managed the product lifecycle from initial checkout flows to full payment integration and inventory scaling protocols.</div>
@@ -313,6 +385,7 @@
                 </div>
             </a>
             
+            <!-- 7. Massage -->
             <a href="massage.html" class="project-card">
                 <div class="card-preview-wrap" style="color: #059669;"><i class="fas fa-spa"></i></div>
                 <div class="card-body">
@@ -326,27 +399,100 @@
                 </div>
             </a>
 
-             <a href="pre_dark_restaurant.html" class="project-card">
-                <div class="card-preview-wrap" style="color: #b45309;"><i class="fas fa-utensils"></i></div>
+            <!-- 8. RIVA Premium Dining -->
+            <a href="premium_dark_restaurant.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #b45309;"><i class="fas fa-wine-glass"></i></div>
                 <div class="card-body">
                     <div class="card-tags">
-                        <span class="tag">Reservations API</span>
-                        <span class="tag">Product Concept</span>
+                        <span class="tag">Premium Dining</span>
+                        <span class="tag">System Design</span>
                     </div>
-                    <div class="card-title">RIVA Dining Platform</div>
-                    <div class="card-desc">Developed both front-of-house menus and the back-of-house reservation processing engine to streamline restaurant operations.</div>
+                    <div class="card-title">RIVA Premium Dining</div>
+                    <div class="card-desc">Upscale restaurant landing page integrated with bespoke internal reservation systems and waitlist management.</div>
                     <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
                 </div>
             </a>
+
+            <!-- 9. RIVA Riverside -->
+            <a href="pre_dark_restaurant.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #0d2640;"><i class="fas fa-utensils"></i></div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag">Reservations API</span>
+                        <span class="tag">Event App</span>
+                    </div>
+                    <div class="card-title">RIVA Riverside Platform</div>
+                    <div class="card-desc">Developed both front-of-house menus and the back-of-house reservation processing engine to streamline operations.</div>
+                    <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+
+            <!-- 10. Lumina Estates -->
+            <a href="property_landingpage.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #4338ca;"><i class="fas fa-building"></i></div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag">Estates Tech</span>
+                        <span class="tag">Lead Capture</span>
+                    </div>
+                    <div class="card-title">Lumina Estates</div>
+                    <div class="card-desc">Built a complex property listing infrastructure enabling agent interactions, virtual tours, and automated inquiry routing.</div>
+                    <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+
+            <!-- 11. ICMT -->
+            <a href="theicmt.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #9333ea;"><i class="fas fa-music"></i></div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag">EdTech App</span>
+                        <span class="tag">Admissions Portal</span>
+                    </div>
+                    <div class="card-title">ICMT Education Portal</div>
+                    <div class="card-desc">Designed an educational portal scaling student auditions, faculty operations, and course prospectus management workflows.</div>
+                    <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+
+            <!-- 12. Training -->
+            <a href="traning.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #166534;"><i class="fas fa-chalkboard-teacher"></i></div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag">LMS Infrastructure</span>
+                        <span class="tag">Coaching Platform</span>
+                    </div>
+                    <div class="card-title">Training Leadership LMS</div>
+                    <div class="card-desc">Engineered a robust corporate coaching system to organize marketing leadership training courses and milestones.</div>
+                    <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+
+            <!-- 13. Jewelry -->
+            <a href="jewerly.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #d97706;"><i class="fas fa-gem"></i></div>
+                <div class="card-body">
+                    <div class="card-tags">
+                        <span class="tag">Luxury E-Commerce</span>
+                        <span class="tag">Inventory Scale</span>
+                    </div>
+                    <div class="card-title">LUMIÈRE Jewelry Engine</div>
+                    <div class="card-desc">Delivered a highly optimized online boutique with modular inventory processing suited for high-end luxury goods.</div>
+                    <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+
         </div>
     </section>
 
+    <!-- Expertise Section -->
     <div style="background: var(--surface);">
         <section class="section" id="expertise">
-            <div class="section-header">
+            <div class="section-header center">
                 <div class="section-tag">Capabilities</div>
                 <h2 class="section-title">Holistic Product Engineering</h2>
-                <p class="section-desc">From strategic roadmap planning to database scaling and polished UI components�I oversee and execute the complete product lifecycle.</p>
+                <p class="section-desc">From strategic roadmap planning to database scaling and polished UI components—I oversee and execute the complete product lifecycle.</p>
             </div>
             
             <div class="skills-grid">
@@ -358,42 +504,63 @@
                 <div class="skill-card">
                     <div class="skill-icon"><i class="fas fa-server"></i></div>
                     <div class="skill-name">Backend Architecture</div>
-                    <div class="skill-desc">Designing robust APIs, scalable database schemas (SQL/NoSQL), authentication flows, and high-performance server-side logic (Node, Python).</div>
+                    <div class="skill-desc">Designing APIs, scalable schemas, authentication, and high-performance server logic.</div>
                 </div>
                 <div class="skill-card">
                     <div class="skill-icon"><i class="fas fa-paint-brush"></i></div>
                     <div class="skill-name">Frontend Engineering</div>
-                    <div class="skill-desc">Building intuitive, pixel-perfect, and accessible user interfaces using clean HTML/CSS, Vanilla JS, and modern UI frameworks.</div>
+                    <div class="skill-desc">Building intuitive, pixel-perfect, accessible user interfaces using clean modern frameworks.</div>
                 </div>
                 <div class="skill-card">
                     <div class="skill-icon"><i class="fas fa-database"></i></div>
                     <div class="skill-name">Systems & Cloud</div>
-                    <div class="skill-desc">Setting up robust CI/CD pipelines, cloud deployment environments, scaling infrastructure, and monitoring product health.</div>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fas fa-users"></i></div>
-                    <div class="skill-name">User-Centric Design</div>
-                    <div class="skill-desc">Prototyping flows, optimizing checkout conversion rates, and relying on data-driven design decisions for maximum impact.</div>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon"><i class="fas fa-chart-line"></i></div>
-                    <div class="skill-name">Analytics & Growth</div>
-                    <div class="skill-desc">Implementing tracking systems to monitor user behavior, ensuring each release brings measurable value to business OKRs.</div>
+                    <div class="skill-desc">Setting up robust deployment pipelines, cloud environments, and monitoring product health.</div>
                 </div>
             </div>
         </section>
     </div>
 
+    <!-- Contact & Email Form Section -->
     <section class="cta-section" id="contact">
-        <h2>Ready to build something real?</h2>
-        <p>Whether you need a full product developed from scratch or strategic product leadership to scale your app, let's connect.</p>
-        <a href="mailto:hello@yourproduct.com" class="btn btn-primary">
-            <i class="fas fa-paper-plane"></i> Get In Touch
-        </a>
+        <div class="contact-wrapper">
+            <div class="contact-info">
+                <h2>Ready to build something real?</h2>
+                <p>Whether you need a full product developed from scratch or strategic product leadership to scale your app, let's connect.</p>
+                
+                <div class="contact-methods">
+                    <a href="mailto:zubairjamil418@gmail.com" class="contact-method">
+                        <i class="fas fa-envelope"></i>
+                        <span>zubairjamil418@gmail.com</span>
+                    </a>
+                    <a href="https://wa.me/923072388023" target="_blank" class="contact-method">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>+92 307 2388 023</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Message feature ready! Connect this to your backend API.');">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="john@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Tell me about your project or product needs..." required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Send Message</button>
+                </form>
+            </div>
+        </div>
     </section>
 
     <footer>
-        <p>Architected & Engineered by Your Name | Full-Stack Product Manager</p>
+        <p>Architected & Engineered by Zubair Jamil | Full-Stack Product Manager</p>
     </footer>
 
 </body>
