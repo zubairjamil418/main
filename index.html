@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio — Senior Frontend Developer</title>
+    <title>Portfolio � Full-Stack Developer & Product Manager</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg: #0a0f1e;
-            --surface: #111827;
-            --surface2: #1a2236;
-            --border: #1f2d45;
-            --accent: #3b82f6;
-            --accent2: #6366f1;
-            --accent3: #10b981;
-            --text: #f1f5f9;
-            --text-muted: #94a3b8;
-            --radius: 14px;
-            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg: #ffffff;
+            --surface: #f9fafb;
+            --surface2: #f3f4f6;
+            --border: #e5e7eb;
+            --accent: #0f172a;
+            --accent2: #4f46e5;
+            --text: #111827;
+            --text-muted: #6b7280;
+            --radius: 12px;
+            --transition: 0.3s ease;
         }
 
         html { scroll-behavior: smooth; }
@@ -32,251 +31,109 @@
             overflow-x: hidden;
         }
 
-        /* ───── NAV ───── */
+        /* Nav */
         nav {
             position: fixed;
             top: 0; left: 0; right: 0;
             z-index: 100;
-            padding: 1rem 2rem;
+            padding: 1.5rem 3rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(10, 15, 30, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
         }
 
-        .nav-logo {
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            color: var(--text);
-        }
+        .nav-logo { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text); }
+        .nav-logo span { color: var(--accent2); }
 
-        .nav-logo span { color: var(--accent); }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: color var(--transition);
-        }
-
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color var(--transition); }
         .nav-links a:hover { color: var(--text); }
 
-        /* ───── HERO ───── */
+        /* Hero */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 6rem 2rem 4rem;
-            position: relative;
-            overflow: hidden;
+            padding: 8rem 2rem 4rem;
+            background: radial-gradient(circle at 50% 0%, #f3f4f6 0%, #ffffff 70%);
         }
 
-        .hero-grid-bg {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-        }
-
-        .hero-glow {
-            position: absolute;
-            width: 700px;
-            height: 700px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 760px;
-        }
+        .hero-content { max-width: 800px; }
 
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.375rem 1rem;
-            border-radius: 20px;
-            background: rgba(59,130,246,0.1);
-            border: 1px solid rgba(59,130,246,0.25);
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
+            padding: 0.5rem 1.25rem;
+            border-radius: 99px;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent2);
+            margin-bottom: 2rem;
         }
-
-        .hero-badge i { font-size: 0.7rem; }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 800;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
             line-height: 1.1;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
-
-        .hero h1 .highlight {
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            color: var(--text);
         }
 
         .hero-sub {
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             color: var(--text-muted);
-            max-width: 580px;
-            margin: 0 auto 2rem;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
         }
 
         .btn {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.75rem 1.75rem;
-            border-radius: 10px;
-            font-size: 0.9rem;
+            padding: 0.875rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
             transition: all var(--transition);
-            border: none;
         }
 
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { background: #000; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+        .btn-ghost:hover { border-color: var(--text); transform: translateY(-2px); }
 
-        .btn-primary:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59,130,246,0.35);
-        }
+        /* Stats */
+        .stats-bar { padding: 4rem 2rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface); }
+        .stats-inner { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 3rem; }
+        .stat-item { text-align: center; }
+        .stat-num { font-size: 3rem; font-weight: 900; color: var(--accent); }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        .btn-ghost {
-            background: transparent;
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-        }
+        /* Sections */
+        .section { padding: 8rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .section-header { margin-bottom: 4rem; }
+        .section-header.center { text-align: center; }
+        .section-tag { display: inline-block; font-size: 0.85rem; font-weight: 700; color: var(--accent2); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .section-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
+        .section-desc { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; line-height: 1.7; }
+        .center .section-desc { margin: 0 auto; }
 
-        .btn-ghost:hover {
-            color: var(--text);
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        /* ───── STATS ───── */
-        .stats-bar {
-            padding: 3rem 2rem;
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .stats-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-num {
-            font-size: 2.25rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-top: 0.25rem;
-        }
-
-        /* ───── SECTIONS ───── */
-        .section {
-            padding: 6rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 3.5rem;
-        }
-
-        .section-tag {
-            display: inline-block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 0.75rem;
-        }
-
-        .section-title {
-            font-size: clamp(1.75rem, 3vw, 2.5rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 0.75rem;
-        }
-
-        .section-desc {
-            color: var(--text-muted);
-            max-width: 540px;
-            margin: 0 auto;
-        }
-
-        /* ───── PORTFOLIO GRID ───── */
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 1.75rem;
-        }
-
+        /* Portfolio Grid */
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 2rem; }
         .project-card {
-            background: var(--surface);
+            background: var(--bg);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             overflow: hidden;
@@ -285,627 +142,259 @@
             display: flex;
             flex-direction: column;
             transition: all var(--transition);
-            position: relative;
         }
+        .project-card:hover { transform: translateY(-8px); border-color: #d1d5db; box-shadow: 0 20px 40px rgba(0,0,0,0.06); }
+        
+        .card-preview-wrap { height: 240px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; transition: background var(--transition); }
+        .project-card:hover .card-preview-wrap { background: #eef2ff; color: var(--accent2); }
 
-        .project-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(59,130,246,0.4);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(59,130,246,0.1);
-        }
+        .card-body { padding: 2rem; flex: 1; display: flex; flex-direction: column; }
+        .card-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .tag { font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 99px; background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); }
+        .card-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--accent); }
+        .card-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; flex: 1; margin-bottom: 1.5rem; }
+        .card-link { font-size: 0.85rem; font-weight: 700; color: var(--accent); display: inline-flex; align-items: center; gap: 0.5rem; }
+        .project-card:hover .card-link { gap: 0.75rem; color: var(--accent2); }
 
-        .project-card:hover .card-preview {
-            transform: scale(1.04);
-        }
-
-        .card-preview-wrap {
-            height: 210px;
-            overflow: hidden;
-            background: var(--surface2);
-            position: relative;
-        }
-
-        .card-preview {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top;
-            transition: transform 0.5s ease;
-            border: none;
-            display: block;
-        }
-
-        /* Iframe preview replaced by color block + icon for performance */
-        .card-thumb {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            transition: transform 0.5s ease;
-        }
-
-        .project-card:hover .card-thumb {
-            transform: scale(1.1);
-        }
-
-        .card-body {
-            padding: 1.25rem 1.5rem 1.5rem;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-tags {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 0.75rem;
-        }
-
-        .tag {
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-
-        .tag-blue  { background: rgba(59,130,246,0.15);  color: #60a5fa; }
-        .tag-green { background: rgba(16,185,129,0.15);  color: #34d399; }
-        .tag-purple{ background: rgba(99,102,241,0.15);  color: #a5b4fc; }
-        .tag-amber { background: rgba(245,158,11,0.15);  color: #fcd34d; }
-        .tag-rose  { background: rgba(244,63,94,0.15);   color: #fb7185; }
-        .tag-cyan  { background: rgba(6,182,212,0.15);   color: #67e8f9; }
-        .tag-slate { background: rgba(100,116,139,0.15); color: #94a3b8; }
-        .tag-pink  { background: rgba(236,72,153,0.15);  color: #f9a8d4; }
-
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-            color: var(--text);
-        }
-
-        .card-desc {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-            flex: 1;
-        }
-
-        .card-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 1.25rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .card-link {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            transition: gap var(--transition);
-        }
-
-        .project-card:hover .card-link { gap: 0.7rem; }
-
-        .card-type {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        /* ───── SKILLS ───── */
+        /* Skills */
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1.25rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
         }
-
         .skill-card {
             background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            transition: all var(--transition);
-        }
-
-        .skill-card:hover {
-            border-color: rgba(59,130,246,0.3);
-            transform: translateY(-3px);
-        }
-
-        .skill-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .skill-name {
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .skill-desc {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        /* ───── CTA BANNER ───── */
-        .cta-section {
-            padding: 6rem 2rem;
-            text-align: center;
-        }
-
-        .cta-card {
-            max-width: 700px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(99,102,241,0.1));
-            border: 1px solid rgba(59,130,246,0.2);
-            border-radius: 20px;
-            padding: 3.5rem 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(59,130,246,0.06) 0%, transparent 60%);
-            pointer-events: none;
-        }
-
-        .cta-card h2 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 0.75rem;
-        }
-
-        .cta-card p {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-        }
-
-        .cta-btns {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* ───── FOOTER ───── */
-        footer {
-            background: var(--surface);
-            border-top: 1px solid var(--border);
             padding: 2rem;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
         }
+        .skill-icon { font-size: 1.75rem; color: var(--accent2); margin-bottom: 1.25rem; }
+        .skill-name { font-weight: 800; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .skill-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
 
-        footer span { color: var(--accent); }
-
-        /* ───── SCROLL REVEAL ───── */
-        .reveal {
-            opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* Footer / CTA */
+        .cta-section { background: var(--accent); color: white; padding: 6rem 2rem; text-align: center; }
+        .cta-section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; }
+        .cta-section p { color: #9ca3af; font-size: 1.1rem; max-width: 500px; margin: 0 auto 2.5rem; }
+        .cta-section .btn-primary { background: white; color: var(--accent); }
+        .cta-section .btn-primary:hover { background: #f3f4f6; }
+        
+        footer { background: var(--bg); border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; }
     </style>
 </head>
 <body>
 
-    <!-- NAV -->
     <nav>
-        <div class="nav-logo">Dev<span>.</span>Portfolio</div>
+        <div class="nav-logo">Dev<span>Product</span></div>
         <ul class="nav-links">
             <li><a href="#work">Work</a></li>
-            <li><a href="#skills">Skills</a></li>
+            <li><a href="#expertise">Expertise</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
-    <!-- HERO -->
     <section class="hero">
-        <div class="hero-grid-bg"></div>
-        <div class="hero-glow"></div>
         <div class="hero-content">
             <div class="hero-badge">
-                <i class="fas fa-circle" style="color: #10b981; font-size: 0.5rem;"></i>
-                Available for freelance projects
+                <i class="fas fa-check-circle"></i> Available for Product Leadership & Full-Stack Projects
             </div>
-            <h1>Senior Frontend<br><span class="highlight">Developer</span></h1>
+            <h1>Building Complete Products,<br>Not Just Websites</h1>
             <p class="hero-sub">
-                Crafting high-converting landing pages, SaaS dashboards, and immersive digital experiences with clean, performant HTML&nbsp;&amp;&nbsp;CSS.
+                I am a Full-Stack Developer and Product Manager. I bridge the gap between business strategy, robust backend scalable architecture, and pixel-perfect minimal frontends.
             </p>
-            <div class="hero-cta">
-                <a href="#work" class="btn btn-primary">
-                    <i class="fas fa-layer-group"></i> View My Work
-                </a>
-                <a href="#contact" class="btn btn-ghost">
-                    <i class="fas fa-envelope"></i> Get In Touch
-                </a>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="#work" class="btn btn-primary">See My Work</a>
+                <a href="#contact" class="btn btn-ghost">Let's Talk Strategy</a>
             </div>
         </div>
     </section>
 
-    <!-- STATS BAR -->
     <div class="stats-bar">
         <div class="stats-inner">
             <div class="stat-item">
-                <div class="stat-num">10+</div>
-                <div class="stat-label">Projects Built</div>
+                <div class="stat-num">End-to-End</div>
+                <div class="stat-label">Product Ownership</div>
             </div>
             <div class="stat-item">
-                <div class="stat-num">5+</div>
-                <div class="stat-label">Industries</div>
+                <div class="stat-num">Full-Stack</div>
+                <div class="stat-label">Architecture & Code</div>
             </div>
             <div class="stat-item">
-                <div class="stat-num">100%</div>
-                <div class="stat-label">Custom Code</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num">0</div>
-                <div class="stat-label">Templates Used</div>
+                <div class="stat-num">Strategic</div>
+                <div class="stat-label">Growth & Delivery</div>
             </div>
         </div>
     </div>
 
-    <!-- PORTFOLIO -->
     <section class="section" id="work">
-        <div class="section-header reveal">
-            <div class="section-tag">Portfolio</div>
-            <h2 class="section-title">Featured Projects</h2>
-            <p class="section-desc">A collection of landing pages and dashboards built across diverse industries — from luxury brands to SaaS platforms.</p>
+        <div class="section-header">
+            <div class="section-tag">Case Studies</div>
+            <h2 class="section-title">Completed Products</h2>
+            <p class="section-desc">A selection of end-to-end applications designed, engineered, and managed across diverse domains ranging from SaaS workflows to E-Commerce platforms.</p>
         </div>
 
         <div class="portfolio-grid">
-
-            <!-- SalesForce Pro -->
-            <a href="salesforce.html" class="project-card reveal">
-                <div class="card-preview-wrap">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #0f172a, #1e3a5f);">
-                        <i class="fas fa-chart-line" style="color: #3b82f6;"></i>
-                    </div>
-                </div>
+            <a href="salesforce.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #4f46e5;"><i class="fas fa-chart-line"></i></div>
                 <div class="card-body">
                     <div class="card-tags">
-                        <span class="tag tag-blue">Dashboard</span>
-                        <span class="tag tag-purple">SaaS</span>
-                        <span class="tag tag-green">Chart.js</span>
+                        <span class="tag">Full-Stack SaaS</span>
+                        <span class="tag">Analytics</span>
+                        <span class="tag">Node.js</span>
                     </div>
-                    <div class="card-title">SalesForce Pro</div>
-                    <div class="card-desc">Interactive sales dashboard with per-rep performance tracking, live charts, commission calculator, and client order management.</div>
-                    <div class="card-footer">
-                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
-                        <span class="card-type">Web App</span>
-                    </div>
+                    <div class="card-title">SalesForce Pro Dashboard</div>
+                    <div class="card-desc">Designed data infrastructure and frontend UI for a comprehensive sales tool with commission tracking, rep performance logic, and dynamic charts.</div>
+                    <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
                 </div>
             </a>
 
-            <!-- ScaleCRM -->
-            <a href="crm.html" class="project-card reveal">
-                <div class="card-preview-wrap">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #0f1923, #1a3a2a);">
-                        <i class="fas fa-users" style="color: #10b981;"></i>
-                    </div>
-                </div>
+            <a href="crm.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #10b981;"><i class="fas fa-users-cog"></i></div>
                 <div class="card-body">
                     <div class="card-tags">
-                        <span class="tag tag-green">CRM</span>
-                        <span class="tag tag-blue">SaaS</span>
-                        <span class="tag tag-slate">Landing Page</span>
+                        <span class="tag">CRM Platform</span>
+                        <span class="tag">Product Strategy</span>
                     </div>
                     <div class="card-title">ScaleCRM</div>
-                    <div class="card-desc">Economical & scalable customer management platform landing page with feature showcase, pricing tiers, and lead capture.</div>
-                    <div class="card-footer">
-                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
-                        <span class="card-type">Landing Page</span>
-                    </div>
+                    <div class="card-desc">Built a lead-capture pipeline and customer lifecycle CRM focused on scalable architecture, user adoption, and unified design systems.</div>
+                    <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
                 </div>
             </a>
 
-            <!-- FlowSync -->
-            <a href="flowsync.html" class="project-card reveal">
-                <div class="card-preview-wrap">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #0f0f2e, #1e1b4b);">
-                        <i class="fas fa-sync-alt" style="color: #6366f1;"></i>
-                    </div>
-                </div>
+            <a href="flowsync.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #6366f1;"><i class="fas fa-project-diagram"></i></div>
                 <div class="card-body">
                     <div class="card-tags">
-                        <span class="tag tag-purple">SaaS</span>
-                        <span class="tag tag-cyan">Automation</span>
-                        <span class="tag tag-slate">Landing Page</span>
+                        <span class="tag">Workflow Automation</span>
+                        <span class="tag">API Integration</span>
                     </div>
-                    <div class="card-title">FlowSync</div>
-                    <div class="card-desc">Professional SaaS platform landing page for workflow automation with animated feature sections and conversion-focused design.</div>
-                    <div class="card-footer">
-                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
-                        <span class="card-type">Landing Page</span>
-                    </div>
+                    <div class="card-title">FlowSync Platform</div>
+                    <div class="card-desc">Architected the system workflows and led the API integration roadmap, accelerating client onboarding.</div>
+                    <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
                 </div>
             </a>
 
-            <!-- LUMIÈRE Jewelry -->
-            <a href="jewerly.html" class="project-card reveal">
-                <div class="card-preview-wrap">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #1a1208, #3d2b0d);">
-                        <i class="fas fa-gem" style="color: #fcd34d;"></i>
-                    </div>
-                </div>
+            <a href="carcms.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #ef4444;"><i class="fas fa-car"></i></div>
                 <div class="card-body">
                     <div class="card-tags">
-                        <span class="tag tag-amber">Luxury</span>
-                        <span class="tag tag-rose">E-Commerce</span>
-                        <span class="tag tag-slate">Jewelry</span>
+                        <span class="tag">Dealership CMS</span>
+                        <span class="tag">Database Design</span>
                     </div>
-                    <div class="card-title">LUMIÈRE — Fine Jewelry</div>
-                    <div class="card-desc">High-end fine jewelry brand landing page with editorial photography layout, collection showcases, and premium dark aesthetic.</div>
-                    <div class="card-footer">
-                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
-                        <span class="card-type">E-Commerce</span>
-                    </div>
+                    <div class="card-title">Milltown Motors CMS</div>
+                    <div class="card-desc">Delivered a custom vehicle management backend paired with a high-performing buyer front-end for seamless inventory management.</div>
+                    <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
                 </div>
             </a>
 
-            <!-- LUXE Fashion -->
-            <a href="luxury_ecommerce.html" class="project-card reveal">
-                <div class="card-preview-wrap">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #120a0a, #2d1515);">
-                        <i class="fas fa-shopping-bag" style="color: #fb7185;"></i>
-                    </div>
-                </div>
+            <a href="madeira.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #0c4a6e;"><i class="fas fa-home"></i></div>
                 <div class="card-body">
                     <div class="card-tags">
-                        <span class="tag tag-rose">Fashion</span>
-                        <span class="tag tag-amber">Luxury</span>
-                        <span class="tag tag-slate">E-Commerce</span>
+                        <span class="tag">Real Estate Tech</span>
+                        <span class="tag">UX / UI</span>
                     </div>
-                    <div class="card-title">LUXE — Luxury Fashion</div>
-                    <div class="card-desc">Curated luxury fashion & lifestyle brand with immersive hero sections, product grid layout, and refined minimalist typography.</div>
-                    <div class="card-footer">
-                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
-                        <span class="card-type">E-Commerce</span>
-                    </div>
+                    <div class="card-title">Exploring Madeira</div>
+                    <div class="card-desc">Created the digital experience and inquiry funnel for an international real estate platform, streamlining lead qualification.</div>
+                    <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
                 </div>
             </a>
 
-            <!-- LuxeTouch Massage -->
-            <a href="massage.html" class="project-card reveal">
-                <div class="card-preview-wrap">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #0d1a18, #1a3330);">
-                        <i class="fas fa-spa" style="color: #34d399;"></i>
-                    </div>
-                </div>
+            <a href="luxury_ecommerce.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #9d174d;"><i class="fas fa-shopping-bag"></i></div>
                 <div class="card-body">
                     <div class="card-tags">
-                        <span class="tag tag-green">Wellness</span>
-                        <span class="tag tag-cyan">Services</span>
-                        <span class="tag tag-slate">Landing Page</span>
+                        <span class="tag">E-Commerce Architecture</span>
+                        <span class="tag">Stripe</span>
                     </div>
-                    <div class="card-title">LuxeTouch — Massage</div>
-                    <div class="card-desc">Premium massage services landing page with service menu, booking call-to-actions, and a calming luxury spa aesthetic.</div>
-                    <div class="card-footer">
-                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
-                        <span class="card-type">Service Page</span>
-                    </div>
+                    <div class="card-title">LUXE Retail App</div>
+                    <div class="card-desc">Managed the product lifecycle from initial checkout flows to full payment integration and inventory scaling protocols.</div>
+                    <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
                 </div>
             </a>
-
-            <!-- RIVA Premium Restaurant -->
-            <a href="premium_dark_restaurant.html" class="project-card reveal">
-                <div class="card-preview-wrap">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #120c04, #2e1a04);">
-                        <i class="fas fa-utensils" style="color: #fb923c;"></i>
-                    </div>
-                </div>
+            
+            <a href="massage.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #059669;"><i class="fas fa-spa"></i></div>
                 <div class="card-body">
                     <div class="card-tags">
-                        <span class="tag tag-amber">Restaurant</span>
-                        <span class="tag tag-rose">Fine Dining</span>
-                        <span class="tag tag-slate">Dark Theme</span>
+                        <span class="tag">Booking System</span>
+                        <span class="tag">Full-Stack</span>
                     </div>
-                    <div class="card-title">RIVA — Premium Dining</div>
-                    <div class="card-desc">Upscale restaurant landing page with dark premium theme, menu showcase, reservation section, and cinematic hero design.</div>
-                    <div class="card-footer">
-                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
-                        <span class="card-type">Restaurant</span>
-                    </div>
+                    <div class="card-title">LuxeTouch Booking</div>
+                    <div class="card-desc">Architected an automated appointment scheduling system backend with a calming, frictionless user interface.</div>
+                    <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
                 </div>
             </a>
 
-            <!-- RIVA Riverside -->
-            <a href="pre_dark_restaurant.html" class="project-card reveal">
-                <div class="card-preview-wrap">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #08121e, #0d2640);">
-                        <i class="fas fa-water" style="color: #67e8f9;"></i>
-                    </div>
-                </div>
+             <a href="pre_dark_restaurant.html" class="project-card">
+                <div class="card-preview-wrap" style="color: #b45309;"><i class="fas fa-utensils"></i></div>
                 <div class="card-body">
                     <div class="card-tags">
-                        <span class="tag tag-cyan">Restaurant</span>
-                        <span class="tag tag-blue">Riverside</span>
-                        <span class="tag tag-slate">Budapest</span>
+                        <span class="tag">Reservations API</span>
+                        <span class="tag">Product Concept</span>
                     </div>
-                    <div class="card-title">RIVA — Riverside Dining</div>
-                    <div class="card-desc">Riverside dining experience in Budapest — atmospheric design with waterfront mood, seasonal menu highlights, and event bookings.</div>
-                    <div class="card-footer">
-                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
-                        <span class="card-type">Restaurant</span>
-                    </div>
+                    <div class="card-title">RIVA Dining Platform</div>
+                    <div class="card-desc">Developed both front-of-house menus and the back-of-house reservation processing engine to streamline restaurant operations.</div>
+                    <div class="card-link">View Product <i class="fas fa-arrow-right"></i></div>
                 </div>
             </a>
-
-            <!-- Lumina Estates -->
-            <a href="property_landingpage.html" class="project-card reveal">
-                <div class="card-preview-wrap">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #0a0e1a, #1a2540);">
-                        <i class="fas fa-building" style="color: #a5b4fc;"></i>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="card-tags">
-                        <span class="tag tag-purple">Real Estate</span>
-                        <span class="tag tag-blue">Property</span>
-                        <span class="tag tag-slate">Landing Page</span>
-                    </div>
-                    <div class="card-title">Lumina Estates</div>
-                    <div class="card-desc">Premium property landing page with property listings, location highlights, agent contact section, and clean architectural layout.</div>
-                    <div class="card-footer">
-                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
-                        <span class="card-type">Real Estate</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- ICMT -->
-            <a href="theicmt.html" class="project-card reveal">
-                <div class="card-preview-wrap">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #0e0a1f, #1e1040);">
-                        <i class="fas fa-music" style="color: #c084fc;"></i>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="card-tags">
-                        <span class="tag tag-purple">Education</span>
-                        <span class="tag tag-pink">Arts</span>
-                        <span class="tag tag-slate">College</span>
-                    </div>
-                    <div class="card-title">ICMT — Musical Theatre</div>
-                    <div class="card-desc">International College of Musical Theatre — institution landing page with course overview, faculty section, and audition call-to-action.</div>
-                    <div class="card-footer">
-                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
-                        <span class="card-type">Education</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Frances & Kevin Training -->
-            <a href="traning.html" class="project-card reveal">
-                <div class="card-preview-wrap">
-                    <div class="card-thumb" style="background: linear-gradient(135deg, #0f1a0a, #1a3010);">
-                        <i class="fas fa-chalkboard-teacher" style="color: #86efac;"></i>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="card-tags">
-                        <span class="tag tag-green">Coaching</span>
-                        <span class="tag tag-cyan">Marketing</span>
-                        <span class="tag tag-slate">Training</span>
-                    </div>
-                    <div class="card-title">Frances &amp; Kevin — Training</div>
-                    <div class="card-desc">Marketing leadership training landing page with coach profiles, program highlights, testimonials, and lead capture form.</div>
-                    <div class="card-footer">
-                        <span class="card-link">View Project <i class="fas fa-arrow-right"></i></span>
-                        <span class="card-type">Coaching</span>
-                    </div>
-                </div>
-            </a>
-
         </div>
     </section>
 
-    <!-- SKILLS -->
-    <div style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
-        <section class="section" id="skills">
-            <div class="section-header reveal">
-                <div class="section-tag">Expertise</div>
-                <h2 class="section-title">Technical Skills</h2>
-                <p class="section-desc">Focused on delivering pixel-perfect, performant frontend experiences without relying on heavy frameworks.</p>
+    <div style="background: var(--surface);">
+        <section class="section" id="expertise">
+            <div class="section-header">
+                <div class="section-tag">Capabilities</div>
+                <h2 class="section-title">Holistic Product Engineering</h2>
+                <p class="section-desc">From strategic roadmap planning to database scaling and polished UI components�I oversee and execute the complete product lifecycle.</p>
             </div>
+            
             <div class="skills-grid">
-                <div class="skill-card reveal">
-                    <div class="skill-icon" style="background: rgba(59,130,246,0.1); color: #3b82f6;"><i class="fab fa-html5"></i></div>
-                    <div class="skill-name">HTML5 / Semantic Markup</div>
-                    <div class="skill-desc">Accessible, SEO-friendly structure with clean semantic HTML for every project.</div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fas fa-tasks"></i></div>
+                    <div class="skill-name">Product Management</div>
+                    <div class="skill-desc">Defining roadmaps, managing agile sprints, prioritizing features based on user metrics, and bridging business strategy with technical delivery.</div>
                 </div>
-                <div class="skill-card reveal">
-                    <div class="skill-icon" style="background: rgba(99,102,241,0.1); color: #818cf8;"><i class="fab fa-css3-alt"></i></div>
-                    <div class="skill-name">CSS3 / Advanced Layouts</div>
-                    <div class="skill-desc">CSS Grid, Flexbox, animations, custom properties, and responsive design without any framework.</div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fas fa-server"></i></div>
+                    <div class="skill-name">Backend Architecture</div>
+                    <div class="skill-desc">Designing robust APIs, scalable database schemas (SQL/NoSQL), authentication flows, and high-performance server-side logic (Node, Python).</div>
                 </div>
-                <div class="skill-card reveal">
-                    <div class="skill-icon" style="background: rgba(245,158,11,0.1); color: #fbbf24;"><i class="fab fa-js-square"></i></div>
-                    <div class="skill-name">Vanilla JavaScript</div>
-                    <div class="skill-desc">Dynamic UI, DOM manipulation, API integration, and interactive dashboards — no jQuery needed.</div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fas fa-paint-brush"></i></div>
+                    <div class="skill-name">Frontend Engineering</div>
+                    <div class="skill-desc">Building intuitive, pixel-perfect, and accessible user interfaces using clean HTML/CSS, Vanilla JS, and modern UI frameworks.</div>
                 </div>
-                <div class="skill-card reveal">
-                    <div class="skill-icon" style="background: rgba(16,185,129,0.1); color: #34d399;"><i class="fas fa-chart-bar"></i></div>
-                    <div class="skill-name">Chart.js / Data Viz</div>
-                    <div class="skill-desc">Interactive charts, dashboards, and data visualisations with animated, responsive graphs.</div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fas fa-database"></i></div>
+                    <div class="skill-name">Systems & Cloud</div>
+                    <div class="skill-desc">Setting up robust CI/CD pipelines, cloud deployment environments, scaling infrastructure, and monitoring product health.</div>
                 </div>
-                <div class="skill-card reveal">
-                    <div class="skill-icon" style="background: rgba(236,72,153,0.1); color: #f472b6;"><i class="fas fa-mobile-alt"></i></div>
-                    <div class="skill-name">Responsive Design</div>
-                    <div class="skill-desc">Mobile-first layouts that adapt seamlessly across all screen sizes and devices.</div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fas fa-users"></i></div>
+                    <div class="skill-name">User-Centric Design</div>
+                    <div class="skill-desc">Prototyping flows, optimizing checkout conversion rates, and relying on data-driven design decisions for maximum impact.</div>
                 </div>
-                <div class="skill-card reveal">
-                    <div class="skill-icon" style="background: rgba(6,182,212,0.1); color: #22d3ee;"><i class="fas fa-rocket"></i></div>
-                    <div class="skill-name">Performance & UX</div>
-                    <div class="skill-desc">Optimised load times, smooth animations, and conversion-focused user experience design.</div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="skill-name">Analytics & Growth</div>
+                    <div class="skill-desc">Implementing tracking systems to monitor user behavior, ensuring each release brings measurable value to business OKRs.</div>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- CTA / CONTACT -->
     <section class="cta-section" id="contact">
-        <div class="cta-card reveal">
-            <div class="section-tag">Let's Work Together</div>
-            <h2>Have a project in mind?</h2>
-            <p>I'm available for freelance work — whether it's a landing page, SaaS dashboard, or a full product UI.</p>
-            <div class="cta-btns">
-                <a href="mailto:hello@yourportfolio.com" class="btn btn-primary">
-                    <i class="fas fa-envelope"></i> Send a Message
-                </a>
-                <a href="https://github.com" target="_blank" rel="noopener" class="btn btn-ghost">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-            </div>
-        </div>
+        <h2>Ready to build something real?</h2>
+        <p>Whether you need a full product developed from scratch or strategic product leadership to scale your app, let's connect.</p>
+        <a href="mailto:hello@yourproduct.com" class="btn btn-primary">
+            <i class="fas fa-paper-plane"></i> Get In Touch
+        </a>
     </section>
 
-    <!-- FOOTER -->
     <footer>
-        <p>Built with <span>♥</span> using pure HTML &amp; CSS — no frameworks, no templates.</p>
+        <p>Architected & Engineered by Your Name | Full-Stack Product Manager</p>
     </footer>
 
-    <script>
-        // Scroll reveal
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, i * 60);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    </script>
 </body>
 </html>
