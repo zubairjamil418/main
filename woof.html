@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PawMatch - Where Pets Find Their Perfect Playmate</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B6B;
+            --primary-light: #FF8E8E;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            --text-dark: #2D3748;
+            --text-light: #F7FAFC;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--text-dark);
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: #FF6B6B;
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: #4ECDC4;
+            bottom: -50px;
+            right: -50px;
+            animation-delay: 5s;
+        }
+
+        .shape-3 {
+            width: 250px;
+            height: 250px;
+            background: #FFE66D;
+            top: 50%;
+            left: 50%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        /* Navigation - Liquid Glass Style */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-btn {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Main Container */
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 2rem 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            gap: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Glass Card Base Style */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(31, 38, 135, 0.45);
+        }
+
+        /* Left Sidebar - Profile & Filters */
+        .sidebar-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .user-profile-mini {
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .user-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.2rem;
+        }
+
+        .user-status {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .filters-section h3 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .filter-label {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            font-weight: 500;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-chip {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .filter-chip:hover, .filter-chip.active {
+            background: white;
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .range-slider {
+            width: 100%;
+            margin-top: 0.5rem;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.3);
+            outline: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Center - Main Swipe Area */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 8rem);
+        }
+
+        .swipe-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            height: 650px;
+            perspective: 1000px;
+        }
+
+        .card-stack {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .profile-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            cursor: grab;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .profile-card:nth-child(1) { z-index: 4; }
+        .profile-card:nth-child(2) { z-index: 3; transform: scale(0.95) translateY(20px); opacity: 0.8; }
+        .profile-card:nth-child(3) { z-index: 2; transform: scale(0.9) translateY(40px); opacity: 0.6; }
+        .profile-card:nth-child(4) { z-index: 1; transform: scale(0.85) translateY(60px); opacity: 0.4; }
+
+        .profile-card.dragging {
+            cursor: grabbing;
+            transition: none;
+        }
+
+        .card-image-container {
+            position: relative;
+            height: 65%;
+            overflow: hidden;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .profile-card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-badges {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.95);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .badge.verified {
+            color: var(--primary);
+        }
+
+        .card-info {
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.5rem;
+        }
+
+        .pet-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pet-age {
+            background: var(--accent);
+            color: var(--text-dark);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .pet-breed {
+            color: #718096;
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+        }
+
+        .pet-bio {
+            color: #4A5568;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .pet-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #718096;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            font-size: 1.1rem;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .action-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .action-btn:hover {
+            transform: scale(1.15) translateY(-3px);
+        }
+
+        .action-btn.reject {
+            background: #FEE;
+            color: var(--error);
+            border: 2px solid #FCC;
+        }
+
+        .action-btn.reject:hover {
+            background: var(--error);
+            color: white;
+            box-shadow: 0 6px 20px rgba(245, 101, 101, 0.4);
+        }
+
+        .action-btn.super-like {
+            background: #E6FFFA;
+            color: var(--secondary);
+            border: 2px solid #B2F5EA;
+            font-size: 1.3rem;
+        }
+
+        .action-btn.super-like:hover {
+            background: var(--secondary);
+            color: white;
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+        }
+
+        .action-btn.like {
+            background: #F0FFF4;
+            color: var(--success);
+            border: 2px solid #C6F6D5;
+        }
+
+        .action-btn.like:hover {
+            background: var(--success);
+            color: white;
+            box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+        }
+
+        /* Swipe Indicators */
+        .swipe-indicator {
+            position: absolute;
+            top: 40px;
+            padding: 0.5rem 1rem;
+            border: 4px solid;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0;
+            transform: rotate(0deg) scale(0.8);
+            transition: all 0.3s ease;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .swipe-indicator.like {
+            right: 40px;
+            color: var(--success);
+            border-color: var(--success);
+            transform: rotate(15deg);
+        }
+
+        .swipe-indicator.nope {
+            left: 40px;
+            color: var(--error);
+            border-color: var(--error);
+            transform: rotate(-15deg);
+        }
+
+        .swipe-indicator.super {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            color: var(--secondary);
+            border-color: var(--secondary);
+        }
+
+        /* Right Sidebar - Matches & Chat */
+        .sidebar-right {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .match-count {
+            background: var(--accent);
+            color: var(--text-dark);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .new-matches {
+            display: flex;
+            gap: 0.8rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            scrollbar-width: none;
+        }
+
+        .new-matches::-webkit-scrollbar {
+            display: none;
+        }
+
+        .match-avatar {
+            position: relative;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .match-avatar:hover {
+            transform: translateY(-5px);
+        }
+
+        .match-avatar img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .match-avatar.new::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 14px;
+            height: 14px;
+            background: var(--primary);
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        .match-name {
+            text-align: center;
+            color: white;
+            font-size: 0.75rem;
+            margin-top: 0.3rem;
+            font-weight: 500;
+        }
+
+        .messages-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .message-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .message-item:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateX(5px);
+        }
+
+        .message-item.unread {
+            background: rgba(255,255,255,0.25);
+            border-left: 3px solid var(--accent);
+        }
+
+        .message-avatar {
+            position: relative;
+        }
+
+        .message-avatar img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+        }
+
+        .online-indicator {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            background: var(--success);
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        .message-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.2rem;
+        }
+
+        .message-sender {
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .message-time {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.75rem;
+        }
+
+        .message-preview {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .unread-badge {
+            background: var(--primary);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Chat Modal */
+        .chat-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .chat-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .chat-container {
+            width: 90%;
+            max-width: 500px;
+            height: 80vh;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .chat-modal.active .chat-container {
+            transform: scale(1);
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+        }
+
+        .chat-header img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid white;
+            object-fit: cover;
+        }
+
+        .chat-header-info {
+            flex: 1;
+        }
+
+        .chat-header-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .chat-header-status {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .chat-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .chat-close:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: #F7FAFC;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message-bubble {
+            max-width: 75%;
+            padding: 0.8rem 1rem;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            animation: messagePop 0.3s ease;
+            position: relative;
+        }
+
+        @keyframes messagePop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .message-bubble.received {
+            background: white;
+            color: var(--text-dark);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .message-bubble.sent {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-bubble.typing {
+            background: #E2E8F0;
+            color: #718096;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.6rem 1rem;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            background: #718096;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        .chat-input-area {
+            padding: 1rem 1.5rem;
+            background: white;
+            border-top: 1px solid #E2E8F0;
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: 2px solid #E2E8F0;
+            border-radius: 25px;
+            padding: 0.8rem 1.2rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .chat-send {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .chat-send:hover {
+            transform: scale(1.1) rotate(-10deg);
+            box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+        }
+
+        /* Match Animation */
+        .match-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .match-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .match-content {
+            text-align: center;
+            color: white;
+            transform: scale(0.5);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .match-overlay.active .match-content {
+            transform: scale(1);
+        }
+
+        .match-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: matchPulse 2s infinite;
+        }
+
+        @keyframes matchPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .match-profiles {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .match-profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .match-heart {
+            font-size: 3rem;
+            animation: heartbeat 1s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .match-text {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .match-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .match-btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .match-btn.primary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .match-btn.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .match-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+            .sidebar-left, .sidebar-right {
+                position: static;
+                display: none;
+            }
+            .mobile-nav {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .swipe-container {
+                height: 550px;
+            }
+            .nav-links {
+                display: none;
+            }
+            .card-actions {
+                gap: 1rem;
+            }
+            .action-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Mobile Bottom Nav */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--glass-border);
+            padding: 0.8rem 2rem;
+            display: none;
+            justify-content: space-around;
+            z-index: 1000;
+        }
+
+        .mobile-nav-item {
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .mobile-nav-item:hover, .mobile-nav-item.active {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-5px);
+        }
+
+        .mobile-nav-item .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            color: white;
+            font-size: 0.65rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid transparent;
+        }
+
+        /* AI Assistant Badge */
+        .ai-badge {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 600;
+            z-index: 100;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .ai-badge:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .ai-icon {
+            font-size: 1.5rem;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(10deg); }
+            75% { transform: rotate(-10deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            color: white;
+            padding: 3rem;
+            display: none;
+        }
+
+        .empty-state.show {
+            display: block;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .empty-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-subtext {
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .refresh-btn {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Loading Animation */
+        .loading-paw {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: white;
+            z-index: 5000;
+            animation: pawPrint 1s infinite;
+            display: none;
+        }
+
+        @keyframes pawPrint {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.8); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <span class="logo-icon">🐾</span>
+            PawMatch
+        </div>
+        <div class="nav-links">
+            <a href="#" onclick="showSection('discover')">Discover</a>
+            <a href="#" onclick="showSection('matches')">Matches</a>
+            <a href="#" onclick="showSection('messages')">Messages</a>
+            <a href="#" onclick="showSection('profile')">Profile</a>
+            <button class="nav-btn" onclick="upgradePremium()">Premium</button>
+        </div>
+    </nav>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar-left">
+            <div class="glass-card user-profile-mini">
+                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop" alt="Your Profile" class="user-avatar">
+                <div class="user-name">Sarah & Luna</div>
+                <div class="user-status">
+                    <span class="status-dot"></span>
+                    Online now
+                </div>
+            </div>
+
+            <div class="glass-card filters-section">
+                <h3>⚡ Smart Filters</h3>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Pet Type</label>
+                    <div class="filter-options">
+                        <span class="filter-chip active" onclick="toggleFilter(this)">🐕 Dogs</span>
+                        <span class="filter-chip" onclick="toggleFilter(this)">🐈 Cats</span>
+                        <span class="filter-chip" onclick="toggleFilter(this)">🐰 Other</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Size</label>
+                    <div class="filter-options">
+                        <span class="filter-chip" onclick="toggleFilter(this)">Small</span>
+                        <span class="filter-chip active" onclick="toggleFilter(this)">Medium</span>
+                        <span class="filter-chip" onclick="toggleFilter(this)">Large</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Distance: <span id="distanceValue">5</span> miles</label>
+                    <input type="range" class="range-slider" min="1" max="50" value="5" oninput="updateDistance(this.value)">
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Age Range</label>
+                    <div class="filter-options">
+                        <span class="filter-chip active" onclick="toggleFilter(this)">Puppy/Kitten</span>
+                        <span class="filter-chip active" onclick="toggleFilter(this)">Adult</span>
+                        <span class="filter-chip" onclick="toggleFilter(this)">Senior</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <h3 style="color: white; margin-bottom: 0.8rem;">📊 Your Stats</h3>
+                <div style="color: rgba(255,255,255,0.9); font-size: 0.9rem; line-height: 1.8;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Profile Views</span>
+                        <strong style="color: white;">248</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Matches</span>
+                        <strong style="color: white;">18</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Playdates</span>
+                        <strong style="color: white;">6</strong>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center - Swipe Cards -->
+        <main class="main-content">
+            <div class="swipe-container" id="swipeContainer">
+                <div class="card-stack" id="cardStack">
+                    <!-- Cards will be injected here by JS -->
+                </div>
+                
+                <div class="card-actions">
+                    <button class="action-btn reject" onclick="swipe('left')">
+                        <span>✕</span>
+                    </button>
+                    <button class="action-btn super-like" onclick="swipe('super')">
+                        <span>⭐</span>
+                    </button>
+                    <button class="action-btn like" onclick="swipe('right')">
+                        <span>♥</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="empty-state" id="emptyState">
+                <div class="empty-icon">🎉</div>
+                <div class="empty-text">You're all caught up!</div>
+                <div class="empty-subtext">Check back later for more furry friends</div>
+                <button class="refresh-btn" onclick="resetCards()">Discover More</button>
+            </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="sidebar-right">
+            <div class="glass-card">
+                <div class="section-header">
+                    <h3 class="section-title">🔥 New Matches</h3>
+                    <span class="match-count">3</span>
+                </div>
+                <div class="new-matches" id="newMatches">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="section-header">
+                    <h3 class="section-title">💬 Messages</h3>
+                    <span class="match-count" id="messageCount">5</span>
+                </div>
+                <div class="messages-list" id="messagesList">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+            <div class="glass-card" style="background: linear-gradient(135deg, rgba(255,107,107,0.3) 0%, rgba(78,205,196,0.3) 100%);">
+                <h3 style="color: white; margin-bottom: 0.5rem;">🎁 Premium</h3>
+                <p style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin-bottom: 1rem;">Get unlimited likes, see who liked you, and more!</p>
+                <button style="width: 100%; padding: 0.8rem; border: none; border-radius: 12px; background: white; color: var(--primary); font-weight: 700; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                    Upgrade Now
+                </button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <div class="mobile-nav-item active" onclick="setActiveNav(this)">
+            <span>🏠</span>
+        </div>
+        <div class="mobile-nav-item" onclick="setActiveNav(this)">
+            <span>🔍</span>
+        </div>
+        <div class="mobile-nav-item" onclick="setActiveNav(this)">
+            <span>💬</span>
+            <span class="badge">3</span>
+        </div>
+        <div class="mobile-nav-item" onclick="setActiveNav(this)">
+            <span>👤</span>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div class="chat-modal" id="chatModal">
+        <div class="chat-container">
+            <div class="chat-header">
+                <img src="" alt="Match" id="chatHeaderImg">
+                <div class="chat-header-info">
+                    <div class="chat-header-name" id="chatHeaderName">Buddy</div>
+                    <div class="chat-header-status">
+                        <span class="status-dot"></span>
+                        Online now
+                    </div>
+                </div>
+                <button class="chat-close" onclick="closeChat()">✕</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages injected here -->
+            </div>
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
+                <button class="chat-send" onclick="sendMessage()">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Match Overlay -->
+    <div class="match-overlay" id="matchOverlay">
+        <div class="match-content">
+            <div class="match-title">It's a Match!</div>
+            <div class="match-profiles">
+                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop" alt="You" class="match-profile-img">
+                <span class="match-heart">💕</span>
+                <img src="" alt="Match" class="match-profile-img" id="matchImg">
+            </div>
+            <div class="match-text">You and <span id="matchName">Buddy</span> like each other!</div>
+            <div class="match-buttons">
+                <button class="match-btn primary" onclick="startChatFromMatch()">Send Message</button>
+                <button class="match-btn secondary" onclick="closeMatch()">Keep Swiping</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant -->
+    <div class="ai-badge" onclick="openAIChat()" title="AI Dating Coach">
+        <span class="ai-icon">✨</span>
+        <span>AI Coach</span>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-paw" id="loading">🐾</div>
+
+    <script>
+        // Pet Profiles Data
+        const petProfiles = [
+            {
+                id: 1,
+                name: "Max",
+                age: "2 years",
+                breed: "Golden Retriever",
+                bio: "Friendly ball of sunshine who loves park adventures and belly rubs. Looking for playmates who enjoy fetch!",
+                image: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=600&h=800&fit=crop",
+                location: "2 miles away",
+                owner: "Jessica",
+                traits: ["Playful", "Friendly", "Energetic"],
+                size: "Large"
+            },
+            {
+                id: 2,
+                name: "Luna",
+                age: "1 year",
+                breed: "Siamese Cat",
+                bio: "Elegant and curious. I enjoy window watching and cozy afternoons. Seeking a gentle companion for lazy Sundays.",
+                image: "https://images.unsplash.com/photo-1513245543132-31f507417b26?w=600&h=800&fit=crop",
+                location: "0.5 miles away",
+                owner: "Michael",
+                traits: ["Calm", "Affectionate", "Indoor"],
+                size: "Small"
+            },
+            {
+                id: 3,
+                name: "Charlie",
+                age: "3 years",
+                breed: "French Bulldog",
+                bio: "Professional cuddler and treat enthusiast. Short walks, long naps. Let's be best friends!",
+                image: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=600&h=800&fit=crop",
+                location: "1.2 miles away",
+                owner: "Emma",
+                traits: ["Chill", "Funny", "Loyal"],
+                size: "Small"
+            },
+            {
+                id: 4,
+                name: "Bella",
+                age: "4 years",
+                breed: "Labrador Mix",
+                bio: "Water lover and hiking buddy. Always ready for adventure! Looking for an active playmate.",
+                image: "https://images.unsplash.com/photo-1596492784531-6e6eb5ea9993?w=600&h=800&fit=crop",
+                location: "3 miles away",
+                owner: "David",
+                traits: ["Active", "Smart", "Loyal"],
+                size: "Large"
+            },
+            {
+                id: 5,
+                name: "Milo",
+                age: "8 months",
+                breed: "Tabby Cat",
+                bio: "Young and playful! I love chasing laser pointers and exploring cardboard boxes.",
+                image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&h=800&fit=crop",
+                location: "1.5 miles away",
+                owner: "Sophie",
+                traits: ["Playful", "Curious", "Young"],
+                size: "Small"
+            }
+        ];
+
+        // Messages Data
+        const messagesData = [
+            {
+                id: 1,
+                name: "Rocky & Tom",
+                avatar: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&h=200&fit=crop",
+                preview: "Would love to set up a playdate!",
+                time: "2m",
+                unread: true,
+                online: true
+            },
+            {
+                id: 2,
+                name: "Daisy & Anna",
+                avatar: "https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=200&h=200&fit=crop",
+                preview: "The park tomorrow sounds great 🌳",
+                time: "1h",
+                unread: true,
+                online: false
+            },
+            {
+                id: 3,
+                name: "Cooper & Jake",
+                avatar: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&h=200&fit=crop",
+                preview: "Thanks for the treat recommendation!",
+                time: "3h",
+                unread: false,
+                online: true
+            }
+        ];
+
+        // New Matches
+        const newMatchesData = [
+            { name: "Rocky", img: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&h=200&fit=crop", new: true },
+            { name: "Daisy", img: "https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=200&h=200&fit=crop", new: true },
+            { name: "Cooper", img: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&h=200&fit=crop", new: false }
+        ];
+
+        let currentCardIndex = 0;
+        let currentChatId = null;
+        let currentMatch = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCards();
+            renderNewMatches();
+            renderMessages();
+            setupSwipeGestures();
+        });
+
+        // Render Cards
+        function renderCards() {
+            const stack = document.getElementById('cardStack');
+            stack.innerHTML = '';
+            
+            petProfiles.forEach((pet, index) => {
+                if (index < currentCardIndex) return;
+                
+                const card = document.createElement('div');
+                card.className = 'profile-card';
+                card.dataset.id = pet.id;
+                card.innerHTML = `
+                    <div class="card-image-container">
+                        <img src="${pet.image}" alt="${pet.name}" class="card-image">
+                        <div class="card-badges">
+                            <span class="badge verified">✓ Verified</span>
+                            <span class="badge">📍 ${pet.location}</span>
+                        </div>
+                        <div class="swipe-indicator like">LIKE</div>
+                        <div class="swipe-indicator nope">NOPE</div>
+                        <div class="swipe-indicator super">SUPER</div>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-header">
+                            <div>
+                                <div class="pet-name">
+                                    ${pet.name}
+                                    <span class="pet-age">${pet.age}</span>
+                                </div>
+                                <div class="pet-breed">${pet.breed}</div>
+                            </div>
+                        </div>
+                        <div class="pet-bio">${pet.bio}</div>
+                        <div class="pet-stats">
+                            <span class="stat">
+                                <span class="stat-icon">👤</span>
+                                ${pet.owner}
+                            </span>
+                            <span class="stat">
+                                <span class="stat-icon">📏</span>
+                                ${pet.size}
+                            </span>
+                        </div>
+                        <div class="filter-options" style="margin-top: 0.5rem;">
+                            ${pet.traits.map(trait => `<span class="filter-chip active" style="font-size: 0.7rem; padding: 0.2rem 0.5rem;">${trait}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                stack.appendChild(card);
+            });
+
+            updateCardPositions();
+            
+            if (currentCardIndex >= petProfiles.length) {
+                document.getElementById('swipeContainer').style.display = 'none';
+                document.getElementById('emptyState').classList.add('show');
+            }
+        }
+
+        // Update Card Positions in Stack
+        function updateCardPositions() {
+            const cards = document.querySelectorAll('.profile-card');
+            cards.forEach((card, index) => {
+                card.style.zIndex = cards.length - index;
+                if (index === 0) {
+                    card.style.transform = 'scale(1) translateY(0)';
+                    card.style.opacity = '1';
+                } else if (index === 1) {
+                    card.style.transform = 'scale(0.95) translateY(20px)';
+                    card.style.opacity = '0.8';
+                } else if (index === 2) {
+                    card.style.transform = 'scale(0.9) translateY(40px)';
+                    card.style.opacity = '0.6';
+                } else {
+                    card.style.transform = 'scale(0.85) translateY(60px)';
+                    card.style.opacity = '0.4';
+                }
+            });
+        }
+
+        // Swipe Logic
+        function swipe(direction) {
+            const cards = document.querySelectorAll('.profile-card');
+            if (cards.length === 0) return;
+            
+            const topCard = cards[0];
+            const indicator = topCard.querySelector(`.swipe-indicator.${direction === 'right' ? 'like' : direction === 'left' ? 'nope' : 'super'}`);
+            
+            // Show indicator
+            if (indicator) {
+                indicator.style.opacity = '1';
+                indicator.style.transform = direction === 'right' ? 'rotate(15deg) scale(1)' : 
+                                          direction === 'left' ? 'rotate(-15deg) scale(1)' : 'translate(-50%, -50%) scale(1)';
+            }
+            
+            // Animate card
+            setTimeout(() => {
+                topCard.style.transform = `translateX(${direction === 'right' ? '150%' : direction === 'left' ? '-150%' : '0'}) 
+                                          translateY(${direction === 'super' ? '-150%' : '0'}) 
+                                          rotate(${direction === 'right' ? '30' : direction === 'left' ? '-30' : '0'}deg)`;
+                topCard.style.opacity = '0';
+                
+                setTimeout(() => {
+                    topCard.remove();
+                    currentCardIndex++;
+                    
+                    if (direction === 'right' || direction === 'super') {
+                        // Simulate match (30% chance)
+                        if (Math.random() > 0.7 || direction === 'super') {
+                            showMatch(petProfiles[currentCardIndex - 1]);
+                        }
+                    }
+                    
+                    updateCardPositions();
+                    
+                    if (currentCardIndex >= petProfiles.length) {
+                        document.querySelector('.card-actions').style.display = 'none';
+                        document.getElementById('emptyState').classList.add('show');
+                    }
+                }, 300);
+            }, 200);
+        }
+
+        // Touch/Drag Gestures
+        function setupSwipeGestures() {
+            const container = document.getElementById('cardStack');
+            let startX, startY, currentX, currentY;
+            let isDragging = false;
+            let currentCard = null;
+
+            container.addEventListener('touchstart', handleStart, {passive: false});
+            container.addEventListener('touchmove', handleMove, {passive: false});
+            container.addEventListener('touchend', handleEnd);
+            
+            container.addEventListener('mousedown', handleStart);
+            container.addEventListener('mousemove', handleMove);
+            container.addEventListener('mouseup', handleEnd);
+            container.addEventListener('mouseleave', handleEnd);
+
+            function handleStart(e) {
+                currentCard = document.querySelector('.profile-card');
+                if (!currentCard) return;
+                
+                isDragging = true;
+                currentCard.classList.add('dragging');
+                
+                const touch = e.touches ? e.touches[0] : e;
+                startX = touch.clientX;
+                startY = touch.clientY;
+                
+                currentX = startX;
+                currentY = startY;
+            }
+
+            function handleMove(e) {
+                if (!isDragging || !currentCard) return;
+                e.preventDefault();
+                
+                const touch = e.touches ? e.touches[0] : e;
+                currentX = touch.clientX;
+                currentY = touch.clientY;
+                
+                const deltaX = currentX - startX;
+                const deltaY = currentY - startY;
+                const rotate = deltaX * 0.1;
+                
+                currentCard.style.transform = `translateX(${deltaX}px) translateY(${deltaY}px) rotate(${rotate}deg)`;
+                
+                // Show indicators based on direction
+                const likeIndicator = currentCard.querySelector('.swipe-indicator.like');
+                const nopeIndicator = currentCard.querySelector('.swipe-indicator.nope');
+                const superIndicator = currentCard.querySelector('.swipe-indicator.super');
+                
+                if (deltaX > 50) {
+                    likeIndicator.style.opacity = Math.min(deltaX / 200, 1);
+                    likeIndicator.style.transform = `rotate(15deg) scale(${Math.min(deltaX / 100, 1)})`;
+                } else if (deltaX < -50) {
+                    nopeIndicator.style.opacity = Math.min(Math.abs(deltaX) / 200, 1);
+                    nopeIndicator.style.transform = `rotate(-15deg) scale(${Math.min(Math.abs(deltaX) / 100, 1)})`;
+                }
+                
+                if (deltaY < -100) {
+                    superIndicator.style.opacity = Math.min(Math.abs(deltaY) / 200, 1);
+                }
+            }
+
+            function handleEnd(e) {
+                if (!isDragging || !currentCard) return;
+                
+                isDragging = false;
+                currentCard.classList.remove('dragging');
+                
+                const deltaX = currentX - startX;
+                const deltaY = currentY - startY;
+                
+                if (deltaX > 100) {
+                    swipe('right');
+                } else if (deltaX < -100) {
+                    swipe('left');
+                } else if (deltaY < -150) {
+                    swipe('super');
+                } else {
+                    // Reset position
+                    currentCard.style.transform = '';
+                    currentCard.querySelectorAll('.swipe-indicator').forEach(ind => {
+                        ind.style.opacity = '0';
+                    });
+                }
+                
+                currentCard = null;
+            }
+        }
+
+        // Show Match Overlay
+        function showMatch(pet) {
+            currentMatch = pet;
+            document.getElementById('matchImg').src = pet.image;
+            document.getElementById('matchName').textContent = pet.name;
+            document.getElementById('matchOverlay').classList.add('active');
+            
+            // Add to matches
+            newMatchesData.unshift({ name: pet.name, img: pet.image, new: true });
+            renderNewMatches();
+        }
+
+        function closeMatch() {
+            document.getElementById('matchOverlay').classList.remove('active');
+        }
+
+        function startChatFromMatch() {
+            closeMatch();
+            openChat(currentMatch.id, currentMatch.name, currentMatch.image);
+        }
+
+        // Chat Functions
+        function openChat(id, name, avatar) {
+            currentChatId = id;
+            document.getElementById('chatHeaderImg').src = avatar;
+            document.getElementById('chatHeaderName').textContent = name;
+            document.getElementById('chatModal').classList.add('active');
+            document.getElementById('chatInput').focus();
+            
+            // Load messages
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `
+                <div class="message-bubble received">
+                    Hey there! 👋 ${name} and I would love to meet up for a playdate!
+                </div>
+            `;
+            
+            // Simulate typing
+            setTimeout(() => {
+                showTyping();
+            }, 1000);
+        }
+
+        function showTyping() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message-bubble typing';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            setTimeout(() => {
+                const indicator = document.getElementById('typingIndicator');
+                if (indicator) indicator.remove();
+                
+                const responses = [
+                    "That sounds wonderful! When are you free?",
+                    "My pup would love that! 🐕",
+                    "How about Saturday morning?",
+                    "We could meet at Central Park!",
+                    "Looking forward to it! 🎾"
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble received';
+                bubble.textContent = randomResponse;
+                chatMessages.appendChild(bubble);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 2000);
+        }
+
+        function closeChat() {
+            document.getElementById('chatModal').classList.remove('active');
+            currentChatId = null;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            const chatMessages = document.getElementById('chatMessages');
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble sent';
+            bubble.textContent = text;
+            chatMessages.appendChild(bubble);
+            input.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Simulate reply
+            setTimeout(() => {
+                showTyping();
+            }, 1000);
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        // Render New Matches
+        function renderNewMatches() {
+            const container = document.getElementById('newMatches');
+            container.innerHTML = newMatchesData.map(match => `
+                <div class="match-avatar ${match.new ? 'new' : ''}" onclick="openChat(0, '${match.name}', '${match.img}')">
+                    <img src="${match.img}" alt="${match.name}">
+                    <div class="match-name">${match.name}</div>
+                </div>
+            `).join('');
+        }
+
+        // Render Messages
+        function renderMessages() {
+            const container = document.getElementById('messagesList');
+            container.innerHTML = messagesData.map(msg => `
+                <div class="message-item ${msg.unread ? 'unread' : ''}" onclick="openChat(${msg.id}, '${msg.name}', '${msg.avatar}')">
+                    <div class="message-avatar">
+                        <img src="${msg.avatar}" alt="${msg.name}">
+                        ${msg.online ? '<span class="online-indicator"></span>' : ''}
+                    </div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-sender">${msg.name}</span>
+                            <span class="message-time">${msg.time}</span>
+                        </div>
+                        <div class="message-preview">${msg.preview}</div>
+                    </div>
+                    ${msg.unread ? '<span class="unread-badge">1</span>' : ''}
+                </div>
+            `).join('');
+        }
+
+        // Filter Functions
+        function toggleFilter(element) {
+            element.classList.toggle('active');
+            // Simulate filter refresh
+            document.getElementById('loading').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                currentCardIndex = 0;
+                renderCards();
+            }, 500);
+        }
+
+        function updateDistance(value) {
+            document.getElementById('distanceValue').textContent = value;
+        }
+
+        // Reset Cards
+        function resetCards() {
+            currentCardIndex = 0;
+            document.getElementById('emptyState').classList.remove('show');
+            document.querySelector('.card-actions').style.display = 'flex';
+            document.getElementById('swipeContainer').style.display = 'block';
+            renderCards();
+        }
+
+        // Navigation
+        function showSection(section) {
+            // In a real app, this would switch views
+            console.log('Switching to:', section);
+        }
+
+        function setActiveNav(element) {
+            document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function upgradePremium() {
+            alert('🎉 Premium features: Unlimited likes, See who liked you, Priority matching, and more!');
+        }
+
+        function openAIChat() {
+            alert('🤖 AI Dating Coach: "Try asking about their favorite park or toy to break the ice!"');
+        }
+
+        // Close modals on outside click
+        document.getElementById('chatModal').addEventListener('click', (e) => {
+            if (e.target.id === 'chatModal') closeChat();
+        });
+
+        document.getElementById('matchOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'matchOverlay') closeMatch();
+        });
+    </script>
+</body>
+</html>
