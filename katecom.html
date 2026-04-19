@@ -1,1 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kate Com | Curated Luxury Fashion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        :root {
+            --primary-black: #1a1a1a;
+            --luxury-gold: #d4af37;
+            --soft-cream: #f8f6f3;
+            --text-gray: #666;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            color: var(--primary-black);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+            transition: all 0.4s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 4rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary-black);
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 400;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary-black);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-icons svg {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-icons svg:hover {
+            transform: scale(1.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e4df 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            padding: 2rem;
+            animation: fadeInUp 1.2s ease;
+        }
+
+        .hero-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            padding: 1rem 3rem;
+            border: 1px solid var(--primary-black);
+            text-decoration: none;
+            color: var(--primary-black);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            margin-top: 2rem;
+        }
+
+        .hero-cta:hover {
+            background: var(--primary-black);
+            color: white;
+        }
+
+        .hero-image {
+            position: absolute;
+            right: -10%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50%;
+            height: 80%;
+            object-fit: cover;
+            opacity: 0.9;
+            filter: brightness(0.95);
+            animation: fadeIn 1.5s ease 0.5s both;
+        }
+
+        /* Editorial Section */
+        .editorial {
+            padding: 8rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 300;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+            margin-bottom: 6rem;
+        }
+
+        .product-card {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            group: product;
+        }
+
+        .product-card.large {
+            grid-column: span 7;
+            height: 700px;
+        }
+
+        .product-card.small {
+            grid-column: span 5;
+            height: 700px;
+        }
+
+        .product-card.full {
+            grid-column: span 12;
+            height: 600px;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 3rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+            color: white;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .product-card:hover .product-overlay {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .product-brand {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .product-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .product-desc {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            max-width: 400px;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .product-cta {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border: 1px solid white;
+            color: white;
+            text-decoration: none;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .product-cta:hover {
+            background: white;
+            color: var(--primary-black);
+        }
+
+        /* Text Content Block */
+        .text-block {
+            grid-column: span 5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem 4rem;
+        }
+
+        .text-block h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .text-block p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+        }
+
+        .text-link {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--primary-black);
+            border-bottom: 1px solid var(--primary-black);
+            padding-bottom: 0.3rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        .text-link:hover {
+            border-bottom-width: 2px;
+        }
+
+        /* Featured Collection */
+        .featured {
+            background: var(--soft-cream);
+            padding: 6rem 4rem;
+            margin: 4rem 0;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .featured-image {
+            position: relative;
+            height: 600px;
+            overflow: hidden;
+        }
+
+        .featured-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .featured-image:hover img {
+            transform: scale(1.03);
+        }
+
+        .featured-content {
+            padding: 2rem;
+        }
+
+        .featured-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .featured-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-black);
+            color: white;
+            padding: 6rem 4rem 3rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .footer-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-desc {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            opacity: 0.7;
+            max-width: 300px;
+        }
+
+        .footer-column h4 {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 4rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.9; }
+        }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 968px) {
+            .nav {
+                padding: 1rem 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-image {
+                width: 100%;
+                right: 0;
+                opacity: 0.3;
+            }
+            
+            .product-card.large,
+            .product-card.small,
+            .product-card.full {
+                grid-column: span 12;
+                height: 500px;
+            }
+            
+            .text-block {
+                grid-column: span 12;
+                padding: 2rem;
+            }
+            
+            .featured-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            letter-spacing: 0.3em;
+            animation: pulse 1.5s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader">
+        <div class="loader-text">KATE COM</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="logo">Kate Com</div>
+        <ul class="nav-links">
+            <li><a href="#new">New Arrivals</a></li>
+            <li><a href="#women">Women</a></li>
+            <li><a href="#men">Men</a></li>
+            <li><a href="#accessories">Accessories</a></li>
+            <li><a href="#editorial">Editorial</a></li>
+        </ul>
+        <div class="nav-icons">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <p class="hero-subtitle">The Art of Timeless Elegance</p>
+            <h1 class="hero-title">Kate Com Presents<br/>Endless Summer</h1>
+            <p style="font-size: 1rem; color: var(--text-gray); max-width: 500px; margin: 0 auto; line-height: 1.8;">
+                Explore the best of occasionwear, for wherever your wardrobe takes you next. Curated collections from the world's most distinguished designers.
+            </p>
+            <a href="#explore" class="hero-cta">Explore Collection</a>
+        </div>
+        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&h=1600&fit=crop" alt="Fashion Editorial" class="hero-image">
+    </section>
+
+    <!-- Editorial Section 1 -->
+    <section class="editorial" id="explore">
+        <div class="section-header reveal">
+            <p class="section-label">Curated Selection</p>
+            <h2 class="section-title">This Season's Essentials</h2>
+        </div>
+
+        <div class="product-grid">
+            <div class="product-card large reveal">
+                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&h=1200&fit=crop" alt="Summer Collection" class="product-image">
+                <div class="product-overlay">
+                    <p class="product-brand">Maison Margiela</p>
+                    <h3 class="product-name">Summer's New Wave</h3>
+                    <p class="product-desc">Summer's on its way, and the latest drop is here to prove it. Expect updates on staple basket bags, textural dresses and coordinating knitted sets.</p>
+                    <a href="#" class="product-cta">Shop Now</a>
+                </div>
+            </div>
+
+            <div class="text-block reveal">
+                <h3>Loewe Paula's Ibiza</h3>
+                <p>Draped silhouettes, layered shirts with loose trousers, cargo shorts, surfer-style tees and more – everything you need for island-hopping and city summers alike.</p>
+                <a href="#" class="text-link">Discover the Collection</a>
+            </div>
+
+            <div class="text-block reveal" style="grid-column: span 7; padding-left: 0;">
+                <h3>Prada: Days of Summer</h3>
+                <p>Crisp cottons, breezy linens and raffia accessories – the new capsule is ready for a white-hot summer. Plus, transitional jackets, rugby shirts and white denim provide a clean palette for those between-seasons days.</p>
+                <a href="#" class="text-link">Shop Prada</a>
+            </div>
+
+            <div class="product-card small reveal">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=1200&fit=crop" alt="Prada Collection" class="product-image">
+                <div class="product-overlay">
+                    <p class="product-brand">Prada</p>
+                    <h3 class="product-name">Summer Capsule</h3>
+                    <p class="product-cta">Shop Now</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Collection -->
+    <section class="featured">
+        <div class="featured-grid">
+            <div class="featured-image reveal">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1000&h=1200&fit=crop" alt="Luxury Watch">
+            </div>
+            <div class="featured-content reveal">
+                <p class="featured-label">Timepieces</p>
+                <h2 class="featured-title">Rolex: New Watch Releases 2026</h2>
+                <p class="featured-text">
+                    At Watches and Wonders Geneva 2026, Rolex celebrated 100 years of its iconic Oyster watch with a new collection. Discover highlights – from a colourful Jubilee dial to the return of the Yacht-Master II.
+                </p>
+                <a href="#" class="hero-cta" style="margin-top: 0;">Read More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Editorial Section 2 -->
+    <section class="editorial">
+        <div class="product-grid">
+            <div class="product-card full reveal">
+                <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&h=900&fit=crop" alt="Full Width Editorial" class="product-image">
+                <div class="product-overlay" style="background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);">
+                    <p class="product-brand">Kate Com Exclusive</p>
+                    <h3 class="product-name" style="font-size: 3rem;">The Summer Edit</h3>
+                    <p class="product-desc" style="max-width: 600px;">From dawn till dusk, discover pieces that transition seamlessly from beachside brunches to evening soirées. A curation of breathable linens, silk charmeuse, and artisanal accessories.</p>
+                    <a href="#" class="product-cta">View Lookbook</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div>
+                <div class="footer-brand">Kate Com</div>
+                <p class="footer-desc">Curating the world's finest fashion since 2010. We believe in timeless elegance, sustainable luxury, and the transformative power of personal style.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Shop</h4>
+                <ul>
+                    <li><a href="#">New Arrivals</a></li>
+                    <li><a href="#">Women</a></li>
+                    <li><a href="#">Men</a></li>
+                    <li><a href="#">Accessories</a></li>
+                    <li><a href="#">Sale</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Client Services</h4>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Shipping & Returns</a></li>
+                    <li><a href="#">Size Guide</a></li>
+                    <li><a href="#">Gift Cards</a></li>
+                    <li><a href="#">Personal Shopping</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Store Locator</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Kate Com. All rights reserved.</p>
+            <div style="display: flex; gap: 2rem;">
+                <a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Privacy Policy</a>
+                <a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none;">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.loader').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Navigation scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Parallax effect for hero image
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroImage = document.querySelector('.hero-image');
+            if (heroImage && scrolled < window.innerHeight) {
+                heroImage.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
