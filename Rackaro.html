@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rackaro — IT Hardware for Data Centres</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        rackaro: {
+                            black: '#050505',
+                            dark: '#0a0a0a',
+                            gray: '#111111',
+                            light: '#1a1a1a',
+                            border: '#222222',
+                            text: '#888888',
+                            white: '#ffffff',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #050505;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease, width 0.2s, height 0.2s, border-color 0.2s;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+        }
+        .cursor.hover {
+            width: 50px;
+            height: 50px;
+            border-color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+        .cursor-dot {
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Canvas */
+        #hero-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+        }
+
+        /* Noise overlay */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+        /* Text reveal animation */
+        .reveal-text {
+            overflow: hidden;
+        }
+        .reveal-text span {
+            display: inline-block;
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        /* Magnetic button */
+        .magnetic-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* Floating card */
+        .float-card {
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+
+        /* Grid line animation */
+        .grid-line {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            height: 1px;
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .grid-line.active { width: 100%; }
+
+        /* Marquee */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(5,5,5,0.85);
+        }
+
+        /* Glitch effect on hover */
+        .glitch-hover:hover {
+            animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(-2deg); }
+            40% { transform: skew(2deg); }
+            60% { transform: skew(-1deg); }
+            80% { transform: skew(1deg); }
+            100% { transform: skew(0deg); }
+        }
+
+        /* Scanning line */
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: scan 4s ease-in-out infinite;
+        }
+        @keyframes scan {
+            0%, 100% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* Perspective container */
+        .perspective-container {
+            perspective: 1000px;
+        }
+
+        /* Smooth scroll container */
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading screen */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: #050505;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .loader-bar {
+            width: 200px;
+            height: 1px;
+            background: #222;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .loader-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: #fff;
+            transition: width 0.3s ease;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="smooth-scroll">
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-dot" id="cursor-dot"></div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="font-mono text-xs tracking-[0.3em] text-white/40">INITIALIZING</div>
+        <div class="loader-bar">
+            <div class="loader-progress" id="loader-progress"></div>
+        </div>
+        <div class="font-mono text-[10px] text-white/20 mt-2" id="loader-text">0%</div>
+    </div>
+
+    <!-- Noise Overlay -->
+    <div class="noise"></div>
+
+    <!-- Three.js Canvas -->
+    <canvas id="hero-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-6 mix-blend-difference" id="navbar">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="font-mono text-xs tracking-[0.3em] text-white/60 hover:text-white transition-colors duration-500 cursor-pointer" data-hover>
+                RACKARO
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#assets" class="font-mono text-[10px] tracking-[0.2em] text-white/40 hover:text-white transition-all duration-300 cursor-pointer" data-hover>ASSETS</a>
+                <a href="#about" class="font-mono text-[10px] tracking-[0.2em] text-white/40 hover:text-white transition-all duration-300 cursor-pointer" data-hover>ABOUT</a>
+                <a href="#contact" class="font-mono text-[10px] tracking-[0.2em] text-white/40 hover:text-white transition-all duration-300 cursor-pointer" data-hover>CONTACT</a>
+            </div>
+            <div class="font-mono text-[10px] tracking-[0.2em] text-white/20" id="time"></div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center z-10 pointer-events-none">
+        <div class="text-center px-6 max-w-5xl mx-auto">
+            <div class="reveal-text mb-4">
+                <span class="font-mono text-[10px] tracking-[0.5em] text-white/30 block" id="hero-subtitle">IT HARDWARE SUPPLY</span>
+            </div>
+            <div class="reveal-text mb-8">
+                <h1 class="text-[12vw] md:text-[10vw] font-black tracking-tighter leading-none text-white" id="hero-title">
+                    RACKARO
+                </h1>
+            </div>
+            <div class="reveal-text">
+                <p class="text-sm md:text-base text-white/30 font-light tracking-wide max-w-md mx-auto leading-relaxed" id="hero-desc">
+                    Premium used & new infrastructure for data centres worldwide. Reliable, scalable, sustainable.
+                </p>
+            </div>
+            <div class="mt-12 reveal-text">
+                <div class="inline-flex items-center gap-4">
+                    <div class="w-12 h-px bg-white/20"></div>
+                    <span class="font-mono text-[10px] text-white/20 tracking-[0.3em]">SCROLL TO EXPLORE</span>
+                    <div class="w-12 h-px bg-white/20"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+            <div class="w-px h-12 bg-gradient-to-b from-transparent to-white/20 relative overflow-hidden">
+                <div class="w-full h-4 bg-white/40 absolute top-0 animate-bounce"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Section -->
+    <section class="relative z-10 py-8 border-y border-white/5 bg-rackaro-black/80 backdrop-blur-sm">
+        <div class="marquee-container">
+            <div class="marquee-content font-mono text-[8vw] md:text-[4vw] font-bold text-white/[0.03] tracking-tighter">
+                SERVERS • STORAGE • NETWORKING • REFURBISHED • NEW • DATA CENTRES • ENTERPRISE • SCALABLE • SERVERS • STORAGE • NETWORKING • REFURBISHED • NEW • DATA CENTRES • ENTERPRISE • SCALABLE •
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Assets Grid -->
+    <section id="assets" class="relative z-10 min-h-screen py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-20">
+                <div class="grid-line mb-8"></div>
+                <div class="flex justify-between items-end">
+                    <div>
+                        <p class="font-mono text-[10px] tracking-[0.3em] text-white/30 mb-4">01 / BRAND ASSETS</p>
+                        <h2 class="text-4xl md:text-6xl font-bold tracking-tight text-white">Identity Kit</h2>
+                    </div>
+                    <p class="font-mono text-xs text-white/20 hidden md:block max-w-xs text-right">
+                        Click any asset to preview and download brand materials
+                    </p>
+                </div>
+            </div>
+
+            <div class="perspective-container grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Card 1: Email Signature -->
+                <div class="float-card group relative bg-rackaro-gray border border-white/5 rounded-lg overflow-hidden cursor-pointer hover:border-white/20 transition-all duration-500" 
+                     onclick="openModal('modal-email')" data-hover data-tilt>
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="scan-line opacity-0 group-hover:opacity-100"></div>
+                    <div class="p-10 md:p-14 relative z-10">
+                        <div class="flex justify-between items-start mb-12">
+                            <span class="font-mono text-[10px] tracking-[0.2em] text-white/20">001</span>
+                            <div class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/40 group-hover:rotate-45 transition-all duration-500">
+                                <svg class="w-3 h-3 text-white/40 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <h3 class="text-2xl md:text-3xl font-semibold text-white group-hover:translate-x-2 transition-transform duration-500">Email Signature</h3>
+                            <p class="text-sm text-white/30 font-light leading-relaxed max-w-sm">
+                                Professional HTML email template with brand-aligned typography and contact formatting.
+                            </p>
+                        </div>
+                        <div class="mt-8 pt-8 border-t border-white/5">
+                            <div class="flex items-center gap-3 text-white/20 font-mono text-[10px] tracking-wider">
+                                <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+                                HTML • COPY-READY
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Preview thumbnail -->
+                    <div class="absolute bottom-0 right-0 w-48 h-32 bg-rackaro-black border-t border-l border-white/5 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-700">
+                        <div class="space-y-1 opacity-50">
+                            <div class="text-[8px] font-bold text-white">RACKARO</div>
+                            <div class="text-[6px] text-white/40">IT Hardware for Data Centres</div>
+                            <div class="text-[6px] text-white/20 mt-2">Name | Title</div>
+                            <div class="text-[6px] text-white/20">info@rackaro.com</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Business Cards -->
+                <div class="float-card group relative bg-rackaro-gray border border-white/5 rounded-lg overflow-hidden cursor-pointer hover:border-white/20 transition-all duration-500" 
+                     onclick="openModal('modal-cards')" data-hover data-tilt>
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="scan-line opacity-0 group-hover:opacity-100"></div>
+                    <div class="p-10 md:p-14 relative z-10">
+                        <div class="flex justify-between items-start mb-12">
+                            <span class="font-mono text-[10px] tracking-[0.2em] text-white/20">002</span>
+                            <div class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/40 group-hover:rotate-45 transition-all duration-500">
+                                <svg class="w-3 h-3 text-white/40 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <h3 class="text-2xl md:text-3xl font-semibold text-white group-hover:translate-x-2 transition-transform duration-500">Business Cards</h3>
+                            <p class="text-sm text-white/30 font-light leading-relaxed max-w-sm">
+                                Print-ready card designs with matte black finish and spot UV specifications.
+                            </p>
+                        </div>
+                        <div class="mt-8 pt-8 border-t border-white/5">
+                            <div class="flex items-center gap-3 text-white/20 font-mono text-[10px] tracking-wider">
+                                <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+                                85×55MM • PRINT SPECS
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-0 right-0 w-48 h-32 bg-rackaro-black border-t border-l border-white/5 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-700 flex items-center justify-center">
+                        <div class="w-24 h-14 bg-rackaro-dark border border-white/10 rounded flex items-center justify-center">
+                            <span class="text-[8px] font-bold tracking-wider text-white/40">RACKARO</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: LinkedIn Banner -->
+                <div class="float-card group relative bg-rackaro-gray border border-white/5 rounded-lg overflow-hidden cursor-pointer hover:border-white/20 transition-all duration-500" 
+                     onclick="openModal('modal-linkedin')" data-hover data-tilt>
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="scan-line opacity-0 group-hover:opacity-100"></div>
+                    <div class="p-10 md:p-14 relative z-10">
+                        <div class="flex justify-between items-start mb-12">
+                            <span class="font-mono text-[10px] tracking-[0.2em] text-white/20">003</span>
+                            <div class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/40 group-hover:rotate-45 transition-all duration-500">
+                                <svg class="w-3 h-3 text-white/40 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <h3 class="text-2xl md:text-3xl font-semibold text-white group-hover:translate-x-2 transition-transform duration-500">LinkedIn Banner</h3>
+                            <p class="text-sm text-white/30 font-light leading-relaxed max-w-sm">
+                                HTML banner design optimized for LinkedIn company pages with responsive code.
+                            </p>
+                        </div>
+                        <div class="mt-8 pt-8 border-t border-white/5">
+                            <div class="flex items-center gap-3 text-white/20 font-mono text-[10px] tracking-wider">
+                                <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+                                1128×191 • HTML CODE
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-0 right-0 w-48 h-32 bg-rackaro-black border-t border-l border-white/5 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-700">
+                        <div class="w-full h-8 bg-rackaro-dark border border-white/5 flex items-center px-2">
+                            <span class="text-[6px] text-white/30 font-mono">RACKARO — HARDWARE SPECIALISTS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Company Profile -->
+                <div class="float-card group relative bg-rackaro-gray border border-white/5 rounded-lg overflow-hidden cursor-pointer hover:border-white/20 transition-all duration-500" 
+                     onclick="openModal('modal-pdf')" data-hover data-tilt>
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="scan-line opacity-0 group-hover:opacity-100"></div>
+                    <div class="p-10 md:p-14 relative z-10">
+                        <div class="flex justify-between items-start mb-12">
+                            <span class="font-mono text-[10px] tracking-[0.2em] text-white/20">004</span>
+                            <div class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/40 group-hover:rotate-45 transition-all duration-500">
+                                <svg class="w-3 h-3 text-white/40 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <h3 class="text-2xl md:text-3xl font-semibold text-white group-hover:translate-x-2 transition-transform duration-500">Company Profile</h3>
+                            <p class="text-sm text-white/30 font-light leading-relaxed max-w-sm">
+                                Comprehensive PDF brochure detailing services, capabilities, and market reach.
+                            </p>
+                        </div>
+                        <div class="mt-8 pt-8 border-t border-white/5">
+                            <div class="flex items-center gap-3 text-white/20 font-mono text-[10px] tracking-wider">
+                                <span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+                                PDF • 2.4 MB
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-0 right-0 w-48 h-32 bg-rackaro-black border-t border-l border-white/5 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-700 flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="text-[10px] font-bold text-white/20 mb-1">PDF</div>
+                            <div class="text-[6px] text-white/10 font-mono">COMPANY PROFILE</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="relative z-10 py-32 px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+                <div class="md:col-span-4">
+                    <p class="font-mono text-[10px] tracking-[0.3em] text-white/30 mb-4">02 / ABOUT</p>
+                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight">
+                        Hardware that<br>powers the<br>cloud.
+                    </h2>
+                </div>
+                <div class="md:col-span-6 md:col-start-7 space-y-8">
+                    <p class="text-lg text-white/40 font-light leading-relaxed">
+                        Rackaro specializes in sourcing and supplying high-quality IT hardware to data centres across the globe. From enterprise servers to networking equipment, we bridge the gap between technology and infrastructure.
+                    </p>
+                    <p class="text-lg text-white/40 font-light leading-relaxed">
+                        Whether you need brand-new installations or certified refurbished equipment, our supply chain delivers reliability at scale. We understand that in data centres, downtime is not an option.
+                    </p>
+                    <div class="grid grid-cols-3 gap-8 pt-8 border-t border-white/10">
+                        <div>
+                            <div class="text-3xl font-bold text-white mb-1 counter" data-target="500">0</div>
+                            <div class="font-mono text-[10px] text-white/30 tracking-wider">CLIENTS</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-white mb-1 counter" data-target="50">0</div>
+                            <div class="font-mono text-[10px] text-white/30 tracking-wider">COUNTRIES</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-white mb-1 counter" data-target="99">0</div>
+                            <div class="font-mono text-[10px] text-white/30 tracking-wider">UPTIME %</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="relative z-10 py-32 px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="font-mono text-[10px] tracking-[0.3em] text-white/30 mb-8">03 / CONTACT</p>
+            <h2 class="text-5xl md:text-8xl font-bold tracking-tighter text-white mb-8 glitch-hover cursor-default">
+                Let's talk.
+            </h2>
+            <p class="text-white/30 font-light mb-12 max-w-md mx-auto">
+                Ready to scale your data centre infrastructure? Reach out and our team will respond within 24 hours.
+            </p>
+            <a href="mailto:info@rackaro.com" class="magnetic-btn inline-flex items-center gap-4 px-8 py-4 border border-white/20 rounded-full text-white hover:bg-white hover:text-rackaro-black transition-all duration-500 group" data-hover>
+                <span class="font-mono text-sm tracking-wider">info@rackaro.com</span>
+                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-10 border-t border-white/5 py-8 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="font-mono text-[10px] tracking-[0.2em] text-white/20">
+                © 2026 RACKARO. ALL RIGHTS RESERVED.
+            </div>
+            <div class="font-mono text-[10px] tracking-[0.2em] text-white/20">
+                DATA CENTRE HARDWARE SPECIALISTS
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODALS -->
+
+    <!-- Modal 1: Email Signature -->
+    <div id="modal-email" class="fixed inset-0 z-[100] hidden">
+        <div class="modal-backdrop absolute inset-0" onclick="closeModal('modal-email')"></div>
+        <div class="relative z-10 flex items-center justify-center min-h-screen p-4 pointer-events-none">
+            <div class="bg-rackaro-dark border border-white/10 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto pointer-events-auto fade-in shadow-2xl shadow-black/50">
+                <div class="sticky top-0 bg-rackaro-dark/95 backdrop-blur-xl border-b border-white/5 p-8 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white tracking-tight">Email Signature</h2>
+                        <p class="text-xs text-white/30 font-mono mt-1 tracking-wider">HTML TEMPLATE</p>
+                    </div>
+                    <button onclick="closeModal('modal-email')" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-white/30 hover:bg-white/5 transition-all" data-hover>
+                        <svg class="w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <div class="p-8 space-y-8">
+                    <div class="bg-rackaro-black border border-white/5 rounded-xl p-8">
+                        <div style="font-family: Inter, sans-serif; color: #ffffff; border-top: 1px solid #333; padding-top: 24px;">
+                            <strong style="font-size: 20px; letter-spacing: -0.5px; font-weight: 700;">RACKARO</strong><br>
+                            <span style="color: #666; font-size: 12px; letter-spacing: 0.1em;">IT HARDWARE FOR DATA CENTRES</span>
+                            <div style="margin-top: 16px; font-size: 13px; line-height: 1.8; color: #888;">
+                                <span style="color: #fff;">Alex Chen</span> <span style="color: #444;">|</span> Technical Director<br>
+                                <a href="mailto:alex@rackaro.com" style="color: #aaa; text-decoration: none; border-bottom: 1px solid #333;">alex@rackaro.com</a><br>
+                                <a href="https://rackaro.com" style="color: #aaa; text-decoration: none;">www.rackaro.com</a>
+                            </div>
+                            <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #1a1a1a; font-size: 10px; color: #444; letter-spacing: 0.05em;">
+                                SERVERS • STORAGE • NETWORKING • GLOBAL SUPPLY
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="copySignature()" class="w-full py-4 bg-white text-rackaro-black font-semibold rounded-xl hover:bg-white/90 transition-all flex items-center justify-center gap-3 group" data-hover>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        <span class="font-mono text-sm tracking-wider">COPY HTML</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Business Cards -->
+    <div id="modal-cards" class="fixed inset-0 z-[100] hidden">
+        <div class="modal-backdrop absolute inset-0" onclick="closeModal('modal-cards')"></div>
+        <div class="relative z-10 flex items-center justify-center min-h-screen p-4 pointer-events-none">
+            <div class="bg-rackaro-dark border border-white/10 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto pointer-events-auto fade-in shadow-2xl shadow-black/50">
+                <div class="sticky top-0 bg-rackaro-dark/95 backdrop-blur-xl border-b border-white/5 p-8 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white tracking-tight">Business Cards</h2>
+                        <p class="text-xs text-white/30 font-mono mt-1 tracking-wider">PRINT SPECIFICATIONS</p>
+                    </div>
+                    <button onclick="closeModal('modal-cards')" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-white/30 hover:bg-white/5 transition-all" data-hover>
+                        <svg class="w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <div class="p-8 space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Front -->
+                        <div class="space-y-3">
+                            <p class="font-mono text-[10px] tracking-[0.2em] text-white/30">FRONT</p>
+                            <div class="aspect-[1.75/1] bg-rackaro-black border border-white/10 rounded-xl flex flex-col justify-center items-center p-8 relative overflow-hidden group">
+                                <div class="absolute inset-0 opacity-[0.02]" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, #fff 2px, #fff 4px);"></div>
+                                <h3 class="text-4xl font-bold tracking-tighter text-white relative z-10">RACKARO</h3>
+                                <p class="text-xs text-white/30 mt-2 font-mono tracking-[0.3em] relative z-10">IT HARDWARE SUPPLY</p>
+                            </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="space-y-3">
+                            <p class="font-mono text-[10px] tracking-[0.2em] text-white/30">BACK</p>
+                            <div class="aspect-[1.75/1] bg-rackaro-black border border-white/10 rounded-xl flex justify-between items-center p-8 relative">
+                                <div class="space-y-1">
+                                    <p class="text-white font-semibold text-lg">Sarah Kim</p>
+                                    <p class="text-white/40 text-sm font-light">Operations Director</p>
+                                </div>
+                                <div class="text-right space-y-1 text-xs text-white/30 font-mono">
+                                    <p>info@rackaro.com</p>
+                                    <p>rackaro.com</p>
+                                    <p class="text-white/10 text-[10px] mt-2">Used & New Data Centre Hardware</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-rackaro-gray/30 rounded-xl p-6 space-y-3 border border-white/5">
+                        <p class="font-mono text-[10px] tracking-[0.2em] text-white/30 mb-4">SPECIFICATIONS</p>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="flex justify-between py-2 border-b border-white/5">
+                                <span class="text-white/30">Dimensions</span>
+                                <span class="text-white font-mono">85 × 55 mm</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-white/5">
+                                <span class="text-white/30">Stock</span>
+                                <span class="text-white font-mono">350gsm Matte</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-white/5">
+                                <span class="text-white/30">Finish</span>
+                                <span class="text-white font-mono">Spot UV + White Foil</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-white/5">
+                                <span class="text-white/30">Corners</span>
+                                <span class="text-white font-mono">2mm Radius</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: LinkedIn Banner -->
+    <div id="modal-linkedin" class="fixed inset-0 z-[100] hidden">
+        <div class="modal-backdrop absolute inset-0" onclick="closeModal('modal-linkedin')"></div>
+        <div class="relative z-10 flex items-center justify-center min-h-screen p-4 pointer-events-none">
+            <div class="bg-rackaro-dark border border-white/10 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto pointer-events-auto fade-in shadow-2xl shadow-black/50">
+                <div class="sticky top-0 bg-rackaro-dark/95 backdrop-blur-xl border-b border-white/5 p-8 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white tracking-tight">LinkedIn Banner</h2>
+                        <p class="text-xs text-white/30 font-mono mt-1 tracking-wider">1128 × 191 PX • HTML DESIGN</p>
+                    </div>
+                    <button onclick="closeModal('modal-linkedin')" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-white/30 hover:bg-white/5 transition-all" data-hover>
+                        <svg class="w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <div class="p-8 space-y-8">
+                    <!-- Live Preview -->
+                    <div class="space-y-3">
+                        <p class="font-mono text-[10px] tracking-[0.2em] text-white/30">LIVE PREVIEW</p>
+                        <div class="w-full overflow-hidden rounded-xl border border-white/10" style="aspect-ratio: 1128/191;">
+                            <div style="width:100%;height:100%;background:#0a0a0a;display:flex;align-items:center;justify-content:space-between;padding:0 48px;font-family:Inter,sans-serif;position:relative;overflow:hidden;">
+                                <div style="position:relative;z-index:2;">
+                                    <h1 style="margin:0;font-size:clamp(24px, 4vw, 48px);font-weight:700;letter-spacing:-2px;color:#fff;">RACKARO</h1>
+                                    <p style="margin:4px 0 0;font-size:clamp(8px, 1.2vw, 14px);color:#666;letter-spacing:2px;font-family:'JetBrains Mono',monospace;">DATA CENTRE HARDWARE SPECIALISTS</p>
+                                </div>
+                                <div style="text-align:right;position:relative;z-index:2;">
+                                    <p style="margin:0;font-size:clamp(6px, 0.8vw, 11px);color:#444;font-family:'JetBrains Mono',monospace;line-height:1.8;">
+                                        NEW & REFURBISHED<br>
+                                        SERVERS • STORAGE • NETWORKING<br>
+                                        GLOBAL SUPPLY
+                                    </p>
+                                </div>
+                                <div style="position:absolute;inset:0;background:linear-gradient(90deg,#000,#1a1a1a,#000);opacity:0.5;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Code Block -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <p class="font-mono text-[10px] tracking-[0.2em] text-white/30">HTML CODE</p>
+                            <button onclick="copyLinkedInCode()" class="text-xs font-mono text-white/40 hover:text-white transition-colors" data-hover>COPY</button>
+                        </div>
+                        <div class="bg-rackaro-black border border-white/5 rounded-xl p-6 font-mono text-[11px] text-white/40 overflow-x-auto leading-relaxed" id="linkedin-code">
+&lt;div style="width:1128px;height:191px;background:#0a0a0a;display:flex;align-items:center;justify-content:space-between;padding:0 48px;font-family:Inter,sans-serif;position:relative;overflow:hidden;"&gt;
+  &lt;div style="position:relative;z-index:2;"&gt;
+    &lt;h1 style="margin:0;font-size:48px;font-weight:700;letter-spacing:-2px;color:#fff;"&gt;RACKARO&lt;/h1&gt;
+    &lt;p style="margin:4px 0 0;font-size:14px;color:#666;letter-spacing:2px;font-family:monospace;"&gt;DATA CENTRE HARDWARE SPECIALISTS&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div style="text-align:right;position:relative;z-index:2;"&gt;
+    &lt;p style="margin:0;font-size:11px;color:#444;font-family:monospace;line-height:1.8;"&gt;
+      NEW & REFURBISHED&lt;br&gt;
+      SERVERS • STORAGE • NETWORKING&lt;br&gt;
+      GLOBAL SUPPLY
+    &lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div style="position:absolute;inset:0;background:linear-gradient(90deg,#000,#1a1a1a,#000);opacity:0.5;"&gt;&lt;/div&gt;
+&lt;/div&gt;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Company Profile PDF -->
+    <div id="modal-pdf" class="fixed inset-0 z-[100] hidden">
+        <div class="modal-backdrop absolute inset-0" onclick="closeModal('modal-pdf')"></div>
+        <div class="relative z-10 flex items-center justify-center min-h-screen p-4 pointer-events-none">
+            <div class="bg-rackaro-dark border border-white/10 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto pointer-events-auto fade-in shadow-2xl shadow-black/50">
+                <div class="sticky top-0 bg-rackaro-dark/95 backdrop-blur-xl border-b border-white/5 p-8 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white tracking-tight">Company Profile</h2>
+                        <p class="text-xs text-white/30 font-mono mt-1 tracking-wider">PDF BROCHURE</p>
+                    </div>
+                    <button onclick="closeModal('modal-pdf')" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-white/30 hover:bg-white/5 transition-all" data-hover>
+                        <svg class="w-4 h-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <div class="p-8 space-y-8">
+                    <!-- PDF Preview -->
+                    <div class="bg-rackaro-black border border-white/5 rounded-xl p-10 space-y-8">
+                        <div class="text-center border-b border-white/5 pb-8">
+                            <h1 class="text-5xl font-bold tracking-tighter text-white mb-3">RACKARO</h1>
+                            <p class="font-mono text-xs text-white/30 tracking-[0.3em]">COMPANY PROFILE 2026</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-3 border-b border-white/[0.03]">
+                                <span class="text-white/40 text-sm">Company</span>
+                                <span class="text-white font-mono text-sm">Rackaro Ltd</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-white/[0.03]">
+                                <span class="text-white/40 text-sm">Specialization</span>
+                                <span class="text-white font-mono text-sm text-right">Used & New IT Hardware</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-white/[0.03]">
+                                <span class="text-white/40 text-sm">Focus</span>
+                                <span class="text-white font-mono text-sm text-right">Data Centre Infrastructure</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-white/[0.03]">
+                                <span class="text-white/40 text-sm">Products</span>
+                                <span class="text-white font-mono text-sm text-right">Servers, Storage, Networking</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-white/[0.03]">
+                                <span class="text-white/40 text-sm">Markets</span>
+                                <span class="text-white font-mono text-sm">Global</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 text-center">
+                            <p class="text-white/20 text-sm leading-relaxed max-w-md mx-auto">
+                                Rackaro supplies premium IT hardware to data centres worldwide. From enterprise servers to networking equipment, we deliver reliable infrastructure solutions that scale with your business.
+                            </p>
+                        </div>
+                    </div>
+
+                    <button class="w-full py-4 bg-white text-rackaro-black font-semibold rounded-xl hover:bg-white/90 transition-all flex items-center justify-center gap-3 group" data-hover>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span class="font-mono text-sm tracking-wider">DOWNLOAD PDF</span>
+                    </button>
+                    <p class="text-center text-[10px] text-white/15 font-mono">rackaro-company-profile-2026.pdf • 2.4 MB</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // LOADER
+        // ==========================================
+        let loadProgress = 0;
+        const loaderInterval = setInterval(() => {
+            loadProgress += Math.random() * 15;
+            if (loadProgress >= 100) {
+                loadProgress = 100;
+                clearInterval(loaderInterval);
+                setTimeout(() => {
+                    gsap.to('#loader', {
+                        opacity: 0,
+                        duration: 0.8,
+                        ease: 'power2.inOut',
+                        onComplete: () => {
+                            document.getElementById('loader').style.display = 'none';
+                            initAnimations();
+                        }
+                    });
+                }, 300);
+            }
+            document.getElementById('loader-progress').style.width = loadProgress + '%';
+            document.getElementById('loader-text').textContent = Math.floor(loadProgress) + '%';
+        }, 100);
+
+        // ==========================================
+        // CUSTOM CURSOR
+        // ==========================================
+        const cursor = document.getElementById('cursor');
+        const cursorDot = document.getElementById('cursor-dot');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+        });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Hover effects for cursor
+        document.querySelectorAll('[data-hover]').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // ==========================================
+        // THREE.JS HERO ANIMATION
+        // ==========================================
+        const canvas = document.getElementById('hero-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Create wireframe icosahedron
+        const geometry = new THREE.IcosahedronGeometry(2, 1);
+        const wireframe = new THREE.WireframeGeometry(geometry);
+        const lineMaterial = new THREE.LineBasicMaterial({ 
+            color: 0x333333,
+            transparent: true,
+            opacity: 0.3
+        });
+        const icosahedron = new THREE.LineSegments(wireframe, lineMaterial);
+        scene.add(icosahedron);
+
+        // Inner glow sphere
+        const sphereGeo = new THREE.SphereGeometry(1.8, 32, 32);
+        const sphereMat = new THREE.MeshBasicMaterial({
+            color: 0x111111,
+            transparent: true,
+            opacity: 0.5
+        });
+        const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+        scene.add(sphere);
+
+        // Particle field
+        const particlesGeo = new THREE.BufferGeometry();
+        const particleCount = 200;
+        const posArray = new Float32Array(particleCount * 3);
+        for(let i = 0; i < particleCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 15;
+        }
+        particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMat = new THREE.PointsMaterial({
+            size: 0.02,
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.4
+        });
+        const particles = new THREE.Points(particlesGeo, particlesMat);
+        scene.add(particles);
+
+        camera.position.z = 5;
+
+        // Mouse interaction for 3D object
+        let targetRotationX = 0;
+        let targetRotationY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            targetRotationX = (e.clientY / window.innerHeight - 0.5) * 0.5;
+            targetRotationY = (e.clientX / window.innerWidth - 0.5) * 0.5;
+        });
+
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+            
+            icosahedron.rotation.x += 0.001;
+            icosahedron.rotation.y += 0.002;
+            sphere.rotation.x += 0.001;
+            sphere.rotation.y += 0.002;
+            particles.rotation.y += 0.0005;
+
+            // Smooth mouse follow
+            icosahedron.rotation.x += (targetRotationX - icosahedron.rotation.x) * 0.05;
+            icosahedron.rotation.y += (targetRotationY - icosahedron.rotation.y) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+        animate3D();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ==========================================
+        // GSAP ANIMATIONS
+        // ==========================================
+        function initAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero text reveal
+            gsap.to('#hero-subtitle', {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                delay: 0.2,
+                ease: 'power3.out'
+            });
+            
+            gsap.to('#hero-title', {
+                y: 0,
+                opacity: 1,
+                duration: 1.2,
+                delay: 0.4,
+                ease: 'power3.out'
+            });
+
+            gsap.to('#hero-desc', {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                delay: 0.8,
+                ease: 'power3.out'
+            });
+
+            // Navbar show on scroll
+            ScrollTrigger.create({
+                start: 'top -100',
+                onUpdate: (self) => {
+                    if (self.direction === -1) {
+                        gsap.to('#navbar', { y: 0, duration: 0.3 });
+                    } else if (self.scroll() > 100) {
+                        gsap.to('#navbar', { y: 0, duration: 0.3 });
+                    }
+                }
+            });
+
+            // Grid lines animation
+            gsap.utils.toArray('.grid-line').forEach(line => {
+                ScrollTrigger.create({
+                    trigger: line,
+                    start: 'top 80%',
+                    onEnter: () => line.classList.add('active')
+                });
+            });
+
+            // Float cards 3D tilt
+            document.querySelectorAll('[data-tilt]').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 20;
+                    const rotateY = (centerX - x) / 20;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                });
+            });
+
+            // Counter animation
+            gsap.utils.toArray('.counter').forEach(counter => {
+                const target = parseInt(counter.dataset.target);
+                ScrollTrigger.create({
+                    trigger: counter,
+                    start: 'top 85%',
+                    onEnter: () => {
+                        gsap.to(counter, {
+                            innerHTML: target,
+                            duration: 2,
+                            snap: { innerHTML: 1 },
+                            ease: 'power2.out'
+                        });
+                    }
+                });
+            });
+
+            // Parallax for hero canvas
+            gsap.to('#hero-canvas', {
+                scrollTrigger: {
+                    trigger: 'body',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true
+                },
+                y: 200,
+                opacity: 0.3
+            });
+
+            // Section reveals
+            gsap.utils.toArray('section').forEach(section => {
+                gsap.from(section.querySelectorAll('h2, h3, p, .float-card'), {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top 80%',
+                    },
+                    y: 60,
+                    opacity: 0,
+                    duration: 1,
+                    stagger: 0.1,
+                    ease: 'power3.out'
+                });
+            });
+        }
+
+        // ==========================================
+        // MAGNETIC BUTTON
+        // ==========================================
+        document.querySelectorAll('.magnetic-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // ==========================================
+        // CLOCK
+        // ==========================================
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('time').textContent = timeStr + ' UTC';
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // ==========================================
+        // MODAL FUNCTIONS
+        // ==========================================
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            gsap.from(modal.querySelector('.fade-in'), {
+                scale: 0.9,
+                opacity: 0,
+                duration: 0.4,
+                ease: 'power3.out'
+            });
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            gsap.to(modal.querySelector('.fade-in'), {
+                scale: 0.95,
+                opacity: 0,
+                duration: 0.2,
+                ease: 'power2.in',
+                onComplete: () => {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('[id^="modal-"]').forEach(m => closeModal(m.id));
+            }
+        });
+
+        // ==========================================
+        // COPY FUNCTIONS
+        // ==========================================
+        function copySignature() {
+            const html = `<div style="font-family: Inter, sans-serif; color: #ffffff; border-top: 1px solid #333; padding-top: 24px;"><strong style="font-size: 20px; letter-spacing: -0.5px; font-weight: 700;">RACKARO</strong><br><span style="color: #666; font-size: 12px; letter-spacing: 0.1em;">IT HARDWARE FOR DATA CENTRES</span><div style="margin-top: 16px; font-size: 13px; line-height: 1.8; color: #888;"><span style="color: #fff;">Alex Chen</span> <span style="color: #444;">|</span> Technical Director<br><a href="mailto:alex@rackaro.com" style="color: #aaa; text-decoration: none; border-bottom: 1px solid #333;">alex@rackaro.com</a><br><a href="https://rackaro.com" style="color: #aaa; text-decoration: none;">www.rackaro.com</a></div><div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #1a1a1a; font-size: 10px; color: #444; letter-spacing: 0.05em;">SERVERS • STORAGE • NETWORKING • GLOBAL SUPPLY</div></div>`;
+            navigator.clipboard.writeText(html);
+            showToast('Email signature copied to clipboard');
+        }
+
+        function copyLinkedInCode() {
+            const code = document.getElementById('linkedin-code').textContent;
+            navigator.clipboard.writeText(code);
+            showToast('LinkedIn banner code copied');
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-white text-rackaro-black px-6 py-3 rounded-full font-mono text-xs tracking-wider z-[200] fade-in';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                gsap.to(toast, { opacity: 0, y: 20, duration: 0.3, onComplete: () => toast.remove() });
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
