@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laravel Recovery Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f2ec;
+    --cream: #f0ece3;
+    --green: #1a7a4a;
+    --green-light: #d4f0e0;
+    --green-mid: #2db56a;
+    --amber: #b85c00;
+    --amber-light: #fdebd0;
+    --blue: #1a4a8a;
+    --blue-light: #ddeaf9;
+    --ink: #1c1c1c;
+    --muted: #5a5a5a;
+    --border: rgba(0,0,0,0.1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ---- HEADER ---- */
+  header {
+    background: var(--black);
+    color: var(--white);
+    padding: 4rem 2rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: 'RECOVERY';
+    position: absolute;
+    right: -20px;
+    bottom: -30px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(80px, 14vw, 180px);
+    color: rgba(255,255,255,0.04);
+    letter-spacing: -4px;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 1.5rem;
+  }
+
+  .eyebrow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green-mid);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+    color: var(--white);
+  }
+
+  header h1 em {
+    font-style: normal;
+    color: var(--green-mid);
+  }
+
+  header p.subtitle {
+    font-size: 1.1rem;
+    color: rgba(245,242,236,0.65);
+    max-width: 540px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .stat-row {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: rgba(245,242,236,0.45);
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .stat-divider {
+    width: 1px;
+    background: rgba(255,255,255,0.1);
+    align-self: stretch;
+  }
+
+  /* ---- MAIN ---- */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+  section { margin-bottom: 4rem; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  h2 + p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  /* ---- TIMELINE ---- */
+  .timeline { position: relative; }
+
+  .tl-track {
+    position: absolute;
+    left: 22px;
+    top: 12px;
+    bottom: 12px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--green-mid), rgba(45,181,106,0.1));
+  }
+
+  .tl-item {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .tl-item:nth-child(1) { animation-delay: 0.05s; }
+  .tl-item:nth-child(2) { animation-delay: 0.12s; }
+  .tl-item:nth-child(3) { animation-delay: 0.19s; }
+  .tl-item:nth-child(4) { animation-delay: 0.26s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .tl-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tl-circle {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .c-green { background: var(--green-light); color: var(--green); }
+  .c-amber { background: var(--amber-light); color: var(--amber); }
+  .c-blue { background: var(--blue-light); color: var(--blue); }
+  .c-dark { background: #e0ddd7; color: #2a2a2a; }
+
+  .tl-body {
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+  }
+
+  .tl-time {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .tl-body h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+
+  .tl-body ul {
+    padding-left: 16px;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.75;
+  }
+
+  /* ---- CARDS GRID ---- */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .mod-card {
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .mod-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+  }
+
+  .mod-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .mod-card.teal::before { background: var(--green-mid); }
+  .mod-card.amber::before { background: #e08c1a; }
+  .mod-card.blue::before { background: #378add; }
+  .mod-card.purple::before { background: #7f77dd; }
+
+  .mod-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .mod-card.teal .mod-icon { background: var(--green-light); }
+  .mod-card.amber .mod-icon { background: var(--amber-light); }
+  .mod-card.blue .mod-icon { background: var(--blue-light); }
+  .mod-card.purple .mod-icon { background: #eeedfe; }
+
+  .mod-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+
+  .mod-card ul {
+    padding-left: 14px;
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.8;
+  }
+
+  /* ---- PILLARS ---- */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+  }
+
+  .pillar {
+    background: var(--black);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+  }
+
+  .pillar-icon { font-size: 24px; margin-bottom: 10px; }
+
+  .pillar h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .pillar p {
+    font-size: 0.78rem;
+    color: rgba(245,242,236,0.5);
+    line-height: 1.5;
+  }
+
+  /* ---- CTA ---- */
+  .cta-block {
+    background: var(--black);
+    color: var(--white);
+    border-radius: 16px;
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .cta-block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(45,181,106,0.18) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(55,138,221,0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .cta-block h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+    color: var(--white);
+  }
+
+  .cta-block p {
+    color: rgba(245,242,236,0.6);
+    font-size: 0.95rem;
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    background: var(--green-mid);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: transform 0.15s, background 0.15s;
+  }
+
+  .cta-btn:hover {
+    background: #25a05e;
+    transform: translateY(-2px);
+  }
+
+  /* ---- FOOTER ---- */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 0.5px solid var(--border);
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 600px) {
+    header { padding: 2.5rem 1.25rem 3.5rem; }
+    main { padding: 2rem 1.25rem 4rem; }
+    .stat-row { gap: 1.2rem; }
+    .cta-block { padding: 2rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="eyebrow">
+      <span class="eyebrow-dot"></span>
+      Laravel E-Commerce Recovery Proposal
+    </div>
+    <h1>Your site back online<br><em>in 24 hours.</em></h1>
+    <p class="subtitle">A structured recovery and modernization plan — not just quick fixes, but a clear path from broken to production-ready with long-term maintainability built in.</p>
+    <div class="stat-row">
+      <div class="stat">
+        <span class="stat-num">24h</span>
+        <span class="stat-label">Site live again</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">4 wks</span>
+        <span class="stat-label">Full modernization</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">0</span>
+        <span class="stat-label">Guesswork</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">∞</span>
+        <span class="stat-label">Long-term support</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- PHASE 1 -->
+  <section>
+    <div class="section-label">Phase 1</div>
+    <h2>Day 1: Emergency Recovery</h2>
+    <p>A precise, hour-by-hour plan to bring your platform back online — fully functional, verified, and deployed.</p>
+
+    <div class="timeline">
+      <div class="tl-track"></div>
+
+      <div class="tl-item">
+        <div class="tl-node">
+          <div class="tl-circle c-green">1</div>
+        </div>
+        <div class="tl-body">
+          <div class="tl-time">Hours 1 – 3</div>
+          <h3>Deep Diagnosis</h3>
+          <ul>
+            <li>Clone repo and audit Laravel logs end-to-end</li>
+            <li>Inspect .env, config, and all broken routes</li>
+            <li>Map every 500 error, failed migration, and config gap</li>
+            <li>Deliver a written diagnosis report to you</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-node">
+          <div class="tl-circle c-amber">2</div>
+        </div>
+        <div class="tl-body">
+          <div class="tl-time">Hours 3 – 6</div>
+          <h3>Database Repair</h3>
+          <ul>
+            <li>Restore MySQL structure and fix corrupt/missing tables</li>
+            <li>Run outstanding migrations in correct order</li>
+            <li>Verify foreign key integrity and critical seed data</li>
+            <li>Test all DB connections in staging environment</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-node">
+          <div class="tl-circle c-blue">3</div>
+        </div>
+        <div class="tl-body">
+          <div class="tl-time">Hours 6 – 10</div>
+          <h3>Backend Stabilization</h3>
+          <ul>
+            <li>Patch broken controllers, middleware, and service classes</li>
+            <li>Fix Composer dependency conflicts and autoload issues</li>
+            <li>Resolve session, auth, and cache configuration</li>
+            <li>Re-test login, cart, checkout, and order flows</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-node">
+          <div class="tl-circle c-dark">4</div>
+        </div>
+        <div class="tl-body">
+          <div class="tl-time">Hours 10 – 24</div>
+          <h3>Deploy & Verify</h3>
+          <ul>
+            <li>Deploy to production with zero-downtime strategy</li>
+            <li>Verify HTTPS, mail config, and payment gateway</li>
+            <li>Run full smoke test across all user journeys</li>
+            <li>Confirm orders and checkout work end-to-end</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASE 2 -->
+  <section>
+    <div class="section-label">Phase 2 — Weeks 1 – 4</div>
+    <h2>Full Modernization</h2>
+    <p>Once stable, we rebuild the foundations — performance, maintainability, UI, and discoverability.</p>
+
+    <div class="cards-grid">
+      <div class="mod-card teal">
+        <div class="mod-icon">⚙️</div>
+        <h3>Backend</h3>
+        <ul>
+          <li>Upgrade to Laravel 11 + PHP 8.3</li>
+          <li>Refactor to service/repository pattern</li>
+          <li>Queue jobs for emails, reports</li>
+          <li>Feature tests for critical paths</li>
+        </ul>
+      </div>
+      <div class="mod-card amber">
+        <div class="mod-icon">🗄️</div>
+        <h3>Database</h3>
+        <ul>
+          <li>Add indexes on product/order tables</li>
+          <li>Eliminate N+1 Eloquent queries</li>
+          <li>Normalize redundant schema</li>
+          <li>Automated backup setup</li>
+        </ul>
+      </div>
+      <div class="mod-card blue">
+        <div class="mod-icon">📱</div>
+        <h3>UI / UX</h3>
+        <ul>
+          <li>Mobile-first responsive redesign</li>
+          <li>Vite asset bundling for speed</li>
+          <li>Cleaner product listing + filters</li>
+          <li>Improved accessibility</li>
+        </ul>
+      </div>
+      <div class="mod-card purple">
+        <div class="mod-icon">🔍</div>
+        <h3>Technical SEO</h3>
+        <ul>
+          <li>Fix duplicate/missing meta tags</li>
+          <li>Structured data for products</li>
+          <li>Core Web Vitals improvement</li>
+          <li>Sitemap + canonical URLs</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY ME -->
+  <section>
+    <div class="section-label">Why me</div>
+    <h2>What you can expect</h2>
+    <p>Every decision made with long-term maintainability in mind — not the next two weeks.</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-icon">📋</div>
+        <h4>Daily updates</h4>
+        <p>You'll know what changed and why, every single day — no black boxes.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">📝</div>
+        <h4>Full documentation</h4>
+        <p>Every fix is documented so any developer (or you) can understand the codebase.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🛡️</div>
+        <h4>No repeat breakage</h4>
+        <p>Root causes fixed — not symptoms. Tests added to keep it that way.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🛒</div>
+        <h4>E-commerce depth</h4>
+        <p>Cart, checkout, payments, inventory — done this before, doing it right.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h2>Ready to start today.</h2>
+    <p>Share repo and server access — I'll have a full written diagnosis report to you within 3 hours, before any payment or commitment.</p>
+    <a href="mailto:you@email.com" class="cta-btn">Let's talk →</a>
+  </div>
+
+</main>
+
+<footer>
+  <p>Prepared for your review &middot; Laravel E-Commerce Recovery Proposal</p>
+</footer>
+
+</body>
+</html>
