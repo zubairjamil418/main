@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Louise — Islay Holiday Home Website Preview</title>
+    <style>
+        :root {
+            --sand: #f5f1e8;
+            --sea: #2c5f6e;
+            --sea-light: #4a8fa3;
+            --stone: #3d3d3d;
+            --mist: #e8e4db;
+            --white: #ffffff;
+            --accent: #c4a35a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background-color: var(--sand);
+            color: var(--stone);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(245, 241, 232, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--mist);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.8rem 5%;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--sea);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--stone);
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--sea);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--sea);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: var(--sea);
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section with Client's Image */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://dw3i9sxi97owk.cloudfront.net/uploads/jobAttachments/86zPbMZxQdCG3QtewkkR_PXL_20250417_084951812.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.7);
+            transform: scale(1.05);
+            animation: slowZoom 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes slowZoom {
+            from { transform: scale(1.05); }
+            to { transform: scale(1.15); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(44, 95, 110, 0.3), rgba(44, 95, 110, 0.6));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: var(--white);
+            max-width: 800px;
+            padding: 0 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1.2s ease forwards 0.3s;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 0.4rem 1.2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            font-style: italic;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--white);
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: var(--sea);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+            margin: 1.5rem auto;
+        }
+
+        /* Approach Section */
+        .approach-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .approach-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 2px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 3px solid transparent;
+        }
+
+        .approach-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border-top-color: var(--sea);
+        }
+
+        .approach-card .icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .approach-card h3 {
+            color: var(--sea);
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .approach-card p {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background: var(--white);
+            padding: 6rem 5%;
+        }
+
+        .preview-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .wireframe-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .wireframe-block {
+            background: var(--sand);
+            border: 1px solid var(--mist);
+            border-radius: 4px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wireframe-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--sea);
+        }
+
+        .wireframe-block h4 {
+            color: var(--sea);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .wireframe-placeholder {
+            background: var(--mist);
+            height: 120px;
+            border-radius: 2px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        .wireframe-block p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Platform Badge */
+        .platform-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--sea);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        /* Testimonial / Trust */
+        .trust-section {
+            background: var(--sea);
+            color: var(--white);
+            padding: 5rem 5%;
+            text-align: center;
+        }
+
+        .trust-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .trust-section h2 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .trust-section p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 6rem 5%;
+        }
+
+        .cta-section h2 {
+            font-size: 2.2rem;
+            color: var(--sea);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--sea);
+            color: var(--white);
+            padding: 1rem 2.5rem;
+            text-decoration: none;
+            border-radius: 2px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            border: 2px solid var(--sea);
+            margin-top: 1rem;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: var(--sea);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--stone);
+            color: var(--mist);
+            text-align: center;
+            padding: 2rem 5%;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 60px;
+                right: -100%;
+                width: 100%;
+                height: calc(100vh - 60px);
+                background: var(--sand);
+                flex-direction: column;
+                align-items: center;
+                justify-content: start;
+                padding-top: 3rem;
+                gap: 2rem;
+                transition: right 0.3s;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            section {
+                padding: 4rem 5%;
+            }
+
+            .approach-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Fade in on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="logo">LOUISE</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#approach">Approach</a></li>
+            <li><a href="#preview">Preview</a></li>
+            <li><a href="#platform">Platform</a></li>
+            <li><a href="#contact">Next Step</a></li>
+        </ul>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Hero with Client's Image -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="hero-tag">Website Preview for Your Islay Home</span>
+            <h1>Let the Island<br>Do the Talking</h1>
+            <p>A calm, high-quality website that puts your holiday home front and centre — built for whisky tourists, walkers, wildlife lovers, and anyone seeking peace on the Scottish coast.</p>
+        </div>
+        <div class="scroll-indicator" onclick="document.getElementById('approach').scrollIntoView({behavior: 'smooth'})">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Approach -->
+    <section id="approach">
+        <div class="section-header fade-in">
+            <h2>How I Would Build This</h2>
+            <div class="divider"></div>
+            <p>Lightweight, fast, and easy for you to update — no heavy builders, no bloat.</p>
+        </div>
+        <div class="approach-grid">
+            <div class="approach-card fade-in">
+                <span class="icon">⚡</span>
+                <h3>Lightweight & Fast</h3>
+                <p>No heavy page builders. A clean WordPress theme that loads in under 2 seconds, so visitors stay engaged and Google ranks you higher.</p>
+            </div>
+            <div class="approach-card fade-in">
+                <span class="icon">📱</span>
+                <h3>Works Everywhere</h3>
+                <p>Fully responsive across mobile, tablet, and desktop. Your guests often browse on the go — the experience must be seamless.</p>
+            </div>
+            <div class="approach-card fade-in">
+                <span class="icon">🗓️</span>
+                <h3>Smart Availability</h3>
+                <p>Simple calendar plugin for manual blocking, or a channel manager to sync automatically with Airbnb and Booking.com.</p>
+            </div>
+            <div class="approach-card fade-in">
+                <span class="icon">🖼️</span>
+                <h3>Photo-First Design</h3>
+                <p>Large, immersive imagery with minimal text. The property and Islay's coastline are the stars — the site just frames them.</p>
+            </div>
+            <div class="approach-card fade-in">
+                <span class="icon">✏️</span>
+                <h3>Easy to Update</h3>
+                <p>Placeholder content and images set up from day one. You fill in your own text, photos, and pricing at your own pace.</p>
+            </div>
+            <div class="approach-card fade-in">
+                <span class="icon">🥃</span>
+                <h3>Built for Your Guests</h3>
+                <p>Clear sections for whisky tourists, walkers, and wildlife visitors. Local area highlights that sell the experience.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Preview -->
+    <section class="preview-section" id="preview">
+        <div class="preview-container">
+            <div class="section-header fade-in">
+                <h2>Proposed Site Structure</h2>
+                <div class="divider"></div>
+                <p>A straightforward journey from arrival to booking enquiry.</p>
+            </div>
+            <div class="wireframe-demo">
+                <div class="wireframe-block fade-in">
+                    <h4>1. Hero & Introduction</h4>
+                    <div class="wireframe-placeholder">[Your best property / coastline photo]</div>
+                    <p>Strong hero image, short welcome text, and a clear call-to-action to check availability or enquire.</p>
+                </div>
+                <div class="wireframe-block fade-in">
+                    <h4>2. Photo Gallery</h4>
+                    <div class="wireframe-placeholder">[Property, rooms, views, local area]</div>
+                    <p>Showcase the interior, exterior, surrounding landscape, and nearby distilleries or walking routes.</p>
+                </div>
+                <div class="wireframe-block fade-in">
+                    <h4>3. What's Included</h4>
+                    <div class="wireframe-placeholder">[Amenities & facilities list]</div>
+                    <p>Bedrooms, bathrooms, kitchen, WiFi, parking, linen, and any special features like a fireplace or sea view.</p>
+                </div>
+                <div class="wireframe-block fade-in">
+                    <h4>4. Local Highlights</h4>
+                    <div class="wireframe-placeholder">[Islay distilleries, walks, wildlife]</div>
+                    <p>Tailored content for whisky tourists, coastal walkers, bird watchers, and those seeking quiet island life.</p>
+                </div>
+                <div class="wireframe-block fade-in">
+                    <h4>5. Availability Calendar</h4>
+                    <div class="wireframe-placeholder">[Live calendar integration]</div>
+                    <p>Manual blocking or synced via channel manager. Guests see open dates instantly.</p>
+                </div>
+                <div class="wireframe-block fade-in">
+                    <h4>6. Booking Enquiry Form</h4>
+                    <div class="wireframe-placeholder">[Clean, simple contact form]</div>
+                    <p>Name, dates, party size, and message. Straight to your inbox. No friction.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform -->
+    <section id="platform" style="padding-bottom: 2rem;">
+        <div class="section-header fade-in">
+            <h2>Recommended Platform</h2>
+            <div class="divider"></div>
+            <p>WordPress — the right balance of flexibility and simplicity for a self-catering property.</p>
+        </div>
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <div class="platform-badge fade-in">WordPress + Lightweight Theme</div>
+            <p style="margin-top: 2rem; color: #555;">
+                I would avoid heavy builders like Elementor or WPBakery for this project. Instead, a lean custom theme or a well-coded lightweight starter ensures fast load times, better security, and easier long-term maintenance. You get full ownership of your site and the ability to update text and images without touching code.
+            </p>
+        </div>
+    </section>
+
+    <!-- Trust -->
+    <section class="trust-section">
+        <div class="trust-content fade-in">
+            <h2>"A holiday home on Islay sells itself to the right visitor. Your website just needs to get out of the way and let the location do the talking."</h2>
+            <p>— My approach to your project</p>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" id="contact">
+        <div class="fade-in">
+            <h2>Ready When You Are</h2>
+            <p style="color: #666; max-width: 500px; margin: 0 auto 2rem;">
+                I will set everything up with placeholder content so you have a working starting point. You fill in your own photos, text, and pricing at your own pace.
+            </p>
+            <p style="font-style: italic; color: var(--sea); margin-bottom: 2rem;">
+                What is your timeline for getting the property ready to take bookings?
+            </p>
+            <a href="mailto:louise@example.com" class="cta-button">Reply to My Proposal</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Prepared for your Islay holiday home project — Louise</p>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Fade in on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
