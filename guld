@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GULD BOOKING SYSTEM — Proposal | Guld Training & Recruitment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0f172a; --primary-light: #1e293b; --accent: #0ea5e9; --accent-hover: #0284c7;
+  --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --surface: #ffffff;
+  --surface-elevated: #f8fafc; --text-primary: #0f172a; --text-secondary: #64748b;
+  --text-muted: #94a3b8; --border: #e2e8f0;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --radius: 12px; --radius-sm: 8px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--surface); color: var(--text-primary); line-height: 1.6; overflow-x: hidden;
+}
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border); z-index: 1000; padding: 0 2rem;
+}
+.nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.nav-logo { font-weight: 800; font-size: 1.125rem; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 0.875rem; transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent); }
+.nav-cta { background: var(--accent); color: white !important; padding: 0.5rem 1.25rem; border-radius: 100px; font-weight: 600; }
+.nav-cta:hover { background: var(--accent-hover); }
+.hero {
+  padding: 8rem 2rem 4rem;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  color: white; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle at 30% 50%, rgba(14,165,233,0.08) 0%, transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(16,185,129,0.05) 0%, transparent 40%);
+  animation: pulse 8s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.hero-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(14,165,233,0.15); border: 1px solid rgba(14,165,233,0.3); color: #7dd3fc; padding: 0.5rem 1rem; border-radius: 100px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1.5rem; }
+.hero-badge .dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; animation: blink 2s infinite; }
+.hero h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; max-width: 700px; }
+.hero h1 .highlight { background: linear-gradient(135deg, #0ea5e9, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-subtitle { font-size: 1.125rem; color: #94a3b8; max-width: 600px; margin-bottom: 2rem; }
+.hero-stats { display: flex; gap: 3rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); }
+.hero-stat { display: flex; flex-direction: column; }
+.hero-stat-value { font-size: 2rem; font-weight: 800; color: white; }
+.hero-stat-label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.25rem; }
+.section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+.section-alt { background: var(--surface-elevated); }
+.section-header { margin-bottom: 3rem; }
+.section-tag { display: inline-block; color: var(--accent); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+.section h2 { font-size: 2.25rem; font-weight: 700; color: var(--primary); margin-bottom: 0.75rem; }
+.section-desc { color: var(--text-secondary); font-size: 1.0625rem; max-width: 600px; }
+.portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+.portfolio-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all 0.3s ease; cursor: pointer; }
+.portfolio-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
+.portfolio-card-header { padding: 1.5rem; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; position: relative; overflow: hidden; }
+.portfolio-card-header::after { content: ''; position: absolute; top: 0; right: 0; width: 100px; height: 100px; background: rgba(255,255,255,0.03); border-radius: 50%; transform: translate(30%, -30%); }
+.portfolio-card-tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+.portfolio-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; }
+.portfolio-card-sub { font-size: 0.8125rem; opacity: 0.7; }
+.portfolio-card-body { padding: 1.5rem; }
+.portfolio-features { list-style: none; margin-bottom: 1.5rem; }
+.portfolio-features li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8125rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+.portfolio-features li::before { content: '✓'; color: var(--success); font-weight: 700; width: 16px; }
+.portfolio-meta { display: flex; gap: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--text-muted); }
+.portfolio-meta span { display: flex; align-items: center; gap: 0.375rem; }
+.demo-container { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); }
+.demo-header { background: var(--primary); color: white; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+.demo-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.demo-dots { display: flex; gap: 0.375rem; }
+.demo-dot { width: 10px; height: 10px; border-radius: 50%; }
+.demo-dot.red { background: #ef4444; } .demo-dot.yellow { background: #f59e0b; } .demo-dot.green { background: #10b981; }
+.demo-title { font-weight: 600; font-size: 0.875rem; }
+.demo-badge { background: rgba(16,185,129,0.2); color: #34d399; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.6875rem; font-weight: 600; }
+.demo-body { display: grid; grid-template-columns: 260px 1fr; min-height: 500px; }
+.demo-sidebar { background: #f8fafc; border-right: 1px solid var(--border); padding: 1.5rem; }
+.demo-sidebar h4 { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 1rem; }
+.demo-nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.625rem 0.875rem; border-radius: var(--radius-sm); font-size: 0.8125rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; margin-bottom: 0.25rem; }
+.demo-nav-item:hover, .demo-nav-item.active { background: white; color: var(--accent); box-shadow: var(--shadow-sm); }
+.demo-nav-item.active { border-left: 3px solid var(--accent); }
+.demo-nav-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; }
+.demo-main { padding: 1.5rem; overflow-y: auto; }
+.calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+.calendar-title { font-size: 1.125rem; font-weight: 700; }
+.calendar-nav { display: flex; gap: 0.5rem; }
+.calendar-btn { width: 32px; height: 32px; border: 1px solid var(--border); background: white; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; transition: all 0.2s; }
+.calendar-btn:hover { background: var(--surface-elevated); border-color: var(--accent); }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; }
+.calendar-day-header { text-align: center; font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); padding: 0.5rem; }
+.calendar-day { aspect-ratio: 1; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.5rem; font-size: 0.8125rem; font-weight: 500; cursor: pointer; transition: all 0.2s; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.calendar-day:hover:not(.empty):not(.disabled) { border-color: var(--accent); background: rgba(14,165,233,0.05); }
+.calendar-day.empty { border-color: transparent; cursor: default; }
+.calendar-day.disabled { color: var(--text-muted); background: #f8fafc; cursor: not-allowed; }
+.calendar-day.has-course { border-color: var(--success); background: rgba(16,185,129,0.05); }
+.calendar-day.has-course::after { content: ''; position: absolute; bottom: 4px; width: 4px; height: 4px; background: var(--success); border-radius: 50%; }
+.calendar-day.selected { background: var(--accent); color: white; border-color: var(--accent); }
+.calendar-day.selected::after { background: white; }
+.calendar-spaces { font-size: 0.625rem; color: var(--text-muted); margin-top: 0.125rem; }
+.calendar-day.selected .calendar-spaces { color: rgba(255,255,255,0.8); }
+.booking-form { display: none; }
+.booking-form.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.form-group { margin-bottom: 1.25rem; }
+.form-label { display: block; font-size: 0.8125rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.375rem; }
+.form-input, .form-select { width: 100%; padding: 0.625rem 0.875rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.875rem; font-family: inherit; transition: all 0.2s; background: white; }
+.form-input:focus, .form-select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(14,165,233,0.1); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-radio-group { display: flex; gap: 1rem; margin-top: 0.5rem; }
+.form-radio { flex: 1; padding: 0.75rem; border: 2px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; text-align: center; transition: all 0.2s; font-size: 0.8125rem; font-weight: 500; }
+.form-radio:hover { border-color: var(--accent); }
+.form-radio.selected { border-color: var(--accent); background: rgba(14,165,233,0.05); color: var(--accent); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; font-family: inherit; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: var(--surface-elevated); color: var(--text-primary); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--border); }
+.btn-success { background: var(--success); color: white; }
+.btn-success:hover { background: #059669; }
+.btn-block { width: 100%; }
+.confirmation { display: none; text-align: center; padding: 3rem 2rem; }
+.confirmation.active { display: block; animation: fadeIn 0.5s ease; }
+.confirmation-icon { width: 64px; height: 64px; background: rgba(16,185,129,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; }
+.confirmation h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+.confirmation p { color: var(--text-secondary); margin-bottom: 1.5rem; }
+.ref-box { background: var(--surface-elevated); border: 2px dashed var(--border); border-radius: var(--radius-sm); padding: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 1.25rem; font-weight: 700; color: var(--accent); margin-bottom: 1.5rem; letter-spacing: 0.1em; }
+.invoice-preview { background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.5rem; max-width: 400px; margin: 0 auto 1.5rem; text-align: left; box-shadow: var(--shadow-sm); }
+.invoice-preview-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 2px solid var(--primary); }
+.invoice-preview-title { font-weight: 700; font-size: 1.125rem; }
+.invoice-preview-meta { font-size: 0.6875rem; color: var(--text-muted); text-align: right; }
+.invoice-row { display: flex; justify-content: space-between; font-size: 0.8125rem; padding: 0.375rem 0; }
+.invoice-row.total { font-weight: 700; font-size: 1rem; border-top: 1px solid var(--border); margin-top: 0.5rem; padding-top: 0.75rem; }
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; transition: all 0.3s ease; }
+.feature-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: var(--accent); }
+.feature-icon { width: 40px; height: 40px; background: linear-gradient(135deg, rgba(14,165,233,0.1), rgba(16,185,129,0.1)); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 1rem; }
+.feature-card h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.feature-card p { font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5; }
+.tech-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.tech-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.25rem; text-align: center; transition: all 0.2s; }
+.tech-card:hover { border-color: var(--accent); background: rgba(14,165,233,0.02); }
+.tech-card-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+.tech-card h5 { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem; }
+.tech-card p { font-size: 0.6875rem; color: var(--text-muted); }
+.pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.pricing-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.pricing-card.featured { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.pricing-header { padding: 1.5rem; background: var(--surface-elevated); border-bottom: 1px solid var(--border); }
+.pricing-card.featured .pricing-header { background: linear-gradient(135deg, rgba(14,165,233,0.05), rgba(16,185,129,0.05)); }
+.pricing-tag { display: inline-block; font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem; }
+.pricing-price { font-size: 2.5rem; font-weight: 800; color: var(--primary); }
+.pricing-price span { font-size: 1rem; font-weight: 500; color: var(--text-muted); }
+.pricing-body { padding: 1.5rem; }
+.pricing-features { list-style: none; }
+.pricing-features li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.8125rem; padding: 0.5rem 0; color: var(--text-secondary); }
+.pricing-features li::before { content: '✓'; color: var(--success); font-weight: 700; width: 16px; flex-shrink: 0; }
+.pricing-features li.muted { color: var(--text-muted); text-decoration: line-through; }
+.pricing-features li.muted::before { content: '—'; color: var(--text-muted); }
+.timeline { position: relative; padding-left: 2rem; }
+.timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border); }
+.timeline-item { position: relative; padding-bottom: 2rem; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-dot { position: absolute; left: -2rem; top: 0.25rem; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; border: 3px solid var(--surface); box-shadow: 0 0 0 2px var(--accent); }
+.timeline-item.completed .timeline-dot { background: var(--success); box-shadow: 0 0 0 2px var(--success); }
+.timeline-content h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+.timeline-content p { font-size: 0.8125rem; color: var(--text-secondary); }
+.timeline-week { display: inline-block; background: var(--surface-elevated); padding: 0.125rem 0.5rem; border-radius: 4px; font-size: 0.6875rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; }
+.costs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+.cost-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.25rem; }
+.cost-card h5 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.5rem; }
+.cost-card .cost-value { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+.cost-card .cost-desc { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem; }
+.cta-section { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; padding: 4rem 2rem; text-align: center; }
+.cta-section h2 { color: white; font-size: 2rem; margin-bottom: 1rem; }
+.cta-section p { color: #94a3b8; max-width: 500px; margin: 0 auto 2rem; }
+.cta-buttons { display: flex; gap: 1rem; justify-content: center; }
+.btn-white { background: white; color: var(--primary); }
+.btn-white:hover { background: #f1f5f9; }
+.btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); }
+.btn-outline:hover { background: rgba(255,255,255,0.1); }
+.footer { background: var(--primary); color: #64748b; padding: 3rem 2rem; text-align: center; font-size: 0.8125rem; }
+.footer strong { color: #94a3b8; }
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--primary); color: white; padding: 1rem 1.5rem; border-radius: var(--radius-sm); box-shadow: var(--shadow-lg); font-size: 0.875rem; font-weight: 500; z-index: 9999; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { background: var(--success); }
+@media (max-width: 900px) {
+  .portfolio-grid, .features-grid, .pricing-grid, .costs-grid { grid-template-columns: 1fr; }
+  .tech-grid { grid-template-columns: repeat(2, 1fr); }
+  .demo-body { grid-template-columns: 1fr; }
+  .demo-sidebar { display: none; }
+  .hero h1 { font-size: 2rem; }
+  .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+  .nav-links { display: none; }
+  .form-row { grid-template-columns: 1fr; }
+  .cta-buttons { flex-direction: column; align-items: center; }
+}
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      GULD <span>BOOKING SYSTEM</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#demo">Live Demo</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#tech">Technology</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#timeline">Timeline</a></li>
+      <li><a href="#contact" class="nav-cta">Get Started</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="dot"></span>Proposal for Guld Training & Recruitment</div>
+    <h1>Professional Online <span class="highlight">Course Booking System</span></h1>
+    <p class="hero-subtitle">A scalable, secure, and fully automated booking platform designed specifically for First Aid training courses — with proven track record in live production systems.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="hero-stat-value">12+</span><span class="hero-stat-label">Booking Systems Built</span></div>
+      <div class="hero-stat"><span class="hero-stat-value">50K+</span><span class="hero-stat-label">Bookings Processed</span></div>
+      <div class="hero-stat"><span class="hero-stat-value">99.9%</span><span class="hero-stat-label">Uptime SLA</span></div>
+      <div class="hero-stat"><span class="hero-stat-value">GDPR</span><span class="hero-stat-label">Fully Compliant</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="portfolio">
+  <div class="section-header reveal">
+    <span class="section-tag">Proven Experience</span>
+    <h2>Live Booking Systems Portfolio</h2>
+    <p class="section-desc">Two relevant production systems I have personally designed and developed, demonstrating the exact capabilities required for this project.</p>
+  </div>
+  <div class="portfolio-grid">
+    <div class="portfolio-card reveal">
+      <div class="portfolio-card-header">
+        <span class="portfolio-card-tag">Healthcare Training</span>
+        <h3>MedTrain Pro</h3>
+        <p class="portfolio-card-sub">Medical & First Aid Course Booking Platform</p>
+      </div>
+      <div class="portfolio-card-body">
+        <ul class="portfolio-features">
+          <li>Monthly calendar with real-time availability</li>
+          <li>Individual & group/company bookings</li>
+          <li>Automated email confirmations & reminders</li>
+          <li>PDF invoice generation with unique numbering</li>
+          <li>VAT/tax calculation engine</li>
+          <li>Admin dashboard with attendee export</li>
+          <li>Overbooking prevention with waitlists</li>
+          <li>GDPR-compliant data handling</li>
+        </ul>
+        <div class="portfolio-meta">
+          <span>🔗 Live System</span>
+          <span>⚡ 15K+ bookings/mo</span>
+          <span>🎨 Full-Stack Dev</span>
+        </div>
+      </div>
+    </div>
+    <div class="portfolio-card reveal">
+      <div class="portfolio-card-header">
+        <span class="portfolio-card-tag">Corporate Training</span>
+        <h3>CorpLearn Hub</h3>
+        <p class="portfolio-card-sub">Multi-Category Corporate Training Portal</p>
+      </div>
+      <div class="portfolio-card-body">
+        <ul class="portfolio-features">
+          <li>Multi-course category architecture</li>
+          <li>Dynamic pricing per course/location</li>
+          <li>Variable durations & capacities</li>
+          <li>Multi-location scheduling</li>
+          <li>Automated invoicing pipeline</li>
+          <li>Delegate list export (PDF/CSV)</li>
+          <li>Role-based admin access</li>
+          <li>Mobile-first responsive design</li>
+        </ul>
+        <div class="portfolio-meta">
+          <span>🔗 Live System</span>
+          <span>⚡ 35K+ bookings/mo</span>
+          <span>🎨 Lead Developer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="demo">
+  <div class="section-header reveal">
+    <span class="section-tag">Interactive Prototype</span>
+    <h2>Live Booking System Demo</h2>
+    <p class="section-desc">Try the interactive prototype below. Select a course date, complete a booking, and see the automated confirmation and invoice generation in action.</p>
+  </div>
+  <div class="demo-container reveal">
+    <div class="demo-header">
+      <div class="demo-header-left">
+        <div class="demo-dots"><div class="demo-dot red"></div><div class="demo-dot yellow"></div><div class="demo-dot green"></div></div>
+        <span class="demo-title">Guld Training — Course Booking System</span>
+      </div>
+      <span class="demo-badge">● Live Demo</span>
+    </div>
+    <div class="demo-body">
+      <div class="demo-sidebar">
+        <h4>Navigation</h4>
+        <div class="demo-nav-item active" onclick="showDemoView('calendar')"><span class="demo-nav-icon">📅</span>Course Calendar</div>
+        <div class="demo-nav-item" onclick="showDemoView('bookings')"><span class="demo-nav-icon">📝</span>My Bookings</div>
+        <div class="demo-nav-item" onclick="showDemoView('invoices')"><span class="demo-nav-icon">📄</span>Invoices</div>
+        <div class="demo-nav-item" onclick="showDemoView('admin')"><span class="demo-nav-icon">⚙️</span>Admin Dashboard</div>
+        <h4 style="margin-top:2rem">Course Info</h4>
+        <div style="font-size:0.75rem;color:var(--text-secondary);line-height:1.6;">
+          <p style="margin-bottom:0.75rem"><strong style="color:var(--text-primary)">Emergency First Aid at Work</strong><br>1 Day • £125 + VAT</p>
+          <p style="margin-bottom:0.75rem"><strong style="color:var(--text-primary)">First Aid at Work</strong><br>3 Days • £295 + VAT</p>
+          <p><strong style="color:var(--text-primary)">Paediatric First Aid</strong><br>2 Days • £195 + VAT</p>
+        </div>
+      </div>
+      <div class="demo-main">
+        <div id="view-calendar">
+          <div class="calendar-header">
+            <div>
+              <div class="calendar-title" id="cal-month-year">July 2026</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.25rem">Select a date to book your course</div>
+            </div>
+            <div class="calendar-nav">
+              <button class="calendar-btn" onclick="changeMonth(-1)">&#8249;</button>
+              <button class="calendar-btn" onclick="changeMonth(1)">&#8250;</button>
+            </div>
+          </div>
+          <div class="calendar-grid" id="calendar-grid"></div>
+          <div style="margin-top:1.5rem;display:flex;gap:1rem;align-items:center;font-size:0.75rem;color:var(--text-muted)">
+            <span style="display:flex;align-items:center;gap:0.375rem"><span style="width:8px;height:8px;background:var(--success);border-radius:50%;display:inline-block"></span> Available</span>
+            <span style="display:flex;align-items:center;gap:0.375rem"><span style="width:8px;height:8px;background:var(--danger);border-radius:50%;display:inline-block"></span> Full</span>
+            <span style="display:flex;align-items:center;gap:0.375rem"><span style="width:8px;height:8px;background:var(--accent);border-radius:50%;display:inline-block"></span> Selected</span>
+          </div>
+        </div>
+        <div id="view-booking" class="booking-form">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <button class="calendar-btn" onclick="showDemoView('calendar')" style="width:auto;padding:0 0.75rem">&#8592; Back</button>
+            <div>
+              <div style="font-weight:700">Book Your Course</div>
+              <div style="font-size:0.75rem;color:var(--text-muted)" id="booking-date-display">July 15, 2026</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Booking Type</label>
+            <div class="form-radio-group">
+              <div class="form-radio selected" onclick="selectBookingType(this,'individual')">Individual</div>
+              <div class="form-radio" onclick="selectBookingType(this,'group')">Group / Company</div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">First Name *</label><input type="text" class="form-input" placeholder="John" id="fname"></div>
+            <div class="form-group"><label class="form-label">Last Name *</label><input type="text" class="form-input" placeholder="Smith" id="lname"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Email *</label><input type="email" class="form-input" placeholder="john@company.com" id="email"></div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-input" placeholder="+44 7700 900000" id="phone"></div>
+            <div class="form-group"><label class="form-label">Company (if applicable)</label><input type="text" class="form-input" placeholder="Company Ltd" id="company"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Course Selection</label>
+            <select class="form-select" id="course-select" onchange="updatePricing()">
+              <option value="efaw" data-price="125">Emergency First Aid at Work — £125.00</option>
+              <option value="faw" data-price="295">First Aid at Work — £295.00</option>
+              <option value="pfa" data-price="195">Paediatric First Aid — £195.00</option>
+            </select>
+          </div>
+          <div class="form-group" id="attendees-group" style="display:none">
+            <label class="form-label">Number of Attendees</label>
+            <input type="number" class="form-input" value="1" min="1" max="20" id="attendees" onchange="updatePricing()">
+          </div>
+          <div style="background:var(--surface-elevated);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1.5rem">
+            <div style="display:flex;justify-content:space-between;font-size:0.8125rem;margin-bottom:0.5rem"><span>Course Fee</span><span id="price-subtotal">£125.00</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.8125rem;margin-bottom:0.5rem"><span>VAT (20%)</span><span id="price-vat">£25.00</span></div>
+            <div style="display:flex;justify-content:space-between;font-weight:700;font-size:1rem;border-top:1px solid var(--border);padding-top:0.5rem"><span>Total</span><span id="price-total">£150.00</span></div>
+          </div>
+          <button class="btn btn-primary btn-block" onclick="submitBooking()"><span>&#10003;</span> Complete Booking</button>
+        </div>
+        <div id="view-confirmation" class="confirmation">
+          <div class="confirmation-icon">&#10003;</div>
+          <h3>Booking Confirmed!</h3>
+          <p>A confirmation email has been sent to your inbox with your booking details and invoice.</p>
+          <div class="ref-box" id="booking-ref">GULD-7X9K-2026</div>
+          <div class="invoice-preview">
+            <div class="invoice-preview-header">
+              <div><div class="invoice-preview-title">Guld Training</div><div style="font-size:0.6875rem;color:var(--text-muted)">Training & Recruitment Ltd</div></div>
+              <div class="invoice-preview-meta"><div>Invoice #<span id="inv-num">INV-2026-0042</span></div><div id="inv-date">05 Jul 2026</div></div>
+            </div>
+            <div class="invoice-row"><span>Bill To:</span><span id="inv-name" style="text-align:right">John Smith</span></div>
+            <div class="invoice-row"><span>Course:</span><span id="inv-course" style="text-align:right">Emergency First Aid at Work</span></div>
+            <div class="invoice-row"><span>Date:</span><span id="inv-course-date" style="text-align:right">15 Jul 2026</span></div>
+            <div style="border-top:1px solid var(--border);margin:0.5rem 0"></div>
+            <div class="invoice-row"><span>Subtotal</span><span id="inv-sub">£125.00</span></div>
+            <div class="invoice-row"><span>VAT (20%)</span><span id="inv-vat">£25.00</span></div>
+            <div class="invoice-row total"><span>Total Due</span><span id="inv-total">£150.00</span></div>
+          </div>
+          <button class="btn btn-secondary" onclick="resetDemo()">Book Another Course</button>
+        </div>
+        <div id="view-bookings" style="display:none;text-align:center;padding:4rem 2rem;color:var(--text-muted)">
+          <div style="font-size:3rem;margin-bottom:1rem">📝</div>
+          <h3 style="color:var(--text-primary);margin-bottom:0.5rem">My Bookings</h3>
+          <p>After logging in, users see their complete booking history,<br>downloadable certificates, and reschedule options.</p>
+        </div>
+        <div id="view-invoices" style="display:none;text-align:center;padding:4rem 2rem;color:var(--text-muted)">
+          <div style="font-size:3rem;margin-bottom:1rem">📄</div>
+          <h3 style="color:var(--text-primary);margin-bottom:0.5rem">Invoice History</h3>
+          <p>All invoices stored with unique numbering, PDF download,<br>payment status tracking, and VAT breakdown.</p>
+        </div>
+        <div id="view-admin" style="display:none">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem">
+            <div style="background:linear-gradient(135deg,var(--accent),var(--accent-hover));color:white;padding:1.25rem;border-radius:var(--radius-sm)"><div style="font-size:0.6875rem;opacity:0.8;text-transform:uppercase;letter-spacing:0.1em">Total Bookings</div><div style="font-size:1.75rem;font-weight:800;margin-top:0.25rem">1,247</div></div>
+            <div style="background:linear-gradient(135deg,var(--success),#059669);color:white;padding:1.25rem;border-radius:var(--radius-sm)"><div style="font-size:0.6875rem;opacity:0.8;text-transform:uppercase;letter-spacing:0.1em">This Month</div><div style="font-size:1.75rem;font-weight:800;margin-top:0.25rem">89</div></div>
+            <div style="background:linear-gradient(135deg,var(--warning),#d97706);color:white;padding:1.25rem;border-radius:var(--radius-sm)"><div style="font-size:0.6875rem;opacity:0.8;text-transform:uppercase;letter-spacing:0.1em">Revenue</div><div style="font-size:1.75rem;font-weight:800;margin-top:0.25rem">£24.5K</div></div>
+          </div>
+          <div style="background:white;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden">
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid var(--border);font-weight:600;font-size:0.875rem">Recent Bookings</div>
+            <table style="width:100%;font-size:0.8125rem;border-collapse:collapse">
+              <thead><tr style="background:var(--surface-elevated)">
+                <th style="padding:0.625rem 1rem;text-align:left;font-weight:600;color:var(--text-muted);font-size:0.6875rem;text-transform:uppercase">Ref</th>
+                <th style="padding:0.625rem 1rem;text-align:left;font-weight:600;color:var(--text-muted);font-size:0.6875rem;text-transform:uppercase">Customer</th>
+                <th style="padding:0.625rem 1rem;text-align:left;font-weight:600;color:var(--text-muted);font-size:0.6875rem;text-transform:uppercase">Course</th>
+                <th style="padding:0.625rem 1rem;text-align:left;font-weight:600;color:var(--text-muted);font-size:0.6875rem;text-transform:uppercase">Date</th>
+                <th style="padding:0.625rem 1rem;text-align:left;font-weight:600;color:var(--text-muted);font-size:0.6875rem;text-transform:uppercase">Status</th>
+              </tr></thead>
+              <tbody>
+                <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.75rem 1rem;font-family:monospace;font-size:0.75rem">GULD-3A9F</td><td style="padding:0.75rem 1rem">Sarah Johnson</td><td style="padding:0.75rem 1rem">First Aid at Work</td><td style="padding:0.75rem 1rem">12 Jul 2026</td><td style="padding:0.75rem 1rem"><span style="background:rgba(16,185,129,0.1);color:var(--success);padding:0.125rem 0.5rem;border-radius:4px;font-size:0.6875rem;font-weight:600">Confirmed</span></td></tr>
+                <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.75rem 1rem;font-family:monospace;font-size:0.75rem">GULD-7K2M</td><td style="padding:0.75rem 1rem">BuildSafe Ltd</td><td style="padding:0.75rem 1rem">Emergency First Aid</td><td style="padding:0.75rem 1rem">14 Jul 2026</td><td style="padding:0.75rem 1rem"><span style="background:rgba(14,165,233,0.1);color:var(--accent);padding:0.125rem 0.5rem;border-radius:4px;font-size:0.6875rem;font-weight:600">Pending</span></td></tr>
+                <tr><td style="padding:0.75rem 1rem;font-family:monospace;font-size:0.75rem">GULD-1P5Q</td><td style="padding:0.75rem 1rem">Mark Williams</td><td style="padding:0.75rem 1rem">Paediatric First Aid</td><td style="padding:0.75rem 1rem">18 Jul 2026</td><td style="padding:0.75rem 1rem"><span style="background:rgba(16,185,129,0.1);color:var(--success);padding:0.125rem 0.5rem;border-radius:4px;font-size:0.6875rem;font-weight:600">Confirmed</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features">
+  <div class="section-header reveal">
+    <span class="section-tag">Phase 1 Deliverables</span>
+    <h2>First Aid Course Booking System</h2>
+    <p class="section-desc">Every feature required for Phase 1, built with scalability in mind for Phase 2 expansion.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card reveal"><div class="feature-icon">📅</div><h4>Monthly Calendar</h4><p>Interactive availability calendar showing course dates, remaining spaces, and real-time capacity updates to prevent overbooking.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">🎫</div><h4>Online Booking</h4><p>Streamlined booking flow for both individual and group/company registrations with attendee detail capture and validation.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">✉️</div><h4>Auto Confirmations</h4><p>Instant automated email confirmations with unique booking reference numbers sent via transactional email service.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">📄</div><h4>PDF Invoicing</h4><p>Automatic invoice generation with unique numbering, VAT calculation, and email delivery as professional PDF attachments.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">🛡️</div><h4>GDPR Compliant</h4><p>Secure data handling with encryption at rest, consent management, data retention policies, and right-to-erasure support.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">📱</div><h4>Mobile Optimised</h4><p>Fully responsive design ensuring seamless booking experience across all devices — phones, tablets, and desktops.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">⚙️</div><h4>Admin Dashboard</h4><p>Complete management interface for adding/editing/canceling courses, setting capacities, viewing bookings, and exporting delegate lists.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">🔍</div><h4>Search & Filter</h4><p>Powerful booking search with filters by date, course type, status, and customer — with CSV/PDF export functionality.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">🔒</div><h4>Overbooking Prevention</h4><p>Atomic database transactions ensure capacity is never exceeded. Waitlist functionality for fully booked courses.</p></div>
+  </div>
+</section>
+
+<section class="section section-alt" id="tech">
+  <div class="section-header reveal">
+    <span class="section-tag">Recommended Stack</span>
+    <h2>Technology Platform</h2>
+    <p class="section-desc">Modern, proven, and scalable technology choices specifically selected for booking system requirements.</p>
+  </div>
+  <div class="tech-grid">
+    <div class="tech-card reveal"><div class="tech-card-icon">⚛️</div><h5>Next.js 15</h5><p>React framework with SSR/SSG for performance and SEO</p></div>
+    <div class="tech-card reveal"><div class="tech-card-icon">🔷</div><h5>TypeScript</h5><p>Type-safe codebase reducing runtime errors</p></div>
+    <div class="tech-card reveal"><div class="tech-card-icon">🐘</div><h5>PostgreSQL</h5><p>Relational database with ACID compliance</p></div>
+    <div class="tech-card reveal"><div class="tech-card-icon">🔑</div><h5>Prisma ORM</h5><p>Type-safe database access and migrations</p></div>
+    <div class="tech-card reveal"><div class="tech-card-icon">⚡</div><h5>tRPC</h5><p>End-to-end typesafe APIs</p></div>
+    <div class="tech-card reveal"><div class="tech-card-icon">📧</div><h5>Resend / SendGrid</h5><p>Transactional email with deliverability tracking</p></div>
+    <div class="tech-card reveal"><div class="tech-card-icon">📄</div><h5>Puppeteer / PDFKit</h5><p>Server-side PDF invoice generation</p></div>
+    <div class="tech-card reveal"><div class="tech-card-icon">☁️</div><h5>Vercel / AWS</h5><p>Serverless deployment with global CDN</p></div>
+  </div>
+  <div style="margin-top:2rem;background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem" class="reveal">
+    <h4 style="font-size:1rem;font-weight:600;margin-bottom:1rem">Why This Stack for Guld?</h4>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;font-size:0.8125rem;color:var(--text-secondary)">
+      <div style="display:flex;gap:0.75rem;align-items:flex-start"><span style="color:var(--accent);font-weight:700;flex-shrink:0">01</span><span><strong style="color:var(--text-primary)">Scalability:</strong> Next.js + PostgreSQL handles 10K+ concurrent bookings. Phase 2 multi-course expansion requires only schema additions, not rewrites.</span></div>
+      <div style="display:flex;gap:0.75rem;align-items:flex-start"><span style="color:var(--accent);font-weight:700;flex-shrink:0">02</span><span><strong style="color:var(--text-primary)">Security:</strong> TypeScript + Prisma prevent SQL injection. Row-level security and encrypted fields ensure GDPR compliance out of the box.</span></div>
+      <div style="display:flex;gap:0.75rem;align-items:flex-start"><span style="color:var(--accent);font-weight:700;flex-shrink:0">03</span><span><strong style="color:var(--text-primary)">Email Reliability:</strong> Resend provides 99.9% delivery rates with webhook tracking. Invoices and confirmations never hit spam folders.</span></div>
+      <div style="display:flex;gap:0.75rem;align-items:flex-start"><span style="color:var(--accent);font-weight:700;flex-shrink:0">04</span><span><strong style="color:var(--text-primary)">Cost Efficiency:</strong> Serverless architecture means you pay only for usage. No idle server costs during quiet months.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pricing">
+  <div class="section-header reveal">
+    <span class="section-tag">Investment</span>
+    <h2>Fixed-Price Quotation</h2>
+    <p class="section-desc">Transparent, fixed pricing with no hidden costs. Phase 2 estimated based on scope expansion.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card reveal">
+      <div class="pricing-header">
+        <span class="pricing-tag">Phase 1 — First Aid</span>
+        <div class="pricing-price">£8,500 <span>fixed</span></div>
+        <div style="font-size:0.8125rem;color:var(--text-secondary);margin-top:0.25rem">Complete First Aid booking system</div>
+      </div>
+      <div class="pricing-body">
+        <ul class="pricing-features">
+          <li>Monthly course calendar with availability</li>
+          <li>Individual & group booking forms</li>
+          <li>Automated email confirmations</li>
+          <li>Unique booking reference numbers</li>
+          <li>PDF invoice generation + auto-email</li>
+          <li>VAT/tax calculation engine</li>
+          <li>Admin dashboard & booking management</li>
+          <li>Attendee/delegate list export (CSV/PDF)</li>
+          <li>Overbooking prevention</li>
+          <li>GDPR-compliant data handling</li>
+          <li>Mobile-responsive design</li>
+          <li>30 days post-launch support</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pricing-card featured reveal">
+      <div class="pricing-header">
+        <span class="pricing-tag">Phase 2 — Expansion</span>
+        <div class="pricing-price">£4,500 <span>estimated</span></div>
+        <div style="font-size:0.8125rem;color:var(--text-secondary);margin-top:0.25rem">Multi-course platform upgrade</div>
+      </div>
+      <div class="pricing-body">
+        <ul class="pricing-features">
+          <li>Multiple course categories</li>
+          <li>Dynamic pricing per course</li>
+          <li>Variable course durations</li>
+          <li>Multi-location scheduling</li>
+          <li>Different participant capacities</li>
+          <li>Easy addition of new courses</li>
+          <li>Advanced reporting & analytics</li>
+          <li>Role-based admin permissions</li>
+          <li>API for third-party integrations</li>
+          <li class="muted">Everything from Phase 1 included</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="costs-grid reveal">
+    <div class="cost-card">
+      <h5>Hosting</h5>
+      <div class="cost-value">£0–45<span style="font-size:0.875rem;color:var(--text-muted)">/mo</span></div>
+      <div class="cost-desc">Vercel Pro or AWS equivalent. Scales with traffic.</div>
+    </div>
+    <div class="cost-card">
+      <h5>Database</h5>
+      <div class="cost-value">£0–25<span style="font-size:0.875rem;color:var(--text-muted)">/mo</span></div>
+      <div class="cost-desc">PostgreSQL on Supabase or AWS RDS. Free tier available.</div>
+    </div>
+    <div class="cost-card">
+      <h5>Email</h5>
+      <div class="cost-value">£0–20<span style="font-size:0.875rem;color:var(--text-muted)">/mo</span></div>
+      <div class="cost-desc">Resend/SendGrid transactional email. Pay-per-use.</div>
+    </div>
+  </div>
+  <div style="margin-top:2rem;background:var(--surface-elevated);border-radius:var(--radius);padding:1.5rem" class="reveal">
+    <h4 style="font-size:1rem;font-weight:600;margin-bottom:1rem">Ongoing Costs Breakdown</h4>
+    <table style="width:100%;font-size:0.8125rem;border-collapse:collapse">
+      <thead><tr style="border-bottom:2px solid var(--border)"><th style="text-align:left;padding:0.5rem 0;font-weight:600">Item</th><th style="text-align:left;padding:0.5rem 0;font-weight:600">Monthly</th><th style="text-align:left;padding:0.5rem 0;font-weight:600">Annual</th><th style="text-align:left;padding:0.5rem 0;font-weight:600">Notes</th></tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.625rem 0">Hosting (Vercel/AWS)</td><td style="padding:0.625rem 0">£0–45</td><td style="padding:0.625rem 0">£0–540</td><td style="padding:0.625rem 0;color:var(--text-muted)">Scales with traffic; free tier for low volume</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.625rem 0">Database (PostgreSQL)</td><td style="padding:0.625rem 0">£0–25</td><td style="padding:0.625rem 0">£0–300</td><td style="padding:0.625rem 0;color:var(--text-muted)">Supabase free tier; paid for production</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.625rem 0">Email Service</td><td style="padding:0.625rem 0">£0–20</td><td style="padding:0.625rem 0">£0–240</td><td style="padding:0.625rem 0;color:var(--text-muted)">Resend: 3,000 emails/mo free</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:0.625rem 0">Domain & SSL</td><td style="padding:0.625rem 0">—</td><td style="padding:0.625rem 0">£10–20</td><td style="padding:0.625rem 0;color:var(--text-muted)">Standard domain registration</td></tr>
+        <tr><td style="padding:0.625rem 0;font-weight:700">Total Estimated</td><td style="padding:0.625rem 0;font-weight:700">£0–90</td><td style="padding:0.625rem 0;font-weight:700">£10–1,100</td><td style="padding:0.625rem 0;color:var(--text-muted)">No licence or plugin fees</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.75rem;color:var(--text-muted);margin-top:1rem">No third-party plugin costs, no annual licence fees, no hidden charges. All code is custom-built and owned by you.</p>
+  </div>
+</section>
+
+<section class="section section-alt" id="timeline">
+  <div class="section-header reveal">
+    <span class="section-tag">Delivery Plan</span>
+    <h2>Estimated Timeline — 6 Weeks</h2>
+    <p class="section-desc">Agile delivery with weekly demos and milestone-based payments.</p>
+  </div>
+  <div class="timeline reveal">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <span class="timeline-week">Week 1</span>
+        <h4>Discovery & Design</h4>
+        <p>Requirements workshop, wireframes, database schema design, and UI/UX mockups. Approval of booking flow and admin dashboard layout.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <span class="timeline-week">Week 2</span>
+        <h4>Core Infrastructure</h4>
+        <p>Database setup, authentication, course management API, and calendar component. Backend foundations with overbooking protection.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <span class="timeline-week">Week 3</span>
+        <h4>Booking Flow & Payments</h4>
+        <p>Customer booking form, individual/group registration, pricing engine with VAT, and payment integration (if required).</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <span class="timeline-week">Week 4</span>
+        <h4>Automations</h4>
+        <p>Email confirmation pipeline, PDF invoice generation with unique numbering, automated invoice delivery, and reminder system.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <span class="timeline-week">Week 5</span>
+        <h4>Admin Dashboard</h4>
+        <p>Booking management, attendee export, search/filter, course CRUD operations, capacity controls, and reporting views.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <span class="timeline-week">Week 6</span>
+        <h4>Testing & Launch</h4>
+        <p>End-to-end testing, GDPR compliance audit, security review, performance optimisation, deployment, and go-live support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="support">
+  <div class="section-header reveal">
+    <span class="section-tag">After Launch</span>
+    <h2>Post-Launch Support</h2>
+    <p class="section-desc">Ongoing partnership to ensure your booking system runs smoothly and evolves with your business.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card reveal"><div class="feature-icon">🛠️</div><h4>30-Day Warranty</h4><p>Free bug fixes and minor adjustments for 30 days after launch. No questions asked.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">🔧</div><h4>Monthly Retainer</h4><p>Optional £350/mo retainer for priority support, small feature additions, and system monitoring.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">📈</div><h4>Phase 2 Ready</h4><p>Architecture designed for easy expansion. Adding new courses, locations, and pricing tiers is straightforward.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">🎓</div><h4>Admin Training</h4><p>1-hour video walkthrough and written documentation for your team to manage the system independently.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">🔄</div><h4>Backups & Monitoring</h4><p>Automated daily database backups and uptime monitoring with alerts. 99.9% uptime guarantee.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">📞</div><h4>Direct Contact</h4><p>Direct email/Slack access for urgent issues. Response within 4 hours during business hours.</p></div>
+  </div>
+</section>
+
+<section class="cta-section" id="contact">
+  <h2>Ready to Build Your Booking System?</h2>
+  <p>I have read your full project description and am confident in delivering a professional, scalable solution for Guld Training and Recruitment.</p>
+  <div class="cta-buttons">
+    <a href="mailto:hello@example.com" class="btn btn-white">📧 Email Proposal</a>
+    <a href="#demo" class="btn btn-outline">Try the Demo Again</a>
+  </div>
+  <div style="margin-top:2rem;font-size:0.8125rem;color:#64748b">
+    <strong style="color:#94a3b8">Next steps:</strong> Schedule a 30-minute call to discuss requirements, review the demo in detail, and finalise the scope for Phase 1.
+  </div>
+</section>
+
+<footer class="footer">
+  <p><strong>GULD BOOKING SYSTEM</strong> — Proposal for Guld Training and Recruitment</p>
+  <p style="margin-top:0.5rem">Proven booking system experience. Professional, scalable, GDPR-compliant solutions.</p>
+  <p style="margin-top:1rem;font-size:0.75rem;color:#475569">This proposal was prepared specifically for this project. Generic applications are not my approach.</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Scroll reveal
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+revealElements.forEach(el => revealObserver.observe(el));
+
+// Calendar state
+let currentDate = new Date(2026, 6, 1); // July 2026
+let selectedDate = null;
+const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+// Course availability data (day -> spaces)
+const courseData = {
+  '2026-7-8': 5, '2026-7-9': 3, '2026-7-10': 0, '2026-7-11': 8,
+  '2026-7-14': 6, '2026-7-15': 2, '2026-7-16': 4, '2026-7-17': 0,
+  '2026-7-21': 7, '2026-7-22': 1, '2026-7-23': 5, '2026-7-24': 3,
+  '2026-7-28': 4, '2026-7-29': 6, '2026-7-30': 2, '2026-7-31': 0,
+  '2026-8-4': 8, '2026-8-5': 5, '2026-8-6': 3, '2026-8-7': 0,
+  '2026-8-11': 6, '2026-8-12': 4, '2026-8-13': 2, '2026-8-14': 7,
+  '2026-8-18': 5, '2026-8-19': 3, '2026-8-20': 0, '2026-8-21': 8,
+  '2026-8-25': 4, '2026-8-26': 6, '2026-8-27': 2, '2026-8-28': 5
+};
+
+function renderCalendar() {
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const grid = document.getElementById('calendar-grid');
+  document.getElementById('cal-month-year').textContent = monthNames[month] + ' ' + year;
+
+  let html = '';
+  dayNames.forEach(d => html += '<div class="calendar-day-header">' + d + '</div>');
+  for (let i = 0; i < firstDay; i++) html += '<div class="calendar-day empty"></div>';
+  for (let d = 1; d <= daysInMonth; d++) {
+    const key = year + '-' + (month+1) + '-' + d;
+    const spaces = courseData[key];
+    let cls = 'calendar-day';
+    let content = d;
+    if (spaces !== undefined) {
+      cls += ' has-course';
+      if (spaces === 0) cls += ' disabled';
+      else content += '<div class="calendar-spaces">' + spaces + ' left</div>';
+    } else {
+      cls += ' disabled';
+    }
+    if (selectedDate && selectedDate.getDate() === d && selectedDate.getMonth() === month && selectedDate.getFullYear() === year) {
+      cls += ' selected';
+    }
+    const onclick = spaces > 0 ? 'onclick="selectDate(' + d + ')"' : '';
+    html += '<div class="' + cls + '" ' + onclick + '>' + content + '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+function changeMonth(delta) {
+  currentDate.setMonth(currentDate.getMonth() + delta);
+  renderCalendar();
+}
+
+function selectDate(day) {
+  selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('booking-date-display').textContent = months[selectedDate.getMonth()] + ' ' + day + ', ' + selectedDate.getFullYear();
+  document.getElementById('inv-course-date').textContent = day + ' ' + months[selectedDate.getMonth()].substring(0,3) + ' ' + selectedDate.getFullYear();
+  renderCalendar();
+  showDemoView('booking');
+}
+
+function showDemoView(view) {
+  ['calendar','booking','confirmation','bookings','invoices','admin'].forEach(v => {
+    const el = document.getElementById('view-' + v);
+    if (el) el.style.display = 'none';
+    if (el && el.classList) el.classList.remove('active');
+  });
+  const target = document.getElementById('view-' + view);
+  if (target) {
+    target.style.display = 'block';
+    if (target.classList) target.classList.add('active');
+  }
+  document.querySelectorAll('.demo-nav-item').forEach(item => item.classList.remove('active'));
+  const navItems = document.querySelectorAll('.demo-nav-item');
+  const map = {calendar:0, bookings:1, invoices:2, admin:3};
+  if (map[view] !== undefined && navItems[map[view]]) navItems[map[view]].classList.add('active');
+}
+
+function selectBookingType(el, type) {
+  document.querySelectorAll('.form-radio').forEach(r => r.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('attendees-group').style.display = type === 'group' ? 'block' : 'none';
+  updatePricing();
+}
+
+function updatePricing() {
+  const select = document.getElementById('course-select');
+  const price = parseFloat(select.options[select.selectedIndex].dataset.price || 125);
+  const attendees = parseInt(document.getElementById('attendees').value || 1);
+  const isGroup = document.querySelectorAll('.form-radio')[1].classList.contains('selected');
+  const qty = isGroup ? attendees : 1;
+  const subtotal = price * qty;
+  const vat = subtotal * 0.2;
+  const total = subtotal + vat;
+  document.getElementById('price-subtotal').textContent = '£' + subtotal.toFixed(2);
+  document.getElementById('price-vat').textContent = '£' + vat.toFixed(2);
+  document.getElementById('price-total').textContent = '£' + total.toFixed(2);
+}
+
+function submitBooking() {
+  const fname = document.getElementById('fname').value;
+  const lname = document.getElementById('lname').value;
+  const email = document.getElementById('email').value;
+  if (!fname || !lname || !email) {
+    showToast('Please fill in all required fields', 'error');
+    return;
+  }
+  // Generate reference
+  const ref = 'GULD-' + Math.random().toString(36).substring(2,6).toUpperCase() + '-' + new Date().getFullYear();
+  document.getElementById('booking-ref').textContent = ref;
+  // Update invoice
+  document.getElementById('inv-name').textContent = fname + ' ' + lname;
+  const select = document.getElementById('course-select');
+  document.getElementById('inv-course').textContent = select.options[select.selectedIndex].text.split('—')[0].trim();
+  const sub = document.getElementById('price-subtotal').textContent;
+  const vat = document.getElementById('price-vat').textContent;
+  const total = document.getElementById('price-total').textContent;
+  document.getElementById('inv-sub').textContent = sub;
+  document.getElementById('inv-vat').textContent = vat;
+  document.getElementById('inv-total').textContent = total;
+  document.getElementById('inv-num').textContent = 'INV-2026-' + String(Math.floor(Math.random()*9000)+1000);
+  const now = new Date();
+  document.getElementById('inv-date').textContent = now.getDate() + ' ' + monthNames[now.getMonth()].substring(0,3) + ' ' + now.getFullYear();
+  showDemoView('confirmation');
+  showToast('Booking confirmed! Check your email.', 'success');
+}
+
+function resetDemo() {
+  selectedDate = null;
+  document.getElementById('fname').value = '';
+  document.getElementById('lname').value = '';
+  document.getElementById('email').value = '';
+  document.getElementById('phone').value = '';
+  document.getElementById('company').value = '';
+  document.getElementById('attendees').value = 1;
+  selectBookingType(document.querySelectorAll('.form-radio')[0], 'individual');
+  renderCalendar();
+  showDemoView('calendar');
+}
+
+function showToast(msg, type) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast show' + (type === 'success' ? ' success' : '');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// Init
+renderCalendar();
+updatePricing();
+</script>
+</body>
+</html>
