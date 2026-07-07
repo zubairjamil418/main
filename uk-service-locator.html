@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>UK Service Locator</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  :root {
+    --primary: #111;
+    --secondary: #666;
+    --accent: #2563eb;
+    --bg: #f8f9fa;
+    --card: #fff;
+    --border: #e5e7eb;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font); background: var(--bg); color: var(--primary); overflow-x: hidden; }
+
+  .header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 16px;
+    position: sticky; top: 0; z-index: 1000;
+    box-shadow: var(--shadow);
+  }
+  .header-inner { max-width: 600px; margin: 0 auto; }
+  .logo { font-size: 20px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .logo-icon { width: 28px; height: 28px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; }
+
+  .search-box { position: relative; }
+  .search-box input {
+    width: 100%; padding: 14px 48px 14px 16px; font-size: 16px; border: 2px solid var(--border);
+    border-radius: var(--radius); outline: none; transition: border-color 0.2s; font-family: var(--font);
+  }
+  .search-box input:focus { border-color: var(--accent); }
+  .search-btn {
+    position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    background: var(--accent); color: white; border: none; padding: 10px 18px;
+    border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s;
+  }
+  .search-btn:active { opacity: 0.8; }
+  .search-btn:disabled { background: var(--secondary); cursor: not-allowed; }
+
+  .container { max-width: 600px; margin: 0 auto; padding: 16px; }
+
+  #map { height: 320px; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 16px; z-index: 1; }
+
+  .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .results-title { font-size: 17px; font-weight: 600; }
+  .results-count { font-size: 13px; color: var(--secondary); background: var(--bg); padding: 4px 10px; border-radius: 20px; }
+
+  .location-card {
+    background: var(--card); border-radius: var(--radius); padding: 16px;
+    margin-bottom: 12px; box-shadow: var(--shadow); border: 1px solid var(--border);
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .location-card:active { transform: scale(0.98); }
+  .location-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+
+  .loc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .loc-name { font-size: 16px; font-weight: 600; flex: 1; }
+  .loc-distance { font-size: 13px; color: var(--accent); font-weight: 600; white-space: nowrap; margin-left: 8px; }
+  .loc-address { font-size: 14px; color: var(--secondary); line-height: 1.5; margin-bottom: 8px; }
+  .loc-meta { display: flex; gap: 12px; font-size: 12px; color: var(--secondary); }
+  .loc-meta span { display: flex; align-items: center; gap: 4px; }
+  .loc-tag {
+    display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; padding: 3px 8px; border-radius: 6px; margin-top: 8px;
+  }
+  .tag-clinic { background: #dbeafe; color: #1e40af; }
+  .tag-store { background: #dcfce7; color: #166534; }
+  .tag-office { background: #f3e8ff; color: #7c3aed; }
+  .tag-hub { background: #fef3c7; color: #92400e; }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--secondary); }
+  .empty-state svg { width: 64px; height: 64px; margin-bottom: 16px; opacity: 0.3; }
+  .empty-state h3 { font-size: 18px; margin-bottom: 8px; color: var(--primary); }
+
+  .loading { text-align: center; padding: 20px; color: var(--secondary); }
+  .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 8px; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .popup-content { min-width: 180px; }
+  .popup-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .popup-addr { font-size: 12px; color: var(--secondary); }
+  .popup-dist { font-size: 12px; color: var(--accent); font-weight: 600; margin-top: 4px; }
+
+  .footer { text-align: center; padding: 24px; font-size: 12px; color: var(--secondary); }
+
+  @media (max-width: 480px) {
+    #map { height: 260px; }
+    .header { padding: 12px; }
+    .container { padding: 12px; }
+    .location-card { padding: 14px; }
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">📍</div>
+      UK Service Locator
+    </div>
+    <div class="search-box">
+      <input type="text" id="postcodeInput" placeholder="Enter UK postcode (e.g. SW1A 1AA)" maxlength="10">
+      <button class="search-btn" id="searchBtn" onclick="searchLocations()">Find</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div id="map"></div>
+
+  <div class="results-header">
+    <div class="results-title">Nearby locations</div>
+    <div class="results-count" id="resultsCount">Enter a postcode</div>
+  </div>
+
+  <div id="resultsList">
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <h3>Find your nearest service</h3>
+      <p>Enter your postcode above to see locations near you.</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">© 2026 UK Service Locator. Built with OpenStreetMap &amp; postcodes.io</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const locations = [
+  { name: "London Bridge Clinic", address: "22 Tooley St, London SE1 2TF", postcode: "SE1 2TF", lat: 51.5055, lng: -0.0860, type: "clinic", phone: "020 7407 3100", hours: "Mon-Fri 8am-6pm" },
+  { name: "Manchester Central Hub", address: "1 Piccadilly, Manchester M1 1BG", postcode: "M1 1BG", lat: 53.4803, lng: -2.2422, type: "hub", phone: "0161 228 2201", hours: "Mon-Sat 9am-5pm" },
+  { name: "Birmingham New Street Office", address: "Stephenson St, Birmingham B2 4BH", postcode: "B2 4BH", lat: 52.4775, lng: -1.9001, type: "office", phone: "0121 616 2100", hours: "Mon-Fri 9am-5:30pm" },
+  { name: "Leeds City Centre Store", address: "Trinity Leeds, Albion St, Leeds LS1 5AT", postcode: "LS1 5AT", lat: 53.7975, lng: -1.5440, type: "store", phone: "0113 394 2415", hours: "Mon-Sun 9am-8pm" },
+  { name: "Glasgow Buchanan Clinic", address: "220 Buchanan St, Glasgow G1 2FF", postcode: "G1 2FF", lat: 55.8632, lng: -4.2518, type: "clinic", phone: "0141 332 9566", hours: "Mon-Fri 8am-6pm" },
+  { name: "Liverpool One Hub", address: "5 Wall St, Liverpool L1 8JQ", postcode: "L1 8JQ", lat: 53.4045, lng: -2.9883, type: "hub", phone: "0151 707 0888", hours: "Mon-Sat 9am-6pm" },
+  { name: "Bristol Cabot Store", address: "Cabot Circus, Bristol BS1 3BA", postcode: "BS1 3BA", lat: 51.4585, lng: -2.5833, type: "store", phone: "0117 922 3700", hours: "Mon-Sun 10am-8pm" },
+  { name: "Sheffield Meadowhall Office", address: "The Oasis, Meadowhall, Sheffield S9 1EP", postcode: "S9 1EP", lat: 53.4142, lng: -1.4124, type: "office", phone: "0114 256 5600", hours: "Mon-Sat 9am-9pm" },
+  { name: "Cardiff Queen St Clinic", address: "45 Queen St, Cardiff CF10 2AS", postcode: "CF10 2AS", lat: 51.4816, lng: -3.1791, type: "clinic", phone: "029 2034 3500", hours: "Mon-Fri 8am-6pm" },
+  { name: "Nottingham Victoria Hub", address: "Victoria Centre, Nottingham NG1 3QN", postcode: "NG1 3QN", lat: 52.9563, lng: -1.1492, type: "hub", phone: "0115 947 2201", hours: "Mon-Sat 9am-6pm" },
+  { name: "Newcastle Eldon Store", address: "Eldon Square, Newcastle NE1 7XP", postcode: "NE1 7XP", lat: 54.9756, lng: -1.6135, type: "store", phone: "0191 230 6300", hours: "Mon-Sun 9am-7pm" },
+  { name: "Edinburgh Princes St Office", address: "100 Princes St, Edinburgh EH2 3AA", postcode: "EH2 3AA", lat: 55.9533, lng: -3.1883, type: "office", phone: "0131 225 6500", hours: "Mon-Fri 9am-5pm" },
+  { name: "Belfast Victoria Clinic", address: "Victoria Square, Belfast BT1 4QG", postcode: "BT1 4QG", lat: 54.5970, lng: -5.9260, type: "clinic", phone: "028 9032 0200", hours: "Mon-Fri 8am-6pm" },
+  { name: "Southampton Westquay Hub", address: "Westquay, Southampton SO15 1QF", postcode: "SO15 1QF", lat: 50.9036, lng: -1.4042, type: "hub", phone: "023 8021 5500", hours: "Mon-Sat 9am-8pm" },
+  { name: "Portsmouth Gunwharf Store", address: "Gunwharf Quays, Portsmouth PO1 3TZ", postcode: "PO1 3TZ", lat: 50.7960, lng: -1.1060, type: "store", phone: "023 9282 6700", hours: "Mon-Sun 10am-8pm" },
+  { name: "Brighton Churchill Clinic", address: "Churchill Square, Brighton BN1 2TE", postcode: "BN1 2TE", lat: 50.8225, lng: -0.1441, type: "clinic", phone: "01273 202 900", hours: "Mon-Fri 8am-6pm" },
+  { name: "Oxford Westgate Office", address: "Westgate, Oxford OX1 1PE", postcode: "OX1 1PE", lat: 51.7520, lng: -1.2577, type: "office", phone: "01865 248 300", hours: "Mon-Sat 9am-8pm" },
+  { name: "Cambridge Grand Arcade Hub", address: "Grand Arcade, Cambridge CB2 3BJ", postcode: "CB2 3BJ", lat: 52.2053, lng: 0.1218, type: "hub", phone: "01223 308 600", hours: "Mon-Sat 9am-6pm" },
+  { name: "Norwich Castle Store", address: "Castle Mall, Norwich NR1 3DD", postcode: "NR1 3DD", lat: 52.6286, lng: 1.2923, type: "store", phone: "01603 763 300", hours: "Mon-Sun 9am-6pm" },
+  { name: "York Monks Cross Clinic", address: "Monks Cross, York YO32 9GX", postcode: "YO32 9GX", lat: 53.9915, lng: -1.0480, type: "clinic", phone: "01904 655 100", hours: "Mon-Fri 8am-6pm" },
+  { name: "Leicester Highcross Hub", address: "Highcross, Leicester LE1 4AN", postcode: "LE1 4AN", lat: 52.6369, lng: -1.1398, type: "hub", phone: "0116 251 0000", hours: "Mon-Sat 9am-8pm" },
+  { name: "Coventry West Orchards Store", address: "West Orchards, Coventry CV1 1DX", postcode: "CV1 1DX", lat: 52.4081, lng: -1.5106, type: "store", phone: "024 7623 3100", hours: "Mon-Sun 9am-6pm" },
+  { name: "Derby Intu Office", address: "Intu Derby, Derby DE1 2PQ", postcode: "DE1 2PQ", lat: 52.9225, lng: -1.4746, type: "office", phone: "01332 341 200", hours: "Mon-Sat 9am-6pm" },
+  { name: "Stoke Potteries Clinic", address: "The Potteries, Stoke ST1 1PS", postcode: "ST1 1PS", lat: 53.0258, lng: -2.1775, type: "clinic", phone: "01782 202 400", hours: "Mon-Fri 8am-6pm" },
+  { name: "Wolverhampton Mander Hub", address: "Mander Centre, Wolverhampton WV1 3NH", postcode: "WV1 3NH", lat: 52.5853, lng: -2.1285, type: "hub", phone: "01902 711 100", hours: "Mon-Sat 9am-5:30pm" },
+  { name: "Plymouth Drake Circus Store", address: "Drake Circus, Plymouth PL1 1EA", postcode: "PL1 1EA", lat: 50.3719, lng: -4.1430, type: "store", phone: "01752 225 500", hours: "Mon-Sun 9am-6pm" },
+  { name: "Exeter Princesshay Office", address: "Princesshay, Exeter EX1 1GE", postcode: "EX1 1GE", lat: 50.7256, lng: -3.5269, type: "office", phone: "01392 438 100", hours: "Mon-Sat 9am-6pm" },
+  { name: "Aberdeen Union Square Clinic", address: "Union Square, Aberdeen AB11 5RG", postcode: "AB11 5RG", lat: 57.1440, lng: -2.0960, type: "clinic", phone: "01224 592 000", hours: "Mon-Fri 8am-6pm" },
+  { name: "Dundee Overgate Hub", address: "Overgate, Dundee DD1 1UQ", postcode: "DD1 1UQ", lat: 56.4620, lng: -2.9707, type: "hub", phone: "01382 229 000", hours: "Mon-Sat 9am-5:30pm" },
+  { name: "Swansea Quadrant Store", address: "Quadrant, Swansea SA1 3QW", postcode: "SA1 3QW", lat: 51.6180, lng: -3.9510, type: "store", phone: "01792 461 100", hours: "Mon-Sun 9am-6pm" },
+  { name: "Bournemouth Castlepoint Office", address: "Castlepoint, Bournemouth BH8 9UW", postcode: "BH8 9UW", lat: 50.7445, lng: -1.8380, type: "office", phone: "01202 520 200", hours: "Mon-Sat 9am-6pm" },
+  { name: "Reading Oracle Clinic", address: "The Oracle, Reading RG1 2AG", postcode: "RG1 2AG", lat: 51.4535, lng: -0.9710, type: "clinic", phone: "0118 957 3000", hours: "Mon-Fri 8am-6pm" },
+  { name: "Milton Keynes Centre Hub", address: "centre:mk, Milton Keynes MK9 3EP", postcode: "MK9 3EP", lat: 52.0410, lng: -0.7580, type: "hub", phone: "01908 679 000", hours: "Mon-Sat 9am-8pm" },
+  { name: "Luton Mall Store", address: "The Mall, Luton LU1 2TL", postcode: "LU1 2TL", lat: 51.8780, lng: -0.4180, type: "store", phone: "01582 726 200", hours: "Mon-Sun 9am-6pm" },
+  { name: "Ipswich Buttermarket Office", address: "Buttermarket, Ipswich IP1 1DT", postcode: "IP1 1DT", lat: 52.0590, lng: 1.1550, type: "office", phone: "01473 230 300", hours: "Mon-Sat 9am-5:30pm" },
+  { name: "Chelmsford Bond St Clinic", address: "Bond St, Chelmsford CM1 1GD", postcode: "CM1 1GD", lat: 51.7350, lng: 0.4780, type: "clinic", phone: "01245 260 100", hours: "Mon-Fri 8am-6pm" },
+  { name: "Southend Victoria Hub", address: "Victoria Plaza, Southend SS2 5SP", postcode: "SS2 5SP", lat: 51.5400, lng: 0.7100, type: "hub", phone: "01702 330 100", hours: "Mon-Sat 9am-5:30pm" },
+  { name: "Crawley County Mall Store", address: "County Mall, Crawley RH10 1FF", postcode: "RH10 1FF", lat: 51.1150, lng: -0.1830, type: "store", phone: "01293 526 000", hours: "Mon-Sun 9am-6pm" },
+  { name: "Maidstone Fremlin Walk Office", address: "Fremlin Walk, Maidstone ME14 1QP", postcode: "ME14 1QP", lat: 51.2720, lng: 0.5230, type: "office", phone: "01622 690 200", hours: "Mon-Sat 9am-5:30pm" },
+  { name: "Canterbury Whitefriars Clinic", address: "Whitefriars, Canterbury CT1 2TA", postcode: "CT1 2TA", lat: 51.2800, lng: 1.0800, type: "clinic", phone: "01227 769 100", hours: "Mon-Fri 8am-6pm" },
+  { name: "Hull St Stephens Hub", address: "St Stephens, Hull HU2 8LN", postcode: "HU2 8LN", lat: 53.7440, lng: -0.3380, type: "hub", phone: "01482 211 100", hours: "Mon-Sat 9am-6pm" },
+  { name: "Blackpool Houndshill Store", address: "Houndshill, Blackpool FY1 4HU", postcode: "FY1 4HU", lat: 53.8170, lng: -3.0530, type: "store", phone: "01253 620 100", hours: "Mon-Sun 10am-6pm" },
+  { name: "Preston Fishergate Office", address: "Fishergate, Preston PR1 8HJ", postcode: "PR1 8HJ", lat: 53.7590, lng: -2.6990, type: "office", phone: "01772 823 100", hours: "Mon-Sat 9am-5:30pm" },
+  { name: "Bradford Broadway Clinic", address: "The Broadway, Bradford BD1 1EJ", postcode: "BD1 1EJ", lat: 53.7930, lng: -1.7540, type: "clinic", phone: "01274 720 200", hours: "Mon-Fri 8am-6pm" },
+  { name: "Sunderland Bridges Hub", address: "The Bridges, Sunderland SR1 3LB", postcode: "SR1 3LB", lat: 54.9060, lng: -1.3810, type: "hub", phone: "0191 567 0200", hours: "Mon-Sat 9am-6pm" },
+  { name: "Middlesbrough Cleveland Store", address: "Cleveland Centre, Middlesbrough TS1 2NR", postcode: "TS1 2NR", lat: 54.5760, lng: -1.2350, type: "store", phone: "01642 210 100", hours: "Mon-Sun 9am-5:30pm" },
+  { name: "Peterborough Queensgate Office", address: "Queensgate, Peterborough PE1 1NW", postcode: "PE1 1NW", lat: 52.5720, lng: -0.2430, type: "office", phone: "01733 311 200", hours: "Mon-Sat 9am-6pm" },
+  { name: "Swindon Brunel Clinic", address: "Brunel Centre, Swindon SN1 1LF", postcode: "SN1 1LF", lat: 51.5600, lng: -1.7850, type: "clinic", phone: "01793 433 100", hours: "Mon-Fri 8am-6pm" },
+  { name: "Gloucester Eastgate Hub", address: "Eastgate, Gloucester GL1 1AG", postcode: "GL1 1AG", lat: 51.8640, lng: -2.2450, type: "hub", phone: "01452 309 100", hours: "Mon-Sat 9am-5:30pm" },
+  { name: "Worcester Crowngate Store", address: "Crowngate, Worcester WR1 3LE", postcode: "WR1 3LE", lat: 52.1920, lng: -2.2210, type: "store", phone: "01905 612 100", hours: "Mon-Sun 9am-6pm" },
+  { name: "Warrington Golden Square Office", address: "Golden Square, Warrington WA1 1QB", postcode: "WA1 1QB", lat: 53.3900, lng: -2.5920, type: "office", phone: "01925 244 200", hours: "Mon-Sat 9am-5:30pm" },
+  { name: "Chester Grosvenor Clinic", address: "Grosvenor Centre, Chester CH1 1CA", postcode: "CH1 1CA", lat: 53.1900, lng: -2.8900, type: "clinic", phone: "01244 340 100", hours: "Mon-Fri 8am-6pm" }
+];
+
+const map = L.map('map', { zoomControl: false }).setView([54.5, -3.5], 5);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors',
+  maxZoom: 18
+}).addTo(map);
+L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+let markers = [];
+let userMarker = null;
+
+function toRad(deg) { return deg * Math.PI / 180; }
+function haversine(lat1, lng1, lat2, lng2) {
+  const R = 3959;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+function formatDistance(miles) {
+  if (miles < 0.1) return "< 0.1 mi";
+  if (miles < 1) return (Math.round(miles * 10) / 10) + " mi";
+  return Math.round(miles) + " mi";
+}
+function getTagClass(type) { return 'loc-tag tag-' + type; }
+function getTagLabel(type) {
+  const labels = { clinic: 'Clinic', store: 'Store', office: 'Office', hub: 'Service Hub' };
+  return labels[type] || type;
+}
+
+function clearMarkers() {
+  markers.forEach(m => map.removeLayer(m));
+  markers = [];
+  if (userMarker) { map.removeLayer(userMarker); userMarker = null; }
+}
+
+function renderResults(userLat, userLng, sortedLocs) {
+  clearMarkers();
+  const list = document.getElementById('resultsList');
+  const count = document.getElementById('resultsCount');
+
+  if (!sortedLocs.length) {
+    list.innerHTML = '<div class="empty-state"><h3>No locations found</h3><p>Try a different postcode.</p></div>';
+    count.textContent = '0 found';
+    return;
+  }
+
+  count.textContent = sortedLocs.length + ' found';
+
+  userMarker = L.marker([userLat, userLng], {
+    icon: L.divIcon({
+      className: 'user-marker',
+      html: '<div style="width:16px;height:16px;background:#2563eb;border:3px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3);"></div>',
+      iconSize: [16, 16], iconAnchor: [8, 8]
+    })
+  }).addTo(map).bindPopup('<div class="popup-content"><div class="popup-title">You are here</div></div>');
+
+  const bounds = L.latLngBounds([[userLat, userLng]]);
+  let html = '';
+  sortedLocs.forEach((loc, i) => {
+    bounds.extend([loc.lat, loc.lng]);
+    const marker = L.marker([loc.lat, loc.lng]).addTo(map)
+      .bindPopup('<div class="popup-content"><div class="popup-title">' + loc.name + '</div><div class="popup-addr">' + loc.address + '</div><div class="popup-dist">' + formatDistance(loc.distance) + ' away</div></div>');
+    markers.push(marker);
+
+    html += '<div class="location-card" onclick="flyToLocation(' + loc.lat + ', ' + loc.lng + ', ' + i + ')">' +
+      '<div class="loc-header"><div class="loc-name">' + loc.name + '</div><div class="loc-distance">' + formatDistance(loc.distance) + '</div></div>' +
+      '<div class="loc-address">' + loc.address + '</div>' +
+      '<div class="loc-meta"><span>&#128222; ' + loc.phone + '</span><span>&#9200; ' + loc.hours + '</span></div>' +
+      '<div class="' + getTagClass(loc.type) + '">' + getTagLabel(loc.type) + '</div></div>';
+  });
+
+  list.innerHTML = html;
+  map.fitBounds(bounds, { padding: [40, 40], maxZoom: 13 });
+}
+
+function flyToLocation(lat, lng, index) {
+  map.flyTo([lat, lng], 15, { duration: 1 });
+  setTimeout(() => { markers[index].openPopup(); }, 1000);
+}
+
+async function searchLocations() {
+  const input = document.getElementById('postcodeInput');
+  const btn = document.getElementById('searchBtn');
+  const postcode = input.value.trim().toUpperCase().replace(/\s+/g, ' ');
+
+  if (!postcode) { input.focus(); return; }
+
+  btn.disabled = true;
+  btn.textContent = '...';
+  document.getElementById('resultsList').innerHTML = '<div class="loading"><span class="spinner"></span>Finding locations...</div>';
+
+  try {
+    const res = await fetch('https://api.postcodes.io/postcodes/' + encodeURIComponent(postcode.replace(/\s/g, '')));
+    const data = await res.json();
+
+    if (!data.result) { throw new Error('Postcode not found'); }
+
+    const userLat = data.result.latitude;
+    const userLng = data.result.longitude;
+
+    const sorted = locations.map(loc => ({
+      ...loc,
+      distance: haversine(userLat, userLng, loc.lat, loc.lng)
+    })).sort((a, b) => a.distance - b.distance);
+
+    renderResults(userLat, userLng, sorted);
+
+  } catch (err) {
+    document.getElementById('resultsList').innerHTML = '<div class="empty-state"><h3>Postcode not found</h3><p>Please check the postcode and try again. Example: SW1A 1AA</p></div>';
+    document.getElementById('resultsCount').textContent = 'Error';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Find';
+  }
+}
+
+document.getElementById('postcodeInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') searchLocations();
+});
+
+function showAllLocations() {
+  clearMarkers();
+  const bounds = L.latLngBounds();
+  locations.forEach(loc => {
+    bounds.extend([loc.lat, loc.lng]);
+    const marker = L.marker([loc.lat, loc.lng]).addTo(map)
+      .bindPopup('<div class="popup-content"><div class="popup-title">' + loc.name + '</div><div class="popup-addr">' + loc.address + '</div></div>');
+    markers.push(marker);
+  });
+  map.fitBounds(bounds, { padding: [20, 20] });
+}
+
+showAllLocations();
+</script>
+</body>
+</html>
