@@ -244,21 +244,25 @@
         .locations-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 280px;
             gap: 24px;
         }
         .location-card {
             position: relative;
             border-radius: 16px;
             overflow: hidden;
-            aspect-ratio: 4/5;
             cursor: pointer;
+            background: linear-gradient(135deg, #E8E6E1 0%, #D4CFC7 100%);
+            min-height: 280px;
         }
-        .location-card:nth-child(1) { grid-row: span 2; }
+        .location-card:nth-child(1) { grid-row: span 2; min-height: 584px; }
         .location-card:nth-child(4) { grid-column: span 2; }
         .location-card img {
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block;
         }
         .location-card:hover img { transform: scale(1.08); }
         .location-overlay {
@@ -711,9 +715,9 @@
         .reveal-delay-3 { transition-delay: 0.3s; }
         .reveal-delay-4 { transition-delay: 0.4s; }
         @media (max-width: 1024px) {
-            .locations-grid { grid-template-columns: repeat(2, 1fr); }
-            .location-card:nth-child(1) { grid-row: span 1; }
-            .location-card:nth-child(4) { grid-column: span 1; }
+            .locations-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 280px; }
+            .location-card:nth-child(1) { grid-row: span 2; min-height: 584px; }
+            .location-card:nth-child(4) { grid-column: span 2; }
             .report-section { grid-template-columns: 1fr; padding: 48px; gap: 48px; }
             .stats-section { grid-template-columns: repeat(2, 1fr); }
             .stat-item:nth-child(2) { border-right: none; }
@@ -728,8 +732,11 @@
             .search-field { border-right: none; border-bottom: 1px solid var(--border); padding: 12px 20px; }
             .search-btn { width: 100%; }
             .section { padding: 80px 24px; }
-            .locations-grid { grid-template-columns: 1fr; }
-            .location-card:nth-child(1) { grid-row: span 1; }
+            .locations-grid { grid-template-columns: 1fr; grid-auto-rows: 320px; }
+            .location-card:nth-child(1) { grid-row: span 1; min-height: 320px; }
+            .location-card:nth-child(4) { grid-column: span 1; }
+            .location-card:nth-child(4) { grid-column: span 1; }
+            .location-card:nth-child(4) { grid-column: span 1; }
             .report-section { margin: 0 24px; padding: 32px; }
             .stats-section { grid-template-columns: 1fr; }
             .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
@@ -749,6 +756,7 @@
         .mobile-menu-btn svg { width: 24px; height: 24px; color: var(--charcoal); }
         @media (max-width: 768px) { .mobile-menu-btn { display: block; } }
     </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -857,6 +865,19 @@
                 </div>
             </div>
 
+            <div class="location-card reveal reveal-delay-1">
+                <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800&q=80" alt="Ibiza">
+                <div class="location-overlay">
+                    <div class="location-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                        </svg>
+                    </div>
+                    <div class="location-name">Ibiza</div>
+                    <div class="location-count">98 Properties</div>
+                </div>
+            </div>
+
             <div class="location-card reveal reveal-delay-2">
                 <img src="https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&q=80" alt="Madrid">
                 <div class="location-overlay">
@@ -883,18 +904,6 @@
                 </div>
             </div>
         </div>
-        <div class="location-card reveal reveal-delay-1">
-                <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800&q=80" alt="Ibiza">
-                <div class="location-overlay">
-                    <div class="location-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M7 17L17 7M17 7H7M17 7v10"/>
-                        </svg>
-                    </div>
-                    <div class="location-name">Ibiza</div>
-                    <div class="location-count">98 Properties</div>
-                </div>
-            </div>
 
         <div class="view-all reveal">
             <a href="#">
