@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Estates &mdash; Exceptional Properties</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FAF9F6;
+            --white: #FFFFFF;
+            --charcoal: #1A1A1A;
+            --warm-gray: #6B6B6B;
+            --light-gray: #E8E6E1;
+            --accent: #C4A77D;
+            --accent-hover: #B8986A;
+            --border: rgba(0,0,0,0.06);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 24px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav.scrolled {
+            background: rgba(250, 249, 246, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 16px 48px;
+            box-shadow: 0 1px 0 var(--border);
+        }
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: var(--charcoal);
+            text-decoration: none;
+            position: relative;
+        }
+        .nav-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0;
+            width: 0; height: 1px;
+            background: var(--accent);
+            transition: width 0.4s ease;
+        }
+        .nav-logo:hover::after { width: 100%; }
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 4px;
+            transition: color 0.3s ease;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 1px;
+            background: var(--accent);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta {
+            background: var(--charcoal);
+            color: var(--white) !important;
+            padding: 12px 28px;
+            border-radius: 100px;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-cta:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(196, 167, 125, 0.3);
+        }
+        .nav-cta::after { display: none !important; }
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(196, 167, 125, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(196, 167, 125, 0.05) 0%, transparent 50%);
+            z-index: 0;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 900px; }
+        .hero-label {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s 0.2s forwards;
+        }
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 300;
+            line-height: 1.05;
+            margin-bottom: 32px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s 0.4s forwards;
+        }
+        .hero h1 em { font-style: italic; color: var(--accent); }
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--warm-gray);
+            font-weight: 300;
+            line-height: 1.7;
+            max-width: 560px;
+            margin: 0 auto 48px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s 0.6s forwards;
+        }
+        .search-bar {
+            display: flex;
+            background: var(--white);
+            border-radius: 100px;
+            padding: 8px;
+            box-shadow: 0 4px 40px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+            max-width: 720px;
+            margin: 0 auto;
+            gap: 4px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s 0.8s forwards;
+            border: 1px solid var(--border);
+        }
+        .search-field {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 10px;
+            border-right: 1px solid var(--border);
+        }
+        .search-field:last-of-type { border-right: none; }
+        .search-field svg { width: 18px; height: 18px; color: var(--warm-gray); flex-shrink: 0; }
+        .search-field select, .search-field input {
+            border: none; background: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: var(--charcoal);
+            outline: none;
+            width: 100%;
+            cursor: pointer;
+            appearance: none;
+        }
+        .search-field input::placeholder { color: var(--warm-gray); }
+        .search-btn {
+            background: var(--charcoal);
+            color: var(--white);
+            border: none;
+            padding: 16px 36px;
+            border-radius: 100px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+        .search-btn:hover { background: var(--accent); transform: scale(1.02); }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeIn 1s 1.5s forwards;
+        }
+        .scroll-indicator span {
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--warm-gray);
+        }
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            animation: scrollPulse 2s infinite;
+        }
+        .section { padding: 120px 48px; max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 80px; }
+        .section-label {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 300;
+            line-height: 1.1;
+        }
+        .section-title em { font-style: italic; color: var(--accent); }
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .location-card {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+            cursor: pointer;
+        }
+        .location-card:nth-child(1) { grid-row: span 2; }
+        .location-card:nth-child(4) { grid-column: span 2; }
+        .location-card img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .location-card:hover img { transform: scale(1.08); }
+        .location-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 60%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 32px;
+            transition: background 0.5s ease;
+        }
+        .location-card:hover .location-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 100%);
+        }
+        .location-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 400;
+            color: var(--white);
+            margin-bottom: 8px;
+            transform: translateY(10px);
+            opacity: 0.9;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .location-card:hover .location-name { transform: translateY(0); opacity: 1; }
+        .location-count {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 1px;
+            transform: translateY(10px);
+            opacity: 0;
+            transition: all 0.5s 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .location-card:hover .location-count { transform: translateY(0); opacity: 1; }
+        .location-arrow {
+            position: absolute;
+            top: 24px; right: 24px;
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .location-card:hover .location-arrow { opacity: 1; transform: scale(1); }
+        .location-arrow svg { width: 18px; height: 18px; color: var(--white); }
+        .view-all { text-align: center; margin-top: 48px; }
+        .view-all a {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--charcoal);
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--charcoal);
+            transition: all 0.3s ease;
+        }
+        .view-all a:hover { color: var(--accent); border-color: var(--accent); gap: 16px; }
+        .report-section {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 80px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            margin: 0 48px;
+            max-width: 1400px;
+            box-shadow: 0 4px 60px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+        }
+        .report-content h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 40px;
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+        .report-content p {
+            color: var(--warm-gray);
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+        .report-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--charcoal);
+            color: var(--white);
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 100px;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .report-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(196, 167, 125, 0.3);
+        }
+        .report-visual { position: relative; }
+        .report-visual img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        .report-badge {
+            position: absolute;
+            top: -20px; right: -20px;
+            background: var(--accent);
+            color: var(--white);
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 8px 24px rgba(196, 167, 125, 0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+        .report-badge span {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .valuation-section {
+            text-align: center;
+            padding: 120px 48px;
+            position: relative;
+        }
+        .valuation-section::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(196, 167, 125, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .valuation-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .valuation-content h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+        .valuation-content p {
+            color: var(--warm-gray);
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+        .valuation-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--charcoal);
+            color: var(--charcoal);
+            text-decoration: none;
+            padding: 18px 40px;
+            border-radius: 100px;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+        }
+        .valuation-btn:hover {
+            background: var(--charcoal);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+        .properties-section { padding: 0 0 120px; overflow: hidden; }
+        .properties-header {
+            padding: 0 48px;
+            max-width: 1400px;
+            margin: 0 auto 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .properties-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 48px;
+            font-weight: 300;
+        }
+        .slider-nav { display: flex; gap: 12px; }
+        .slider-nav button {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .slider-nav button:hover { background: var(--charcoal); border-color: var(--charcoal); }
+        .slider-nav button:hover svg { color: var(--white); }
+        .slider-nav button svg { width: 18px; height: 18px; color: var(--charcoal); transition: color 0.3s ease; }
+        .properties-slider {
+            display: flex;
+            gap: 24px;
+            padding: 0 48px;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: grab;
+        }
+        .properties-slider:active { cursor: grabbing; }
+        .property-card {
+            flex: 0 0 380px;
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border);
+        }
+        .property-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        .property-image {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+        }
+        .property-image img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .property-card:hover .property-image img { transform: scale(1.05); }
+        .property-badge {
+            position: absolute;
+            top: 16px; left: 16px;
+            background: var(--accent);
+            color: var(--white);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .property-fav {
+            position: absolute;
+            top: 16px; right: 16px;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .property-fav:hover { background: var(--white); transform: scale(1.1); }
+        .property-fav svg { width: 18px; height: 18px; color: var(--charcoal); transition: all 0.3s ease; }
+        .property-fav.active svg { fill: #E74C3C; color: #E74C3C; }
+        .property-info { padding: 24px; }
+        .property-price {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--charcoal);
+            margin-bottom: 8px;
+        }
+        .property-title {
+            font-size: 15px;
+            color: var(--warm-gray);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        .property-meta {
+            display: flex;
+            gap: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        .property-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--warm-gray);
+        }
+        .property-meta-item svg { width: 16px; height: 16px; color: var(--accent); }
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .stat-item {
+            padding: 60px 40px;
+            text-align: center;
+            border-right: 1px solid var(--border);
+            transition: background 0.4s ease;
+        }
+        .stat-item:last-child { border-right: none; }
+        .stat-item:hover { background: var(--white); }
+        .stat-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 56px;
+            font-weight: 300;
+            color: var(--charcoal);
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+        .stat-number span { color: var(--accent); }
+        .stat-label {
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--warm-gray);
+        }
+        .testimonial-section {
+            padding: 120px 48px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .testimonial-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.4;
+            margin-bottom: 40px;
+            color: var(--charcoal);
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+        .testimonial-avatar {
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .testimonial-name { text-align: left; }
+        .testimonial-name strong {
+            display: block;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--charcoal);
+        }
+        .testimonial-name span { font-size: 13px; color: var(--warm-gray); }
+        .footer {
+            background: var(--charcoal);
+            color: var(--white);
+            padding: 80px 48px 40px;
+        }
+        .footer-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
+        }
+        .footer-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+        .footer-desc {
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+            line-height: 1.7;
+            max-width: 300px;
+        }
+        .footer-col h4 {
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            color: rgba(255,255,255,0.4);
+            font-weight: 500;
+        }
+        .footer-col a {
+            display: block;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 14px;
+            transition: color 0.3s ease;
+        }
+        .footer-col a:hover { color: var(--accent); }
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-bottom p { font-size: 13px; color: rgba(255,255,255,0.3); }
+        .footer-social { display: flex; gap: 20px; }
+        .footer-social a { color: rgba(255,255,255,0.4); transition: color 0.3s ease; }
+        .footer-social a:hover { color: var(--accent); }
+        .footer-social svg { width: 20px; height: 20px; }
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 1; transform: scaleY(1); }
+            50% { opacity: 0.5; transform: scaleY(0.7); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        @media (max-width: 1024px) {
+            .locations-grid { grid-template-columns: repeat(2, 1fr); }
+            .location-card:nth-child(1) { grid-row: span 1; }
+            .location-card:nth-child(4) { grid-column: span 1; }
+            .report-section { grid-template-columns: 1fr; padding: 48px; gap: 48px; }
+            .stats-section { grid-template-columns: repeat(2, 1fr); }
+            .stat-item:nth-child(2) { border-right: none; }
+            .stat-item:nth-child(1), .stat-item:nth-child(2) { border-bottom: 1px solid var(--border); }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav { padding: 16px 24px; }
+            .nav-links { display: none; }
+            .hero { padding: 100px 20px 60px; }
+            .search-bar { flex-direction: column; border-radius: 20px; }
+            .search-field { border-right: none; border-bottom: 1px solid var(--border); padding: 12px 20px; }
+            .search-btn { width: 100%; }
+            .section { padding: 80px 24px; }
+            .locations-grid { grid-template-columns: 1fr; }
+            .location-card:nth-child(1) { grid-row: span 1; }
+            .report-section { margin: 0 24px; padding: 32px; }
+            .stats-section { grid-template-columns: 1fr; }
+            .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+            .stat-item:last-child { border-bottom: none; }
+            .properties-header { padding: 0 24px; flex-direction: column; align-items: flex-start; gap: 20px; }
+            .property-card { flex: 0 0 300px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+            .footer-bottom { flex-direction: column; gap: 20px; text-align: center; }
+        }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .mobile-menu-btn svg { width: 24px; height: 24px; color: var(--charcoal); }
+        @media (max-width: 768px) { .mobile-menu-btn { display: block; } }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <a href="#" class="nav-logo">Aura</a>
+        <div class="nav-links">
+            <a href="#locations">Locations</a>
+            <a href="#properties">Properties</a>
+            <a href="#valuation">Valuation</a>
+            <a href="#about">About</a>
+            <a href="#contact" class="nav-cta">Contact</a>
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-label">Luxury Real Estate</div>
+            <h1>Find your <em>exceptional</em><br>property today</h1>
+            <p class="hero-subtitle">We provide international clients with exceptional real estate in the most exclusive locations across Europe and beyond.</p>
+
+            <div class="search-bar">
+                <div class="search-field">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <select>
+                        <option>Buy</option>
+                        <option>Rent</option>
+                    </select>
+                </div>
+                <div class="search-field">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <input type="text" placeholder="Location">
+                </div>
+                <div class="search-field">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input type="text" placeholder="Reference">
+                </div>
+                <button class="search-btn">Search</button>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Locations -->
+    <section class="section" id="locations">
+        <div class="section-header reveal">
+            <div class="section-label">Destinations</div>
+            <h2 class="section-title">Top featured <em>locations</em></h2>
+        </div>
+
+        <div class="locations-grid">
+            <div class="location-card reveal reveal-delay-1">
+                <img src="https://images.unsplash.com/photo-1583422409516-2895a77efded?w=800&q=80" alt="Barcelona">
+                <div class="location-overlay">
+                    <div class="location-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                        </svg>
+                    </div>
+                    <div class="location-name">Barcelona</div>
+                    <div class="location-count">247 Properties</div>
+                </div>
+            </div>
+
+            <div class="location-card reveal reveal-delay-2">
+                <img src="https://images.unsplash.com/photo-1533601017-dc61895e03c0?w=800&q=80" alt="Costa Blanca">
+                <div class="location-overlay">
+                    <div class="location-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                        </svg>
+                    </div>
+                    <div class="location-name">Costa Blanca</div>
+                    <div class="location-count">189 Properties</div>
+                </div>
+            </div>
+
+            <div class="location-card reveal reveal-delay-3">
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80" alt="Costa Brava">
+                <div class="location-overlay">
+                    <div class="location-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                        </svg>
+                    </div>
+                    <div class="location-name">Costa Brava</div>
+                    <div class="location-count">156 Properties</div>
+                </div>
+            </div>
+
+            <div class="location-card reveal reveal-delay-1">
+                <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800&q=80" alt="Ibiza">
+                <div class="location-overlay">
+                    <div class="location-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                        </svg>
+                    </div>
+                    <div class="location-name">Ibiza</div>
+                    <div class="location-count">98 Properties</div>
+                </div>
+            </div>
+
+            <div class="location-card reveal reveal-delay-2">
+                <img src="https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&q=80" alt="Madrid">
+                <div class="location-overlay">
+                    <div class="location-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                        </svg>
+                    </div>
+                    <div class="location-name">Madrid</div>
+                    <div class="location-count">312 Properties</div>
+                </div>
+            </div>
+
+            <div class="location-card reveal reveal-delay-3">
+                <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&q=80" alt="Mallorca">
+                <div class="location-overlay">
+                    <div class="location-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                        </svg>
+                    </div>
+                    <div class="location-name">Mallorca</div>
+                    <div class="location-count">175 Properties</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="view-all reveal">
+            <a href="#">
+                View all our locations
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Market Report -->
+    <section class="report-section reveal" id="about">
+        <div class="report-content">
+            <div class="section-label">Market Insights</div>
+            <h3>2026 Real Estate<br>Market Report</h3>
+            <p>Stay ahead with our comprehensive market analysis. Our expert professionals provide deep insights into property trends, buyer profiles, and investment opportunities across prime European destinations.</p>
+            <a href="#" class="report-btn">
+                Download Report
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+            </a>
+        </div>
+        <div class="report-visual">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="Market Report">
+            <div class="report-badge">
+                <span>2026</span>
+                Report
+            </div>
+        </div>
+    </section>
+
+    <!-- Valuation -->
+    <section class="valuation-section" id="valuation">
+        <div class="valuation-content reveal">
+            <div class="section-label">Free Service</div>
+            <h3>Property Valuation</h3>
+            <p>Find out what your property could be worth with a free valuation request from a member of our experienced property advisory team.</p>
+            <a href="#" class="valuation-btn">
+                Request Valuation
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Properties Slider -->
+    <section class="properties-section" id="properties">
+        <div class="properties-header">
+            <div>
+                <div class="section-label">Latest</div>
+                <h2>Featured Properties</h2>
+            </div>
+            <div class="slider-nav">
+                <button onclick="slideProperties(-1)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <button onclick="slideProperties(1)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="properties-slider" id="propertiesSlider">
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80" alt="Property">
+                    <span class="property-badge">New Listing</span>
+                    <button class="property-fav" onclick="toggleFav(this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="property-info">
+                    <div class="property-price">EUR 1,250,000</div>
+                    <div class="property-title">Stunning penthouse with panoramic sea views in Sitges</div>
+                    <div class="property-meta">
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                <path d="M9 22V12h6v10"/>
+                            </svg>
+                            4 Beds
+                        </div>
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <path d="M22 6l-10 7L2 6"/>
+                            </svg>
+                            3 Baths
+                        </div>
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M3 9h18M9 21V9"/>
+                            </svg>
+                            210 sqm
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Property">
+                    <span class="property-badge">Featured</span>
+                    <button class="property-fav" onclick="toggleFav(this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="property-info">
+                    <div class="property-price">EUR 2,850,000</div>
+                    <div class="property-title">Luxury villa with private pool in Marbella Golden Mile</div>
+                    <div class="property-meta">
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                <path d="M9 22V12h6v10"/>
+                            </svg>
+                            5 Beds
+                        </div>
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <path d="M22 6l-10 7L2 6"/>
+                            </svg>
+                            4 Baths
+                        </div>
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M3 9h18M9 21V9"/>
+                            </svg>
+                            450 sqm
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80" alt="Property">
+                    <span class="property-badge">New Listing</span>
+                    <button class="property-fav" onclick="toggleFav(this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="property-info">
+                    <div class="property-price">EUR 890,000</div>
+                    <div class="property-title">Modern apartment in the heart of Barcelona Eixample</div>
+                    <div class="property-meta">
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                <path d="M9 22V12h6v10"/>
+                            </svg>
+                            3 Beds
+                        </div>
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <path d="M22 6l-10 7L2 6"/>
+                            </svg>
+                            2 Baths
+                        </div>
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M3 9h18M9 21V9"/>
+                            </svg>
+                            145 sqm
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&q=80" alt="Property">
+                    <span class="property-badge">Price Drop</span>
+                    <button class="property-fav" onclick="toggleFav(this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="property-info">
+                    <div class="property-price">EUR 3,400,000</div>
+                    <div class="property-title">Beachfront estate with direct Mediterranean access</div>
+                    <div class="property-meta">
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                <path d="M9 22V12h6v10"/>
+                            </svg>
+                            6 Beds
+                        </div>
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <path d="M22 6l-10 7L2 6"/>
+                            </svg>
+                            5 Baths
+                        </div>
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M3 9h18M9 21V9"/>
+                            </svg>
+                            520 sqm
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=600&q=80" alt="Property">
+                    <span class="property-badge">Exclusive</span>
+                    <button class="property-fav" onclick="toggleFav(this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="property-info">
+                    <div class="property-price">EUR 1,675,000</div>
+                    <div class="property-title">Designer loft in Madrid Salamanca district</div>
+                    <div class="property-meta">
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                <path d="M9 22V12h6v10"/>
+                            </svg>
+                            2 Beds
+                        </div>
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <path d="M22 6l-10 7L2 6"/>
+                            </svg>
+                            2 Baths
+                        </div>
+                        <div class="property-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M3 9h18M9 21V9"/>
+                            </svg>
+                            180 sqm
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats-section">
+        <div class="stat-item reveal">
+            <div class="stat-number">1,200<span>+</span></div>
+            <div class="stat-label">Properties</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-1">
+            <div class="stat-number">18<span></span></div>
+            <div class="stat-label">Locations</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-2">
+            <div class="stat-number">98<span>%</span></div>
+            <div class="stat-label">Client Satisfaction</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-3">
+            <div class="stat-number">15<span>yr</span></div>
+            <div class="stat-label">Experience</div>
+        </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section class="testimonial-section">
+        <div class="reveal">
+            <p class="testimonial-quote">"Aura Estates made finding our dream home in Barcelona an absolute pleasure. Their attention to detail and understanding of our needs was exceptional."</p>
+            <div class="testimonial-author">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Client" class="testimonial-avatar">
+                <div class="testimonial-name">
+                    <strong>Sophia Laurent</strong>
+                    <span>Property Investor, Paris</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">Aura</div>
+                <p class="footer-desc">Exceptional real estate for exceptional people. We connect discerning clients with extraordinary properties across Europe most desirable locations.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Explore</h4>
+                <a href="#">Buy</a>
+                <a href="#">Rent</a>
+                <a href="#">New Developments</a>
+                <a href="#">Commercial</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Press</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>2026 Aura Estates. All rights reserved.</p>
+            <div class="footer-social">
+                <a href="#" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="2" width="20" height="20" rx="5"/>
+                        <circle cx="12" cy="12" r="5"/>
+                        <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
+                    </svg>
+                </a>
+                <a href="#" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/>
+                        <rect x="2" y="9" width="4" height="12"/>
+                        <circle cx="4" cy="4" r="2"/>
+                    </svg>
+                </a>
+                <a href="#" aria-label="Twitter">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0012 8v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll reveal
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Properties slider
+        let sliderPosition = 0;
+        const slider = document.getElementById('propertiesSlider');
+        const cardWidth = 404;
+
+        function slideProperties(direction) {
+            const maxScroll = (slider.children.length - 3) * cardWidth;
+            sliderPosition += direction * cardWidth;
+            sliderPosition = Math.max(0, Math.min(sliderPosition, maxScroll));
+            slider.style.transform = 'translateX(-' + sliderPosition + 'px)';
+        }
+
+        // Favorite toggle
+        function toggleFav(btn) {
+            btn.classList.toggle('active');
+        }
+
+        // Drag to scroll for properties
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            slider.style.cursor = 'grabbing';
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = sliderPosition;
+        });
+
+        slider.addEventListener('mouseleave', () => {
+            isDown = false;
+            slider.style.cursor = 'grab';
+        });
+
+        slider.addEventListener('mouseup', () => {
+            isDown = false;
+            slider.style.cursor = 'grab';
+        });
+
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            const maxScroll = (slider.children.length - 3) * cardWidth;
+            sliderPosition = Math.max(0, Math.min(scrollLeft - walk, maxScroll));
+            slider.style.transform = 'translateX(-' + sliderPosition + 'px)';
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        }
+    </script>
+</body>
+</html>
