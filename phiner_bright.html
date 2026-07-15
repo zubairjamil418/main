@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>A Phiner Lifestyle — Brighter Home Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* ===== BRIGHTER TOKEN SYSTEM ===== */
+    --sage:        #E8EDE4;
+    --sage-deep:   #D4DDD0;
+    --cream:       #FAF8F3;
+    --cream-warm:  #F5F0E8;
+    --ink:         #2C3E2D;
+    --ink-soft:    #5A6B5C;
+    --terracotta:  #C4704B;
+    --terracotta-deep: #A85A38;
+    --leaf:        #6B8F71;
+    --leaf-deep:   #557A5A;
+    --charcoal:    #1E2A1F;
+    --line:        #C8D4C4;
+    --white:       #FFFFFF;
+
+    --font-display: 'Playfair Display', serif;
+    --font-body:    'Inter', sans-serif;
+
+    --section-pad-y: 72px;
+    --section-pad-y-sm: 52px;
+    --content-max: 1140px;
+    --text-max: 600px;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.65;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+  img{ display:block; max-width:100%; }
+  a{ text-decoration:none; color:inherit; }
+
+  .wrap{
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ===== EYEBROW ===== */
+  .eyebrow{
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .eyebrow::before{
+    content:'';
+    width: 24px;
+    height: 2px;
+    background: var(--terracotta);
+    display:inline-block;
+    border-radius: 1px;
+  }
+
+  h1, h2, h3{
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .accent{ color: var(--terracotta); font-style: italic; font-weight: 500; }
+
+  p{ color: var(--ink-soft); font-weight: 400; }
+
+  /* ===== BUTTONS ===== */
+  .btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 14px 28px;
+    border: 2px solid var(--ink);
+    color: var(--ink);
+    transition: all .3s ease;
+    background: transparent;
+    border-radius: 4px;
+  }
+  .btn:hover{ background: var(--ink); color: var(--cream); }
+  .btn.solid{ background: var(--terracotta); border-color: var(--terracotta); color: var(--white); }
+  .btn.solid:hover{ background: var(--terracotta-deep); border-color: var(--terracotta-deep); }
+  .btn.on-dark{ border-color: rgba(255,255,255,.6); color: var(--white); }
+  .btn.on-dark:hover{ background: var(--white); color: var(--charcoal); }
+  .btn.leaf{ background: var(--leaf); border-color: var(--leaf); color: var(--white); }
+  .btn.leaf:hover{ background: var(--leaf-deep); border-color: var(--leaf-deep); }
+
+  /* ===== LEAF DIVIDER ===== */
+  .leaf-divider{
+    display:flex; justify-content:center; padding: 32px 0;
+  }
+  .leaf-divider svg{ width:40px; height:auto; opacity:.6; }
+
+  /* ===================== HEADER ===================== */
+  header{
+    background: var(--white);
+    padding: 18px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 0 rgba(0,0,0,.06);
+  }
+  header .wrap{ display:flex; align-items:center; justify-content:space-between; }
+  .logo{ 
+    font-family: var(--font-display); 
+    font-size: 22px; 
+    color: var(--ink); 
+    letter-spacing: .3px;
+    font-weight: 700;
+  }
+  .logo span{ color: var(--terracotta); font-style: italic; font-weight: 500; }
+
+  /* Desktop nav */
+  .desktop-nav ul{ list-style:none; display:flex; gap:36px; }
+  .desktop-nav a{ 
+    font-size: 12.5px; 
+    letter-spacing: 1.2px; 
+    text-transform: uppercase; 
+    color: var(--ink-soft); 
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 4px;
+  }
+  .desktop-nav a::after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--terracotta);
+    transition: width .3s ease;
+  }
+  .desktop-nav a:hover{ color: var(--ink); }
+  .desktop-nav a:hover::after{ width: 100%; }
+
+  /* Mobile menu toggle */
+  .menu-toggle{
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 100;
+  }
+  .menu-toggle span{
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--ink);
+    margin: 5px 0;
+    transition: all 0.3s ease;
+    border-radius: 1px;
+  }
+
+  /* Mobile nav */
+  .mobile-nav{
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    padding: 20px 32px;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    z-index: 99;
+  }
+  .mobile-nav ul{ list-style:none; display:flex; flex-direction:column; gap:14px; }
+  .mobile-nav a{ 
+    font-size: 13px; 
+    letter-spacing: 1.2px; 
+    text-transform: uppercase; 
+    color: var(--ink-soft); 
+    font-weight: 500; 
+  }
+  .mobile-nav a:hover{ color: var(--terracotta); }
+  .mobile-nav .btn{ margin-top: 8px; width: 100%; justify-content: center; }
+
+  /* ===================== HERO ===================== */
+  .hero{
+    background: linear-gradient(135deg, var(--sage) 0%, var(--cream-warm) 100%);
+    color: var(--ink);
+    padding: 90px 0 110px;
+    text-align:center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before{
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(196,112,75,.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::after{
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: -40px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(107,143,113,.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero .wrap{ position: relative; z-index: 1; }
+  .hero .eyebrow{ justify-content:center; }
+  .hero .eyebrow::before{ display:none; }
+  .hero .eyebrow::after{ content:''; width: 24px; height:2px; background:var(--terracotta); display:inline-block; border-radius:1px; }
+  .hero h1{
+    font-size: clamp(36px, 5vw, 58px);
+    color: var(--ink);
+    max-width: 760px;
+    margin: 0 auto 18px;
+  }
+  .hero p{
+    max-width: 520px;
+    margin: 0 auto 32px;
+    color: var(--ink-soft);
+    font-size: 16px;
+  }
+  .hero .btn-row{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+
+  /* ===================== GENERIC SECTION ===================== */
+  section{ padding: var(--section-pad-y) 0; }
+  .section-text-center{ text-align:center; }
+  .section-text-center p{ max-width: var(--text-max); margin: 0 auto; font-size:15.5px; }
+  .section-text-center h2{ font-size: clamp(28px, 3.2vw, 40px); margin-bottom:16px; }
+
+  /* ===== JOURNEY SECTION ===== */
+  .journey{ background: var(--cream); }
+  .journey-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items:center;
+  }
+  .journey h2{ font-size: clamp(28px,3.2vw,38px); margin-bottom:16px; max-width:460px; }
+  .journey p{ font-size:15px; max-width:440px; margin-bottom:8px; }
+  .journey-list{ 
+    list-style:none; 
+    display:grid; 
+    grid-template-columns:1fr 1fr; 
+    gap: 16px 24px; 
+  }
+  .journey-list li{
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-style: italic;
+    color: var(--ink);
+    padding: 14px 18px;
+    background: var(--white);
+    border-radius: 8px;
+    border-left: 3px solid var(--leaf);
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .journey-list li:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  }
+
+  /* ===== MISSION ===== */
+  .mission{ 
+    background: linear-gradient(180deg, var(--sage) 0%, var(--sage-deep) 100%);
+    position: relative;
+  }
+  .mission::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--terracotta);
+    border-radius: 0 0 3px 3px;
+  }
+
+  /* ===== WHAT YOU'LL FIND HERE ===== */
+  .find-here{ background: var(--cream); }
+  .find-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 44px;
+  }
+  .find-item{
+    padding: 32px 22px;
+    background: var(--white);
+    border-radius: 12px;
+    text-align:center;
+    box-shadow: 0 2px 12px rgba(0,0,0,.04);
+    transition: transform .3s ease, box-shadow .3s ease;
+    border: 1px solid var(--line);
+  }
+  .find-item:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0,0,0,.1);
+  }
+  .find-item .num{
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--terracotta);
+    font-size: 28px;
+    font-weight: 600;
+    display:block;
+    margin-bottom: 12px;
+    line-height: 1;
+  }
+  .find-item h3{ font-size: 16px; font-weight:600; margin-bottom: 8px; color: var(--ink); }
+  .find-item p{ font-size: 13px; line-height: 1.6; }
+
+  /* ===== PHILOSOPHY ===== */
+  .philosophy{ background: var(--cream-warm); }
+  .philo-grid{
+    display:grid;
+    grid-template-columns: .9fr 1.1fr;
+    gap: 64px;
+    align-items:center;
+  }
+  .philo-grid h2{ font-size: clamp(30px,3.4vw,42px); }
+  .philo-right p{ font-size:15px; margin-bottom:14px; max-width:500px; }
+  .philo-right .lede{ 
+    font-family: var(--font-display); 
+    font-style:italic; 
+    font-size:20px; 
+    color: var(--ink); 
+    margin-bottom:20px;
+    padding-left: 20px;
+    border-left: 3px solid var(--terracotta);
+  }
+
+  /* ===== FEATURE / BOOK ===== */
+  .feature{ background: var(--cream); }
+  .feature-grid{
+    display:grid;
+    grid-template-columns: .75fr 1fr;
+    gap: 56px;
+    align-items:center;
+  }
+  .book-plate{
+    aspect-ratio: 3/4.2;
+    background: linear-gradient(160deg, #2C3E2D, #3D5A40);
+    border-radius: 12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: rgba(255,255,255,.4);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    text-align:center;
+    padding: 30px;
+    box-shadow: 0 12px 40px rgba(44,62,45,.25);
+    position: relative;
+  }
+  .book-plate::before{
+    content: '';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(255,255,255,.15);
+    border-radius: 50%;
+  }
+  .feature h2{ font-size: clamp(26px,2.8vw,34px); margin-bottom:12px; }
+  .feature .price{ 
+    font-family: var(--font-display); 
+    font-size: 32px; 
+    color: var(--terracotta); 
+    margin: 16px 0 24px;
+    font-weight: 600;
+  }
+  .feature .price span{
+    font-size: 16px;
+    color: var(--ink-soft);
+    text-decoration: line-through;
+    margin-left: 10px;
+    font-weight: 400;
+  }
+
+  /* ===== INVITATION ===== */
+  .invitation{
+    background: linear-gradient(135deg, var(--charcoal) 0%, #2C3E2D 100%);
+    color: var(--white);
+    text-align:center;
+    position: relative;
+    overflow: hidden;
+  }
+  .invitation::before{
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(196,112,75,.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .invitation .wrap{ position: relative; z-index: 1; }
+  .invitation .eyebrow{ justify-content:center; color: var(--terracotta); }
+  .invitation .eyebrow::before{ display:none; }
+  .invitation .eyebrow::after{ content:''; width: 24px; height:2px; background:var(--terracotta); display:inline-block; border-radius:1px; }
+  .invitation h2{ color: var(--white); font-size: clamp(24px,2.8vw,34px); max-width:620px; margin:0 auto 24px; }
+  .invitation .lines p{
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 16px;
+    color: rgba(255,255,255,.8);
+    margin-bottom: 8px;
+  }
+  .invitation .lines{ max-width:500px; margin: 0 auto 28px; }
+  .invitation .final{ font-size:14.5px; color: rgba(255,255,255,.55); margin-bottom:28px; }
+
+  /* ===== FOOTER ===== */
+  footer{ background: var(--charcoal); color: rgba(255,255,255,.7); padding-top: 56px; }
+  .foot-top{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  .foot-top .item{
+    background: rgba(255,255,255,.04);
+    padding: 24px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.08);
+  }
+  .foot-top .item span{ display:block; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--terracotta); margin-bottom:8px; font-weight: 600; }
+  .foot-top .item p{ color: var(--white); font-family: var(--font-display); font-size: 18px; }
+  .foot-grid{
+    display:grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 32px;
+    padding: 40px 0 32px;
+  }
+  .foot-grid .brand{ 
+    font-family: var(--font-display); 
+    font-size: 22px; 
+    color: var(--white); 
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .foot-grid .brand span{ color: var(--terracotta); font-style: italic; font-weight: 500; }
+  .foot-grid p{ font-size: 13px; color: rgba(255,255,255,.5); max-width: 260px; line-height: 1.7; }
+  .foot-grid h4{ font-size: 11.5px; letter-spacing:2px; text-transform:uppercase; color:var(--terracotta); margin-bottom:16px; font-weight:600; }
+  .foot-grid ul{ list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .foot-grid a{ font-size: 13.5px; color: rgba(255,255,255,.65); transition: color .2s ease; }
+  .foot-grid a:hover{ color: var(--terracotta); }
+  .foot-bottom{
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding: 20px 0;
+    font-size: 12px;
+    color: rgba(255,255,255,.35);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .socials{ display:flex; gap:10px; }
+  .socials a{ 
+    width:34px; height:34px; 
+    border:1px solid rgba(255,255,255,.2); 
+    border-radius:8px; 
+    display:flex; align-items:center; justify-content:center; 
+    font-size:12px; color: rgba(255,255,255,.6);
+    transition: all .2s ease;
+  }
+  .socials a:hover{ 
+    background: var(--terracotta); 
+    border-color: var(--terracotta); 
+    color: var(--white);
+  }
+
+  /* ===== SPEC CALLOUTS ===== */
+  .spec{
+    position:absolute; left: -1px; top:0; background: #C4704B; color:#fff;
+    font-family: var(--font-body); font-size: 10px; letter-spacing:.5px;
+    padding: 3px 8px; opacity:.9; z-index: 5; font-weight: 500;
+  }
+  section{ position: relative; }
+
+  /* ===================== TABLET (max-width: 900px) ===================== */
+  @media (max-width: 900px){
+    .journey-grid, .philo-grid, .feature-grid{ grid-template-columns: 1fr; gap: 36px; }
+    .find-grid{ grid-template-columns: 1fr 1fr; }
+    .find-item{ padding: 28px 18px; }
+    .foot-top, .foot-grid{ grid-template-columns: 1fr; gap: 20px; }
+    :root{ --section-pad-y: 56px; }
+    .wrap{ padding: 0 24px; }
+    .journey-list{ gap: 12px 16px; }
+    .philo-grid{ gap: 28px; }
+    .feature-grid{ gap: 36px; }
+  }
+
+  /* ===================== MOBILE (max-width: 768px) ===================== */
+  @media (max-width: 768px){
+    /* Header */
+    .desktop-nav, header .btn{ display: none; }
+    .menu-toggle{ display: block; }
+    .mobile-nav.active{ display: block; }
+    header{ padding: 14px 0; }
+    .logo{ font-size: 19px; }
+
+    /* Hero */
+    .hero{ padding: 64px 0 80px; }
+    .hero h1{ font-size: clamp(28px, 7.5vw, 36px); }
+    .hero p{ font-size: 15px; margin-bottom: 24px; }
+    .hero .btn-row{ flex-direction: column; align-items: center; gap: 10px; }
+    .hero .btn{ width: 100%; max-width: 260px; justify-content: center; }
+
+    /* Sections */
+    :root{ --section-pad-y: 44px; }
+    section{ padding: var(--section-pad-y) 0; }
+    .wrap{ padding: 0 20px; }
+
+    /* Journey */
+    .journey-grid{ gap: 28px; }
+    .journey h2{ font-size: 26px; }
+    .journey p{ font-size: 14.5px; }
+    .journey-list{ grid-template-columns: 1fr; gap: 10px; }
+    .journey-list li{ font-size: 14px; padding: 12px 14px; }
+
+    /* Mission */
+    .section-text-center h2{ font-size: 26px; }
+    .section-text-center p{ font-size: 14.5px; }
+
+    /* Find here */
+    .find-grid{ grid-template-columns: 1fr; gap: 14px; margin-top: 28px; }
+    .find-item{ padding: 24px 16px; }
+    .find-item .num{ font-size: 24px; }
+
+    /* Philosophy */
+    .philo-grid{ gap: 20px; }
+    .philo-grid h2{ font-size: 26px; }
+    .philo-right .lede{ font-size: 17px; padding-left: 16px; }
+    .philo-right p{ font-size: 14.5px; }
+
+    /* Feature */
+    .feature-grid{ gap: 28px; }
+    .feature h2{ font-size: 24px; }
+    .feature .price{ font-size: 26px; }
+    .book-plate{ aspect-ratio: 3/3.5; }
+
+    /* Invitation */
+    .invitation h2{ font-size: 22px; margin-bottom: 18px; }
+    .invitation .lines p{ font-size: 15px; }
+    .invitation .final{ font-size: 14px; }
+    .invitation .btn{ width: 100%; max-width: 260px; justify-content: center; }
+
+    /* Footer */
+    footer{ padding-top: 36px; }
+    .foot-top{ grid-template-columns: 1fr; gap: 14px; padding-bottom: 24px; }
+    .foot-top .item{ padding: 18px; }
+    .foot-top .item p{ font-size: 16px; }
+    .foot-grid{ grid-template-columns: 1fr; gap: 24px; padding: 24px 0 20px; }
+    .foot-grid .brand{ font-size: 19px; }
+    .foot-grid p{ font-size: 13px; }
+    .foot-bottom{ flex-direction: column; gap: 12px; text-align: center; padding: 16px 0; }
+
+    /* Divider */
+    .leaf-divider{ padding: 24px 0; }
+    .leaf-divider svg{ width: 32px; }
+
+    /* Buttons */
+    .btn{ padding: 12px 24px; font-size: 11.5px; }
+  }
+
+  /* ===================== SMALL MOBILE (max-width: 480px) ===================== */
+  @media (max-width: 480px){
+    .wrap{ padding: 0 16px; }
+    .hero{ padding: 52px 0 64px; }
+    .hero h1{ font-size: 26px; }
+    :root{ --section-pad-y: 36px; }
+    .journey h2, .section-text-center h2, .philo-grid h2{ font-size: 24px; }
+    .feature h2{ font-size: 22px; }
+    .invitation h2{ font-size: 20px; }
+    .find-item{ padding: 20px 14px; }
+  }
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">A <span>Phiner</span> Lifestyle</div>
+    <nav class="desktop-nav">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Coaching</a></li>
+        <li><a href="#">Shop</a></li>
+        <li><a href="#">Donation</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+    <a href="#" class="btn leaf" style="padding:10px 22px;">Book Now</a>
+    <button class="menu-toggle" onclick="document.querySelector('.mobile-nav').classList.toggle('active')" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+  <nav class="mobile-nav">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Coaching</a></li>
+      <li><a href="#">Shop</a></li>
+      <li><a href="#">Donation</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#" class="btn leaf">Book Now</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <span class="spec">padding: 90px 0 110px</span>
+  <div class="wrap">
+    <p class="eyebrow">Simple Choices, Lasting Wellness</p>
+    <h1>Welcome to a <span class="accent">Phiner</span> Lifestyle.</h1>
+    <p>A place where healthier living begins with simple, intentional choices that nourish the whole person — body, mind, and spirit.</p>
+    <div class="btn-row">
+      <a href="#" class="btn solid">Start Our Journey</a>
+      <a href="#" class="btn">View Coaching</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HEALTHY LIVING IS A JOURNEY ============ -->
+<section class="journey">
+  <span class="spec">padding: 72px 0 · gap: 56px</span>
+  <div class="wrap journey-grid">
+    <div>
+      <p class="eyebrow">A Lifelong Practice</p>
+      <h2>Healthy Living Is <span class="accent">a Journey.</span></h2>
+      <p>Healthy living is a lifelong commitment built through simple choices, daily discipline, patience, perseverance, and grace.</p>
+      <p>These ordinary choices, repeated over time, become the foundation of a healthier and more fulfilling life.</p>
+    </div>
+    <ul class="journey-list">
+      <li>Every Nourishing Meal</li>
+      <li>Every Walk Outdoors</li>
+      <li>Every Restful Night's Sleep</li>
+      <li>Every Thoughtful Decision</li>
+      <li>Every Moment of Gratitude</li>
+    </ul>
+  </div>
+</section>
+
+<div class="leaf-divider">
+  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M24 4C24 4 36 12 36 24C36 36 24 44 24 44" stroke="#6B8F71" stroke-width="2" stroke-linecap="round"/>
+    <path d="M24 4C24 4 12 12 12 24C12 36 24 44 24 44" stroke="#6B8F71" stroke-width="2" stroke-linecap="round"/>
+    <path d="M24 12C24 12 30 16 30 22C30 28 24 32 24 32" stroke="#C4704B" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M24 12C24 12 18 16 18 22C18 28 24 32 24 32" stroke="#C4704B" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="4" x2="24" y2="44" stroke="#6B8F71" stroke-width="1.5"/>
+  </svg>
+</div>
+
+<!-- ============ OUR MISSION ============ -->
+<section class="mission section-text-center">
+  <span class="spec">padding: 72px 0 · max-width text: 600px</span>
+  <div class="wrap">
+    <p class="eyebrow" style="justify-content:center;">Our Mission</p>
+    <h2>Our <span class="accent">Mission</span></h2>
+    <p>At A Phiner Lifestyle, our mission is to encourage, educate, and support individuals who desire to live healthier lives through practical, sustainable lifestyle choices.</p>
+    <p style="margin-top:10px;">We believe wellness should feel welcoming, peaceful, and attainable — not overwhelming or intimidating.</p>
+    <div style="margin-top:24px;">
+      <a href="#" class="btn">Read More</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT YOU'LL FIND HERE ============ -->
+<section class="find-here section-text-center">
+  <span class="spec">4-col cards · rounded, shadowed</span>
+  <div class="wrap">
+    <p class="eyebrow" style="justify-content:center;">Growing Every Season</p>
+    <h2>What You'll <span class="accent">Find Here</span></h2>
+    <p>As the website continues to grow, you'll find resources designed to support your wellness journey, including:</p>
+    <div class="find-grid">
+      <div class="find-item">
+        <span class="num">01</span>
+        <h3>Juicing Resources</h3>
+        <p>Simple, nourishing recipes for everyday health.</p>
+      </div>
+      <div class="find-item">
+        <span class="num">02</span>
+        <h3>Wellness Reflections</h3>
+        <p>Thoughtful encouragement for the whole person.</p>
+      </div>
+      <div class="find-item">
+        <span class="num">03</span>
+        <h3>Practical Lifestyle Education</h3>
+        <p>Guidance you can apply to daily life.</p>
+      </div>
+      <div class="find-item">
+        <span class="num">04</span>
+        <h3>Faith-Rooted Encouragement</h3>
+        <p>Support grounded in gratitude and grace.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OUR PHILOSOPHY ============ -->
+<section class="philosophy">
+  <span class="spec">split 45/55 · gap 64px</span>
+  <div class="wrap philo-grid">
+    <div>
+      <p class="eyebrow">Our Philosophy</p>
+      <h2>Our <span class="accent">Philosophy</span></h2>
+    </div>
+    <div class="philo-right">
+      <p class="lede">Health is about far more than appearance.</p>
+      <p>It is about caring for the life we've been given with gratitude, wisdom, and intention.</p>
+      <p>We believe the body is a temple of the Holy Spirit, and caring for our health is one way of honoring that gift.</p>
+      <a href="#" class="btn" style="margin-top:6px;">Learn More</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ JUICE BOOK FEATURE ============ -->
+<section class="feature">
+  <span class="spec">image/text split · use real product photo here</span>
+  <div class="wrap feature-grid">
+    <div class="book-plate">Real Juice Book<br>product photograph<br>goes here</div>
+    <div>
+      <p class="eyebrow">From the Shop</p>
+      <h2>Juicing for Your Soul: <span class="accent">An Invitation to Health and Longevity</span></h2>
+      <p>A simple, classic collection of nourishing juice recipes created to support everyday health and wellness.</p>
+      <div class="price">$19.95</div>
+      <a href="#" class="btn solid">Read More</a>
+    </div>
+  </div>
+</section>
+
+<div class="leaf-divider">
+  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M24 4C24 4 36 12 36 24C36 36 24 44 24 44" stroke="#6B8F71" stroke-width="2" stroke-linecap="round"/>
+    <path d="M24 4C24 4 12 12 12 24C12 36 24 44 24 44" stroke="#6B8F71" stroke-width="2" stroke-linecap="round"/>
+    <path d="M24 12C24 12 30 16 30 22C30 28 24 32 24 32" stroke="#C4704B" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M24 12C24 12 18 16 18 22C18 28 24 32 24 32" stroke="#C4704B" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="24" y1="4" x2="24" y2="44" stroke="#6B8F71" stroke-width="1.5"/>
+  </svg>
+</div>
+
+<!-- ============ A PERSONAL INVITATION ============ -->
+<section class="invitation">
+  <span class="spec">reflective closing · dark band</span>
+  <div class="wrap">
+    <p class="eyebrow">A Personal Invitation</p>
+    <h2>Over the years, many people have asked me what I eat, how I stay active, or what motivates me to live this way.<br>My answer has always been simple.</h2>
+    <div class="lines">
+      <p>Healthy living is not about being perfect.</p>
+      <p>It is about faithfully making one good choice, then another, and another.</p>
+      <p>My hope is that this website encourages you to begin exactly where you are.</p>
+    </div>
+    <p class="final">You do not have to change your entire life today. Simply begin with one healthy choice. Then make another tomorrow. Over time, those choices become a lifestyle.</p>
+    <a href="#" class="btn on-dark">Begin Your Journey</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="item">
+        <span>Call Us</span>
+        <p>+1 (216) 307 1417</p>
+      </div>
+      <div class="item">
+        <span>Email Us</span>
+        <p>info@aphinerlifestyle.com</p>
+      </div>
+    </div>
+    <div class="foot-grid">
+      <div>
+        <div class="brand">A <span>Phiner</span> Lifestyle</div>
+        <p>Faith-centered nutrition coaching to support your whole-body wellness and help you thrive in every season.</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Shop</a></li>
+          <li><a href="#">Donation</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">Testimonial</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms &amp; Conditions</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>Copyright © 2026 All Rights Reserved Aphiner Lifestyle Nutrition Coaching</span>
+      <div class="socials">
+        <a href="#" aria-label="Facebook">f</a>
+        <a href="#" aria-label="Instagram">ig</a>
+        <a href="#" aria-label="LinkedIn">in</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
